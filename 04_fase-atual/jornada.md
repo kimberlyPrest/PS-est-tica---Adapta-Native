@@ -2,8 +2,8 @@
 
 <!-- fase-format:2 -->
 
-- [ ] Materializar organizations, clinics, profiles e memberships sem perder o baseline existente. @técnico de banco #projeto   <!-- id:86eb4738-bb19-4b90-9746-36f037eeb983 -->
-      > P1-S01-T01 — CA-P1-S01-01: quatro contratos T01 presentes; instalação limpa cria as quatro tabelas; no Supabase existente materializa os contratos ausentes e alinha `profiles` de forma aditiva, preservando tabela, IDs, linhas e histórico. Alvo: `psestetica`/`uhozizrpmmpemvegtqaq`. | CA e cenário TDD correspondente na SPEC.
+- [x] Materializar organizations, clinics, profiles e memberships sem perder o baseline existente. @técnico de banco #projeto — concluída em 2026-09-29 <!-- id:86eb4738-bb19-4b90-9746-36f037eeb983 -->
+      > P1-S01-T01 — CA-P1-S01-01: quatro contratos T01 presentes; instalação limpa cria as quatro tabelas; no Supabase existente materializa os contratos ausentes e alinha `profiles` de forma aditiva, preservando tabela, IDs, linhas e histórico. Alvo: `psestetica`/`uhozizrpmmpemvegtqaq`. | Migration 20260929145212; PGlite clean/upgrade passou; perfil baseline preservado; teste humano aprovado em 2026-09-29.
 - [ ] Criar clinic_settings, teams, team_members, contacts, contact_identities e metadados de integration_connections. @técnico de banco #projeto   <!-- id:2072d8ea-9798-423d-9b53-02d7ad1baf7a -->
       > P1-S01-T02 — CA-P1-S01-02: migration cria exatamente clinic_settings, teams, team_members, contacts, contact_identities e integration_connections; esta última guarda apenas secret_ref/config sanitizada. | CA e cenário TDD correspondente na SPEC.
 - [ ] Validar instalação limpa, upgrade do baseline observado, alvo e integridade relacional. @QA + técnico de banco #projeto   <!-- id:3d1eb137-481f-40fd-ba4f-5739d6b10739 -->
