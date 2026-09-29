@@ -2,12 +2,12 @@
 
 <!-- fase-format:2 -->
 
-- [ ] Criar organizations, clinics, profiles e memberships. @técnico de banco #projeto   <!-- id:86eb4738-bb19-4b90-9746-36f037eeb983 -->
-      > P1-S01-T01 — CA-P1-S01-01: migration cria exatamente organizations, clinics, profiles e memberships com os campos/FKs definidos na SPEC. | CA e cenário TDD correspondente na SPEC.
+- [ ] Materializar organizations, clinics, profiles e memberships sem perder o baseline existente. @técnico de banco #projeto   <!-- id:86eb4738-bb19-4b90-9746-36f037eeb983 -->
+      > P1-S01-T01 — CA-P1-S01-01: quatro contratos T01 presentes; instalação limpa cria as quatro tabelas; no Supabase existente materializa os contratos ausentes e alinha `profiles` de forma aditiva, preservando tabela, IDs, linhas e histórico. Alvo: `psestetica`/`uhozizrpmmpemvegtqaq`. | CA e cenário TDD correspondente na SPEC.
 - [ ] Criar clinic_settings, teams, team_members, contacts, contact_identities e metadados de integration_connections. @técnico de banco #projeto   <!-- id:2072d8ea-9798-423d-9b53-02d7ad1baf7a -->
       > P1-S01-T02 — CA-P1-S01-02: migration cria exatamente clinic_settings, teams, team_members, contacts, contact_identities e integration_connections; esta última guarda apenas secret_ref/config sanitizada. | CA e cenário TDD correspondente na SPEC.
-- [ ] Validar instalação limpa, upgrade e integridade dos dois conjuntos de tabelas. @QA + técnico de banco #projeto   <!-- id:3d1eb137-481f-40fd-ba4f-5739d6b10739 -->
-      > P1-S01-T03 — CA-P1-S01-03: migration aplica em banco vazio e upgrade; terceira clínica é cadastrada sem nova migration ou mudança de código. | CA e cenário TDD correspondente na SPEC.
+- [ ] Validar instalação limpa, upgrade do baseline observado, alvo e integridade relacional. @QA + técnico de banco #projeto   <!-- id:3d1eb137-481f-40fd-ba4f-5739d6b10739 -->
+      > P1-S01-T03 — CA-P1-S01-03: instalação limpa e upgrade do Supabase `psestetica` passam; `profiles` e `noop_check_only` são preservadas; alvo divergente não recebe escrita; terceira clínica é cadastrada sem nova migration ou mudança de código. | CA e cenário TDD correspondente na SPEC.
 - [ ] Configurar Auth e fluxo de convite/login conforme decisão aprovada. @técnico de implementação #projeto   <!-- id:ee1ff632-b444-42a9-bb01-a4e2337cab92 -->
       > P1-S02-T01 — Usuário sem sessão não lê dados operacionais. | CA e cenário TDD correspondente na SPEC.
 - [ ] Aplicar políticas RLS por organização/clínica às tabelas expostas e revisar views. @técnico de integração #projeto   <!-- id:31435da1-a1b6-4f22-816c-8bac3569d62b -->

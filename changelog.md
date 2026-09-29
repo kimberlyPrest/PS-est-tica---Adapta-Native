@@ -8,3 +8,6 @@
 - 2026-09-29: critérios P1-S01 agora usam os IDs CA-P1-S01-01/02/03 em SPEC, tasks e Jornada.
 
 - 2026-09-29: detalhados os campos exatos das seis tabelas T02 e alinhados os responsáveis técnicos da SPEC e das tasks.
+
+- 2026-09-29: SPEC P1-S01 alinhada ao baseline observado do Supabase `psestetica`: `profiles` existente é preservada e compatibilizada aditivamente; `noop_check_only` permanece intacta; guard de destino exclui o app Skip como alvo de migrations.
+- 2026-09-29: T01/T03, tasks, Jornada e rastreabilidade agora cobrem instalação limpa, upgrade do baseline existente, preservação de IDs/linhas e validação de alvo.
