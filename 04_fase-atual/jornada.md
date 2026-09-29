@@ -4,9 +4,9 @@
 
 - [x] Materializar organizations, clinics, profiles e memberships sem perder o baseline existente. @técnico de banco #projeto — concluída em 2026-09-29 <!-- id:86eb4738-bb19-4b90-9746-36f037eeb983 -->
       > P1-S01-T01 — CA-P1-S01-01: quatro contratos T01 presentes; instalação limpa e upgrade aprovados; profiles e histórico preservados. | migration 20260929145212; testes PGlite e validação humana registrados no changelog.
-- [ ] Criar clinic_settings, teams, team_members, contacts, contact_identities e integration_connections com PKs e unicidades explícitas. @técnico de banco #projeto   <!-- id:2072d8ea-9798-423d-9b53-02d7ad1baf7a -->
-      > P1-S01-T02 — CA-P1-S01-02: seis contratos e FKs presentes, com PK técnica `id` e constraints da SPEC. | CA e cenário TDD correspondente na SPEC.
-- [ ] Aplicar e validar as constraints de unicidade da SPEC P1-S01. @técnico de banco + QA #projeto   <!-- id:bd34f885-f8b2-41e9-9a14-d7dc6143fdc2 -->
+- [ ] Criar clinic_settings, teams, team_members, contacts, contact_identities e integration_connections com PKs, timestamps e escopo organization/clinic. @técnico de banco #projeto   <!-- id:2072d8ea-9798-423d-9b53-02d7ad1baf7a -->
+      > P1-S01-T02 — CA-P1-S01-02: seis contratos e FKs presentes; connections usam `organization_id`, `clinic_id` opcional e `connection_key`; tabelas têm PK técnica `id` e timestamps comuns. | CA e cenário TDD correspondente na SPEC.
+- [ ] Aplicar e validar as constraints UNIQUE adicionais da SPEC P1-S01. @técnico de banco + QA #projeto   <!-- id:bd34f885-f8b2-41e9-9a14-d7dc6143fdc2 -->
       > P1-S01-T04 — CA-P1-S01-04: duplicatas das chaves declaradas são rejeitadas e coexistências permitidas são aceitas. | Matriz sintética de unicidades na SPEC.
 - [ ] Validar instalação limpa, upgrade e integridade relacional após T01, T02 e T04. @QA + técnico de banco #projeto   <!-- id:3d1eb137-481f-40fd-ba4f-5739d6b10739 -->
       > P1-S01-T03 — CA-P1-S01-03: instalação limpa e upgrade passam; `profiles` e histórico aplicado são preservados; terceira clínica é cadastrada sem nova migration. | CA e cenário TDD correspondente na SPEC.

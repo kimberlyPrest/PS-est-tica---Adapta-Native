@@ -254,7 +254,7 @@ Todas as tabelas operacionais usam UUID, `created_at`, `updated_at` e, quando ap
 | Tabela | Campos principais | Finalidade |
 |---|---|---|
 | `channel_accounts` | `id`, `clinic_id`, `provider`, `phone_e164`, `external_account_id`, `capabilities`, `status` | Número/conta Meta ou Z-API por clínica; não guarda segredo. |
-| `integration_connections` | `id`, `clinic_id`, `provider`, `secret_ref`, `config_sanitized`, `health_status`, `last_tested_at` | Conexão configurável sem persistir credencial no banco operacional. |
+| `integration_connections` | `id`, `organization_id`, `clinic_id` (nulo para padrão da organização), `provider`, `connection_key`, `secret_ref`, `config_sanitized`, `health_status`, `last_tested_at` | Conexão configurável por organização, com override opcional de clínica e chave estável da conta/slot; admite conexões múltiplas por provedor e não persiste credencial no banco operacional. |
 | `contacts` | `id`, `organization_id`, `name`, `primary_phone_e164`, `email`, `status` | Pessoa de contato do CRM. |
 | `contact_identities` | `contact_id`, `channel`, `external_id`, `normalized_value`, `verified_at` | Liga telefone/WhatsApp/Instagram ao contato. |
 | `conversations` | `id`, `clinic_id`, `contact_id`, `channel_account_id`, `status`, `owner_user_id`, `team_id`, `last_message_at`, `next_action_at` | Unidade de atendimento. |
@@ -941,33 +941,35 @@ Execuções, sucesso, falha, custo, latência, confiança, revisão humana, suge
 - Editor irrestrito de código, SQL, RLS ou chamadas arbitrárias pelo console administrativo.
 - Garantia de ganho financeiro sem baseline e adesão operacional.
 
-## 20. Gates e decisões pendentes
+## 20. Gates aprovados e entradas da execução
 
-| ID | Decisão necessária | Dono | Bloqueia |
+Os GATE-01 a GATE-17 estão aprovados para planejamento e implementação conforme `decisoes-e-aprovacoes.md`. A tabela registra quais parâmetros aprovados devem ser carregados dos registros operacionais/cofre em cada fase; não representa aprovação pendente.
+
+| ID | Entrada aprovada a carregar | Fonte/responsável pela carga | Fase de consumo |
 |---|---|---|---|
-| GATE-01 | Confirmar nomes/IDs e regras das duas clínicas iniciais e dados mínimos para cadastrar a terceira no Clínica Experts | Cliente + consultor | Fase 1 |
-| GATE-02 | Confirmar usuários iniciais, papéis, vínculo exclusivo/compartilhado, equipes, turnos e capacidades de cada clínica | Cliente | Fase 1–2 |
-| GATE-03 | Confirmar quais números usam Meta Cloud API e quais usam Z-API, credenciais, titularidade e janela de corte | Cliente + técnico | Fase 2 |
-| GATE-04 | Aprovar mensagens, intenções, transbordos, consentimento e horários | Cliente | Fase 2 |
-| GATE-05 | Mapear profissional/procedimento/agenda e confirmar fluxo humano | Cliente | Fase 3 |
-| GATE-06 | Mapear sellers, pipelines e stages entre Supabase e Clínica Experts | Cliente + técnico | Fase 3 |
-| GATE-07 | Definir quem registra comparecimento, fechamento e perda | Cliente | Fase 3 |
-| GATE-08 | Aprovar cadências 5/15/30/60, máximo e mensagens | Cliente | Fase 3–4 |
-| GATE-09 | Definir política de desconto, voucher, aniversário e recompra | Cliente | Fase 4 |
-| GATE-10 | Escolher quais endpoints de escrita serão ativados | Consultor + cliente | Fase 4 |
-| GATE-11 | Aprovar retenção, DPA/provedor de IA e processo LGPD | Cliente responsável | Antes do go-live |
-| GATE-12 | Aprovar metas após baseline | Cliente + consultor | Fase 5 |
-| GATE-13 | Confirmar se a credencial/API separa as duas clínicas e qual mecanismo autentica webhooks | Cliente + Clínica Experts + técnico | Fase 1–2 |
-| GATE-14 | Aprovar filas, estratégia de distribuição, SLA, cadeia de reoferta/escalonamento, expediente e plantonista por clínica | Cliente | Fase 2 |
-| GATE-15 | Aprovar administradores, política de publicação/rollback de prompts e quais mudanças exigem segundo aprovador | Cliente + técnico | Fase 1–2 |
-| GATE-16 | Aceitar formalmente os riscos operacionais e de termos do uso da Z-API e definir plano de contingência por número | Cliente responsável | Antes do go-live Z-API |
-| GATE-17 | Habilitar o módulo CRM do Clínica Experts no painel da clínica OU decidir que as fases 3–4 usam apenas o CRM próprio (reconciliação por bookings + sales) | Cliente (Felipe) | Fase 3 |
+| GATE-01 | Carregar nomes/IDs e regras aprovados para as duas clínicas e o cadastro da terceira no Clínica Experts | Cliente + consultor | Fase 1 |
+| GATE-02 | Carregar usuários, papéis, memberships, equipes, turnos e capacidades aprovados para cada clínica | Cliente | Fase 1–2 |
+| GATE-03 | Carregar mapeamento aprovado de números/provedores, titularidade e janela de corte; buscar credenciais no cofre | Cliente + técnico | Fase 2 |
+| GATE-04 | Carregar mensagens, intenções, transbordos, consentimento e horários aprovados | Cliente | Fase 2 |
+| GATE-05 | Carregar mapeamentos aprovados de profissionais/procedimentos/agenda e o fluxo humano aprovado | Cliente | Fase 3 |
+| GATE-06 | Carregar mapeamentos aprovados de sellers, pipelines e stages | Cliente + técnico | Fase 3 |
+| GATE-07 | Aplicar os responsáveis aprovados para registrar comparecimento, fechamento e perda | Cliente | Fase 3 |
+| GATE-08 | Carregar cadências, limites e mensagens aprovados | Cliente | Fase 3–4 |
+| GATE-09 | Aplicar as políticas aprovadas de desconto, voucher, aniversário e recompra | Cliente | Fase 4 |
+| GATE-10 | Usar somente a allowlist aprovada de endpoints de escrita | Consultor + cliente | Fase 4 |
+| GATE-11 | Aplicar retenção, DPA/provedor de IA e processo LGPD aprovados antes do go-live | Cliente responsável | Antes do go-live |
+| GATE-12 | Carregar metas aprovadas após estabelecer o baseline | Cliente + consultor | Fase 5 |
+| GATE-13 | Usar a separação de credenciais e autenticação de webhooks já aprovadas | Cliente + Clínica Experts + técnico | Fase 1–2 |
+| GATE-14 | Carregar filas, distribuição, SLA, escalonamento, expediente e plantonistas aprovados por clínica | Cliente | Fase 2 |
+| GATE-15 | Aplicar administradores e política aprovada de publicação/rollback e segundo aprovador | Cliente + técnico | Fase 1–2 |
+| GATE-16 | Aplicar riscos aceitos e plano aprovado de contingência da Z-API por número | Cliente responsável | Antes do go-live Z-API |
+| GATE-17 | Aplicar a opção aprovada: módulo CRM habilitado OU CRM próprio com reconciliação por bookings + sales | Cliente (Felipe) | Fase 3 |
 
 ## 21. Critério global de pronto
 
 O projeto estará pronto quando cada capacidade estiver ligada a uma SPEC, task, prova automatizada e demonstração humana; uma nova clínica puder ser configurada sem mudança de código; Meta e Z-API estiverem isoladas e homologadas; todos os transbordos tiverem ticket, SLA, responsável/fila e fallback; dados e permissões estiverem validados; segredos permanecerem fora do cliente e dos logs; integrações forem idempotentes e observáveis; prompts, agentes e políticas tiverem versão/rollback; e o gestor aprovar o go-live com riscos residuais registrados.
 
-O check interno de escopo permanece `PENDENTE` até a validação humana. A aprovação deste documento autoriza detalhar SPECs e tasks, não autoriza ativar integrações, enviar mensagens reais ou executar escrita no Clínica Experts.
+O check interno de escopo foi aprovado em 2026-09-29, conforme `decisoes-e-aprovacoes.md`. O escopo libera planejamento e implementação nas cinco fases. Ativação produtiva, envio de mensagens reais e escrita externa seguem o procedimento de publicação/rollback aprovado para cada integração.
 
 ## 22. Referências técnicas validadas
 

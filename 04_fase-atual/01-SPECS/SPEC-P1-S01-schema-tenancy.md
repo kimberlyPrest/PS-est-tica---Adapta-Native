@@ -15,7 +15,7 @@
 
 ## Resultado observável
 
-As migrations instalam os dez contratos de tabela enumerados abaixo com relações válidas em banco vazio e atualizam o schema a partir do baseline existente no repositório, preservando os dados de `public.profiles` e o histórico já aplicado. Depois da instalação, uma terceira clínica pode ser criada por dados, sem alteração de código ou schema.
+As migrations instalam os dez contratos de tabela enumerados abaixo, incluindo campos comuns `id UUID`, `created_at` e `updated_at`, com relações válidas em banco vazio e atualizam o schema a partir do baseline existente no repositório, preservando os dados de `public.profiles` e o histórico já aplicado. Depois da instalação, uma terceira clínica pode ser criada por dados, sem alteração de código ou schema.
 
 ## Escopo e limites
 
@@ -29,33 +29,33 @@ As migrations instalam os dez contratos de tabela enumerados abaixo com relaçõ
 
 | Task | Tabelas cobertas | Campos/contrato da seção 7 |
 |---|---|---|
-| P1-S01-T01 | Contrato de exatamente quatro tabelas: `organizations`, `clinics`, `profiles`, `memberships` | `organizations`: `id` (PK), `name`, `status`, `timezone`; `clinics`: `id` (PK), `organization_id`, `name`, `code`, `timezone`, `status`; `profiles`: `id=auth.users.id` (PK/FK), `name`, `status`; `memberships`: `id` (PK), `user_id`, `organization_id`, `clinic_id`, `role`, `active`. `profiles` é criada em instalação limpa e compatibilizada sem recriação no baseline existente. |
-| P1-S01-T02 | `clinic_settings`, `teams`, `team_members`, `contacts`, `contact_identities`, `integration_connections` — exatamente estas seis tabelas | `clinic_settings`: `id` (PK), `clinic_id`, `setting_key`, `value_json`, `inherits_org`, `version`, `status`; `teams`: `id` (PK), `clinic_id`, `name`, `queue_type`; `team_members`: `id` (PK), `team_id`, `user_id`, `capacity`, `active`; `contacts`: `id` (PK), `organization_id`, `name`, `primary_phone_e164`, `email`, `status`; `contact_identities`: `id` (PK), `contact_id`, `channel`, `external_id`, `normalized_value`, `verified_at`; `integration_connections`: `id` (PK), `clinic_id`, `provider`, `secret_ref`, `config_sanitized`, `health_status`, `last_tested_at` (sem valor secreto em claro). |
+| P1-S01-T01 | Contrato de exatamente quatro tabelas: `organizations`, `clinics`, `profiles`, `memberships` | `organizations`: `id` (PK), `name`, `status`, `timezone`; `clinics`: `id` (PK), `organization_id`, `name`, `code`, `timezone`, `status`; `profiles`: `id=auth.users.id` (PK/FK), `name`, `status`; `memberships`: `user_id`, `organization_id`, `clinic_id`, `role`, `active`; PK composta definida abaixo. `profiles` é criada em instalação limpa e compatibilizada sem recriação no baseline existente. |
+| P1-S01-T02 | `clinic_settings`, `teams`, `team_members`, `contacts`, `contact_identities`, `integration_connections` — exatamente estas seis tabelas | `clinic_settings`: `id` (PK), `clinic_id`, `setting_key`, `value_json`, `inherits_org`, `version`, `status`; `teams`: `id` (PK), `clinic_id`, `name`, `queue_type`; `team_members`: `id` (PK), `team_id`, `user_id`, `capacity`, `active`; `contacts`: `id` (PK), `organization_id`, `name`, `primary_phone_e164`, `email`, `status`; `contact_identities`: `id` (PK), `contact_id`, `channel`, `external_id`, `normalized_value`, `verified_at`; `integration_connections`: `id` (PK), `organization_id`, `clinic_id` (nullable for organization-level connection), `provider`, `connection_key`, `secret_ref`, `config_sanitized`, `health_status`, `last_tested_at` (sem valor secreto em claro). |
 | P1-S01-T04 | Constraints UNIQUE adicionais às PKs técnicas | Aplicar e provar exatamente as regras da seção “Chaves primárias e unicidade”; sem unicidade global de telefone/e-mail/identidade externa. |
 | P1-S01-T03 | Verificação integrada dos dez objetos de P1-S01-T01/T02 | Upgrade, FKs, unicidades, escopo tenant/clínica e criação de terceira clínica por inserção/configuração. |
 
-Não adicionar tabelas ou colunas fora desses contratos sem emenda da SPEC. Dados comuns (`id`, `created_at`, `updated_at`, `created_by`, `organization_id`, `clinic_id`, `version`) aplicam-se somente onde a seção 7 disser “quando aplicável”.
+Não adicionar tabelas ou colunas fora desses contratos sem emenda da SPEC. Todas as dez tabelas têm PK UUID conforme a seção “Chaves primárias e unicidade” (PK simples `id`, exceto a PK composta de `memberships`), `created_at TIMESTAMPTZ NOT NULL DEFAULT now()` e `updated_at TIMESTAMPTZ NOT NULL DEFAULT now()`; `profiles.id` referencia `auth.users(id)`. Os demais campos comuns (`created_by`, `organization_id`, `clinic_id`, `version`) aplicam-se onde a seção 7 ou a regra de escopo correspondente os exigir.
 
 ## Chaves primárias e unicidade
 
-**Chave primária técnica:** todas as tabelas deste contrato têm `id UUID PRIMARY KEY`, gerado no banco, exceto `profiles`, cuja PK é `id UUID PRIMARY KEY REFERENCES auth.users(id)`. Isso inclui `memberships`, `clinic_settings`, `team_members` e `contact_identities`. As chaves abaixo são constraints/indexes `UNIQUE` adicionais, distintas da PK técnica. Para `contact_identities`, portanto, cada linha tem identidade técnica estável (`id`) e a regra de negócio não transforma o trio em PK.
+**Chaves primárias:** `organizations`, `clinics`, `clinic_settings`, `teams`, `team_members`, `contacts`, `contact_identities` e `integration_connections` têm `id UUID PRIMARY KEY` gerado no banco; `profiles.id` é UUID PK/FK para `auth.users(id)`. `memberships` é uma tabela de associação e usa PK composta `(user_id, organization_id, clinic_id, role)`, preservando o contrato T01 já concluído e sem adicionar coluna substituta. Todas também têm `created_at` e `updated_at` como `TIMESTAMPTZ NOT NULL DEFAULT now()`. As regras abaixo são constraints/indexes `UNIQUE` adicionais, distintas das PKs técnicas. Para `contact_identities`, portanto, cada linha tem identidade técnica estável (`id`) e a regra de negócio não transforma o trio em PK.
 
 As constraints UNIQUE listadas consideram apenas registros persistidos; `active`/`status` não integra chave de identidade, portanto desativar e reativar reutiliza o mesmo registro.
 
 | Tabela | Constraint UNIQUE adicional à PK | Regra e justificativa |
 |---|---|---|
 | `organizations` | Nenhuma | Nome não é único globalmente. |
-| `clinics` | `(organization_id, code)` | Código identifica a clínica dentro da organização; nomes podem se repetir. |
+| `clinics` | `(organization_id, code)`; `(id, organization_id)` como chave de suporte à FK tenant composta | Código identifica a clínica dentro da organização; a segunda chave garante integridade clinic/organization. Nomes podem se repetir. |
 | `profiles` | Nenhuma | Um perfil por usuário Auth; nome não é único. |
-| `memberships` | `(user_id, organization_id, clinic_id, role)` | Impede duplicar a mesma concessão; permite múltiplos papéis por usuário e múltiplas clínicas. `active` fica fora para permitir reativação sem duplicar vínculo. |
+| `memberships` | Nenhuma adicional; PK composta `(user_id, organization_id, clinic_id, role)` | A identidade da associação é usuário + organização + clínica + papel; permite múltiplos papéis/clínicas, e `active` fica fora para reativação sem duplicar vínculo. |
 | `clinic_settings` | `(clinic_id, setting_key, version)` | Mantém histórico versionado da mesma chave; versões distintas coexistem. |
 | `teams` | `(clinic_id, name)` | Nome de equipe é único dentro da clínica, não globalmente. |
 | `team_members` | `(team_id, user_id)` | Um vínculo por pessoa/equipe; `capacity` e `active` são atributos desse vínculo. |
 | `contacts` | Nenhuma | Telefone e e-mail não são únicos; contatos podem compartilhar dados ou estar ambíguos. |
 | `contact_identities` | `(contact_id, channel, external_id)` quando `external_id` não for nulo | Evita repetir a mesma identidade no contato, mas permite a mesma identidade em contatos diferentes para suportar reconciliação de ambiguidade. `normalized_value` não é globalmente único. |
-| `integration_connections` | `(clinic_id, provider)` | No máximo uma conexão por provedor e clínica; provedores diferentes e clínicas diferentes podem coexistir. |
+| `integration_connections` | `(organization_id, provider, connection_key)` quando `clinic_id IS NULL`; `(clinic_id, provider, connection_key)` quando `clinic_id IS NOT NULL` | Uma conexão por escopo, provedor e chave estável. Permite várias contas do mesmo provedor; `connection_key` não contém segredo e permanece estável durante rotação. |
 
-Constraints compostas adicionais podem ser usadas como suporte referencial (por exemplo, garantir que clínica e organização de uma membership coincidam), mas não substituem nem ampliam as chaves de negócio acima. `memberships.clinic_id` é obrigatório conforme o contrato da seção 7.1; não há membership organizacional sem clínica nesta fase. Para `contact_identities` com `external_id` nulo, não aplicar unicidade de negócio além da PK técnica `id`.
+Constraints compostas adicionais podem ser usadas como suporte referencial (por exemplo, garantir que clínica e organização de uma membership coincidam), mas não substituem nem ampliam as chaves de negócio acima. `memberships` usa a PK composta `(user_id, organization_id, clinic_id, role)` e `clinic_id` é obrigatório conforme seção 7.1; não há membership organizacional sem clínica nesta fase. `integration_connections.organization_id` e `connection_key` são obrigatórios; `clinic_id` nulo indica conexão da organização, preenchido indica override da clínica, sempre pertencente à mesma organização. As chaves de unicidade de conexão usam dois índices parciais para tratar `clinic_id` nulo; a resolução escolhe a chave da clínica antes da chave herdada da organização. A chave `(clinics.id, clinics.organization_id)` dá suporte à FK composta. Para `contact_identities` com `external_id` nulo, não aplicar unicidade de negócio além da PK técnica `id`.
 
 ## Dados e regras
 
@@ -63,7 +63,8 @@ Constraints compostas adicionais podem ser usadas como suporte referencial (por 
 - `memberships.user_id` referencia `profiles.id`; organization/clinic devem ser coerentes segundo a organização da clínica.
 - `clinic_settings.clinic_id` referencia `clinics.id`; configurações futuras respeitam herança organização → clínica.
 - `teams.clinic_id` referencia `clinics.id`; `team_members.team_id` e `user_id` referenciam equipe e perfil.
-- `contact_identities.contact_id` referencia `contacts.id`; conexões pertencem a uma clínica.
+- `contact_identities.contact_id` referencia `contacts.id`.
+- `integration_connections.organization_id` referencia `organizations.id`; `(clinic_id, organization_id)` referencia `(clinics.id, organization_id)` quando `clinic_id` não é nulo, com `(clinics.id, organization_id)` único como suporte referencial. `clinic_id` nulo representa padrão organizacional; preenchido representa override da clínica. `connection_key` identifica de forma estável a conta/slot configurado, pode usar o ID externo não secreto e não muda com rotação do segredo. A resolução segue organização → clínica.
 - `integration_connections` persiste apenas referência do segredo; o valor secreto fica em Supabase Secrets/Vault.
 - As constraints de unicidade são exatamente as listadas na seção “Chaves primárias e unicidade”; FKs e chaves compostas impedem relações clínicas entre tenants incompatíveis.
 
@@ -80,18 +81,18 @@ Constraints compostas adicionais podem ser usadas como suporte referencial (por 
 |---|---|---|---|
 | T01 limpo | migration em banco vazio | existem exatamente os quatro contratos T01, cada um com os campos listados e FKs válidas | catálogo Postgres e migration ID |
 | T01 existente | baseline com `profiles` preexistente e migrations já aplicadas | T01 materializa os contratos de tabela ausentes e alinha `profiles` sem apagar/recriar tabela, remover/alterar linhas ou reescrever histórico | catálogo antes/depois, contagem de linhas, migration ID |
-| T02 | aplicar migration dependente de T01 | existem exatamente as seis tabelas T02 e `integration_connections` não contém credencial em claro | catálogo, inspeção de schema e fixture de segredo sintético |
+| T02 | aplicar migration dependente de T01 | existem exatamente as seis tabelas T02; `integration_connections` aceita padrão organization-level, override clinic-level e múltiplas chaves sem segredo em claro | catálogo, inspeção de schema e fixtures sintéticas |
 | Upgrade | baseline do repositório, inclusive `profiles` e migrations já aplicadas | migrations concluem sem perda de dados/IDs de `profiles`; migrations anteriores permanecem registradas e intactas | saída do pipeline, catálogo e comparação de contagem/chaves |
-| Unicidades | inserir duplicatas de cada chave definida e variantes que devem coexistir | duplicata da chave é rejeitada; papéis/clínicas diferentes, identidades em contatos diferentes, e-mail/telefone repetidos e versões de config distintas são aceitos | testes de constraints com fixtures sintéticas |
+| Unicidades | inserir duplicatas de cada chave definida e variantes que devem coexistir | duplicata da chave é rejeitada; papéis/clínicas diferentes, identidades em contatos diferentes, e-mail/telefone repetidos, versões distintas e chaves de conexão distintas para o mesmo provedor são aceitas | testes de constraints com fixtures sintéticas |
 | Terceira clínica | inserir clinic/org conforme fluxo | clínica fica cadastrável por dados usando schema existente | registro de teste e ausência de nova migration |
 | Falha | migration inválida ou FK órfã | transação falha sem deixar schema parcialmente aplicado | código de saída e estado anterior preservado |
 
 ## Critérios de aceite
 
 - [ ] **CA-P1-S01-01:** T01 materializa os contratos de `organizations`, `clinics`, `profiles`, `memberships` e apenas estas quatro tabelas desse recorte, com campos/FKs definidos acima. Em banco vazio cria as quatro; em upgrade compatibiliza `profiles` por mudanças aditivas, preservando tabela, IDs, linhas e histórico aplicado. Não executa `DROP`, rename/recriação, limpeza de dados ou edição de migration aplicada.
-- [ ] **CA-P1-S01-02:** T02 cria `clinic_settings`, `teams`, `team_members`, `contacts`, `contact_identities`, `integration_connections` e apenas estas seis tabelas desse recorte; conexão persiste somente `secret_ref`/config sanitizada.
+- [ ] **CA-P1-S01-02:** T02 cria `clinic_settings`, `teams`, `team_members`, `contacts`, `contact_identities`, `integration_connections` e apenas estas seis tabelas desse recorte; conexão tem escopo organization/clinic e persiste somente `secret_ref`/config sanitizada.
 - [ ] **CA-P1-S01-03:** conjunto completo materializa os dez contratos em instalação limpa e em upgrade; preserva dados/IDs de `profiles` e histórico aplicado e permite cadastrar terceira clínica sem mudança de código/schema.
-- [ ] **CA-P1-S01-04:** T01/T02 criam as PKs técnicas descritas; T04 aplica e valida todas e somente as constraints/indexes `UNIQUE` adicionais da seção “Chaves primárias e unicidade”. Testes confirmam rejeição de duplicatas e coexistência dos casos explicitamente permitidos.
+- [ ] **CA-P1-S01-04:** T01/T02 criam as PKs descritas (inclusive a PK composta de `memberships`); T04 aplica e valida todas e somente as constraints/indexes `UNIQUE` adicionais da seção “Chaves primárias e unicidade”. Testes confirmam rejeição de duplicatas e coexistência dos casos explicitamente permitidos.
 
 ## TDD da SPEC
 
@@ -108,9 +109,9 @@ Constraints compostas adicionais podem ser usadas como suporte referencial (por 
 
 | ID | Task | Dono | Critério binário | Recorte da prova | Evidência | Status |
 |---|---|---|---|---|---|---|
-| P1-S01-T01 | Materializar organizations, clinics, profiles e memberships sem perder o baseline existente. | técnico de banco | CA-P1-S01-01: quatro contratos T01 presentes; em banco vazio, quatro tabelas criadas; em upgrade, contratos ausentes materializados e `profiles` alinhada aditivamente, preservando tabela/IDs/linhas e histórico. | verificar conjunto T01; comparar catálogo e contagem/chaves de `profiles` antes/depois | catálogo Postgres, migration ID e comparação sanitizada | Liberada |
-| P1-S01-T02 | Criar clinic_settings, teams, team_members, contacts, contact_identities e metadados de integration_connections. | técnico de banco | CA-P1-S01-02: as seis tabelas nomeadas e campos/FKs estão presentes; segredo não é armazenado em claro. | verificar somente o conjunto T02 e secret_ref | catálogo, schema e fixture sintética | Liberada |
-| P1-S01-T04 | Aplicar e validar constraints UNIQUE adicionais às PKs técnicas. | técnico de banco + QA | CA-P1-S01-04: duplicatas violadoras são rejeitadas e coexistências permitidas pela seção “Chaves primárias e unicidade” são aceitas. | inserir duplicata e par permitido para cada chave | testes automatizados de constraints e catálogo do schema | Liberada |
+| P1-S01-T01 | Materializar organizations, clinics, profiles e memberships sem perder o baseline existente. | técnico de banco | CA-P1-S01-01: quatro contratos T01 presentes; em banco vazio, quatro tabelas criadas; em upgrade, contratos ausentes materializados e `profiles` alinhada aditivamente, preservando tabela/IDs/linhas e histórico. | verificar conjunto T01; comparar catálogo e contagem/chaves de `profiles` antes/depois | catálogo Postgres, migration ID e comparação sanitizada | Concluída — 2026-09-29 |
+| P1-S01-T02 | Criar seis contratos T02, PKs, timestamps e conexões com escopo organization/clinic e connection_key. | técnico de banco | CA-P1-S01-02: os seis contratos e FKs estão presentes; connection_key é estável e segredo não é armazenado em claro. | verificar conjunto T02, escopos/herança e referência do segredo | catálogo, schema e fixtures sintéticas | Liberada |
+| P1-S01-T04 | Aplicar e validar constraints UNIQUE adicionais às PKs técnicas. | técnico de banco + QA | CA-P1-S01-04: duplicatas violadoras são rejeitadas e coexistências permitidas pela seção “Chaves primárias e unicidade” são aceitas. | inserir duplicata e par permitido para cada chave, inclusive índices parciais de conexões | testes automatizados de constraints e catálogo do schema | Liberada |
 | P1-S01-T03 | Validar instalação limpa, upgrade do baseline e integridade relacional. | QA + técnico de banco | CA-P1-S01-03: instalação limpa e upgrade passam; `profiles` e o histórico aplicado são preservados; terceira clínica é criada sem nova migration. | cenários T01 limpo/existente, Upgrade, Unicidades, Terceira clínica e Falha | relatório do pipeline, comparação sanitizada e evidência do registro de teste | Liberada |
 
 ## Emendas

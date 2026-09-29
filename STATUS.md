@@ -5,7 +5,7 @@
 - Aprovações humanas: confirmadas pela responsável; registro disponível na pasta do escopo.
 - Fase atual: fase 1, cinco SPECs e 16 tasks; P1-S01-T01 concluída.
 - Progresso da fase 1: 1/16 tasks concluídas (6,25%).
-- P1-S01: T02 e T04 estão liberadas conforme dependências; T02 define as PKs técnicas; T04 aplica/testa UNIQUE adicionais. Ordem: T01 → T02 → T04 → T03.
+- P1-S01: T02 e T04 estão liberadas conforme dependências; T02 define PKs/campos comuns e T04 aplica/testa UNIQUE adicionais. Ordem: T01 → T02 → T04 → T03. Manifesto e README informam 16 tasks.
 - Próxima ação: implementar T02, aplicar e validar T04, depois executar a prova integrada T03.
 - Nenhuma credencial foi incluída.
 

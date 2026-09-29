@@ -6,7 +6,7 @@
   "implementationStatus": "released",
   "phase1": {
     "specCount": 5,
-    "taskCount": 15
+    "taskCount": 16
   },
   "definitiveScope": {
     "path": "02-Escopo-Definitivo/02-Escopo-Definitivo.md",
@@ -31,6 +31,8 @@
     "04_fase-atual/fase.md",
     "04_fase-atual/jornada.md",
     "05-Reunioes/2026-08-24-kickoff.md",
+    "06_notas/aprendizado-continuo/AP-2026-09-29-1354-preservacao-baseline.md",
+    "06_notas/aprendizado-continuo/controle.md",
     "README.md",
     "STATUS.md",
     "changelog.md",

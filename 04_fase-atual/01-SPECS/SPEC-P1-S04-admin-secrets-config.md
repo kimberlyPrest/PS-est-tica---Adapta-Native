@@ -10,7 +10,7 @@
 
 - **Estado atual:** planejamento consolidado; esta capacidade ainda não está implementada.
 - **Estado desejado:** Salvar credenciais diretamente em Supabase Secrets/Vault, manter no banco apenas `secret_ref` e permitir teste não destrutivo/rollback de configurações.
-- **Decisões fechadas:** Valor secreto nunca é retornado ao browser, armazenado em tabela operacional, log ou documento; teste é leitura não destrutiva; publicação de config gera versão imutável.
+- **Decisões fechadas:** Valor secreto nunca é retornado ao browser, armazenado em tabela operacional, log ou documento; teste é leitura não destrutiva; publicação de config gera versão imutável. A conexão usa `(organization_id, clinic_id, provider, connection_key)`; escopo de clínica substitui o padrão da organização, e cada escopo/provedor/chave estável é único sem incluir `secret_ref` na chave.
 - **Aprovações:** confirmadas pela responsável em 29/09/2026 e registradas em `03-Projeto/decisoes-do-projeto.md`; sem gate de aprovação pendente.
 
 ## Resultado observável
@@ -22,7 +22,7 @@ Salvar credenciais diretamente em Supabase Secrets/Vault, manter no banco apenas
 - **Inclui:** Salvar credenciais diretamente em Supabase Secrets/Vault, manter no banco apenas `secret_ref` e permitir teste não destrutivo/rollback de configurações.
 - **Fora de escopo:** demais capacidades do projeto fora do título desta SPEC; itens explicitamente fora da fase conforme seção 18 do escopo.
 - **Atores e permissões:** platform_admin, owner, clinic_admin no escopo autorizado; aplicar RLS/membership e privilégio mínimo.
-- **Dados:** `integration_connections.secret_ref`, `config_sanitized`, `health_status`, `last_tested_at`, versões de configuração e `config_audit_logs`.
+- **Dados:** `integration_connections.organization_id`, `clinic_id`, `provider`, `connection_key`, `secret_ref`, `config_sanitized`, `health_status`, `last_tested_at`, versões de configuração e `config_audit_logs`.
 - **Dependências:** capacidades prévias listadas no índice da fase e ambientes/acessos autorizados do cliente. Dependência técnica indica ordem de execução, não aprovação pendente.
 - **Superfícies afetadas:** Supabase/Postgres/RLS/Edge Functions/Queues/Storage e console web somente conforme a integração descrita nesta SPEC; não presumir arquivos/repositório de implementação inexistentes.
 - **Segurança/privacidade:** segredos exclusivamente server-side; correlation ID; logs sanitizados; isolamento por `organization_id`/`clinic_id`; dados sintéticos em testes.
@@ -32,7 +32,7 @@ Salvar credenciais diretamente em Supabase Secrets/Vault, manter no banco apenas
 
 | Origem/destino | Fonte de verdade | Contrato | Autorização | Idempotência/resiliência |
 |---|---|---|---|---|
-| `admin-save-integration-config`, `admin-test-connection`; Edge Function e Supabase Vault/Secrets. | `integration_connections.secret_ref`, `config_sanitized`, `health_status`, `last_tested_at`, versões de configuração e `config_audit_logs`. | platform_admin, owner, clinic_admin no escopo autorizado | correlação, retry limitado/backoff, dead-letter e tratamento de status definidos no escopo |
+| `admin-save-integration-config`, `admin-test-connection`; Edge Function e Supabase Vault/Secrets. | `integration_connections.organization_id`, `clinic_id`, `provider`, `connection_key`, `secret_ref`, `config_sanitized`, `health_status`, `last_tested_at`, versões de configuração e `config_audit_logs`. | platform_admin, owner, clinic_admin no escopo autorizado | correlação, retry limitado/backoff, dead-letter e tratamento de status definidos no escopo |
 
 ## Regras de negócio
 
@@ -90,7 +90,7 @@ Salvar credenciais diretamente em Supabase Secrets/Vault, manter no banco apenas
 
 | ID | Task | Dono | Critério | Recorte da prova | Evidência | Status |
 |---|---|---|---|---|---|---|
-| P1-S04-T01 | Implementar gravação server-side do segredo e referência opaca. | técnico de implementação | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☐ Liberada |
+| P1-S04-T01 | Implementar gravação server-side do segredo e referência opaca na conexão de escopo organization/clinic identificada por `connection_key`. | técnico de implementação | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☐ Liberada |
 | P1-S04-T02 | Implementar formulário de conexão, teste sanitizado, versionamento e audit log. | técnico de integração | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☐ Liberada |
 | P1-S04-T03 | Provar não exposição de segredo, falhas 401/429/timeout e rollback. | QA + dono operacional | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☐ Liberada |
 
