@@ -21,12 +21,12 @@
     "03-Produto-e-Arquitetura/console-administrativo-e-atendimento.md",
     "04-Processos/fluxo-alvo.md",
     "04-Processos/processo-comercial-observado.md",
-    "04_fase-atual/01-SPECs/00-INDICE.md",
-    "04_fase-atual/01-SPECs/SPEC-P1-S01-schema-tenancy.md",
-    "04_fase-atual/01-SPECs/SPEC-P1-S02-auth-rls.md",
-    "04_fase-atual/01-SPECs/SPEC-P1-S03-admin-organizacao.md",
-    "04_fase-atual/01-SPECs/SPEC-P1-S04-admin-secrets-config.md",
-    "04_fase-atual/01-SPECs/SPEC-P1-S05-clinica-experts-paciente.md",
+    "04_fase-atual/01-SPECS/00-INDICE.md",
+    "04_fase-atual/01-SPECS/SPEC-P1-S01-schema-tenancy.md",
+    "04_fase-atual/01-SPECS/SPEC-P1-S02-auth-rls.md",
+    "04_fase-atual/01-SPECS/SPEC-P1-S03-admin-organizacao.md",
+    "04_fase-atual/01-SPECS/SPEC-P1-S04-admin-secrets-config.md",
+    "04_fase-atual/01-SPECS/SPEC-P1-S05-clinica-experts-paciente.md",
     "04_fase-atual/escopo-da-fase.md",
     "04_fase-atual/fase.md",
     "04_fase-atual/jornada.md",
@@ -35,5 +35,6 @@
     "STATUS.md",
     "changelog.md",
     "handoff-manifest.json"
-  ]
+  ],
+  "specDirectory": "04_fase-atual/01-SPECS"
 }
