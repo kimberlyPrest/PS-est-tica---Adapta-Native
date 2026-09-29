@@ -1,9 +1,39 @@
 {
   "project": "PS Estética",
-  "phase": 1,
-  "status": "approved-and-released-for-implementation",
-  "contents": ["00-VISÃO-GERAL.md", "STATUS.md", "changelog.md", "04_fase-atual/escopo-da-fase.md", "04_fase-atual/fase.md", "04_fase-atual/01-SPECs/"],
-  "specCount": 5,
-  "taskCount": 15,
-  "credentialsIncluded": false
+  "repository": "https://github.com/kimberlyPrest/PS-est-tica---Adapta-Native",
+  "phaseCurrent": 1,
+  "approvalStatus": "approved",
+  "implementationStatus": "released",
+  "phase1": {
+    "specCount": 5,
+    "taskCount": 15
+  },
+  "definitiveScope": {
+    "path": "02-Escopo-Definitivo/02-Escopo-Definitivo.md",
+    "sourceVersion": "3.1 — 29/09/2026"
+  },
+  "credentialsIncluded": false,
+  "contents": [
+    "00-VISÃO-GERAL.md",
+    "01-Visao-e-Constituicao/constituicao-do-produto.md",
+    "02-Escopo-Definitivo/02-Escopo-Definitivo.md",
+    "02-Escopo-Definitivo/decisoes-e-aprovacoes.md",
+    "03-Produto-e-Arquitetura/console-administrativo-e-atendimento.md",
+    "04-Processos/fluxo-alvo.md",
+    "04-Processos/processo-comercial-observado.md",
+    "04_fase-atual/01-SPECs/00-INDICE.md",
+    "04_fase-atual/01-SPECs/SPEC-P1-S01-schema-tenancy.md",
+    "04_fase-atual/01-SPECs/SPEC-P1-S02-auth-rls.md",
+    "04_fase-atual/01-SPECs/SPEC-P1-S03-admin-organizacao.md",
+    "04_fase-atual/01-SPECs/SPEC-P1-S04-admin-secrets-config.md",
+    "04_fase-atual/01-SPECs/SPEC-P1-S05-clinica-experts-paciente.md",
+    "04_fase-atual/escopo-da-fase.md",
+    "04_fase-atual/fase.md",
+    "04_fase-atual/jornada.md",
+    "05-Reunioes/2026-08-24-kickoff.md",
+    "README.md",
+    "STATUS.md",
+    "changelog.md",
+    "handoff-manifest.json"
+  ]
 }
