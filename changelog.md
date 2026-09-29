@@ -9,5 +9,7 @@
 
 - 2026-09-29: detalhados os campos exatos das seis tabelas T02 e alinhados os responsáveis técnicos da SPEC e das tasks.
 
+- 2026-09-29: dúvida registrada durante a revisão de P1-S01-T01 foi resolvida: T01 cobre organizations, clinics, profiles e memberships; T02 cobre clinic_settings, teams, team_members, contacts, contact_identities e integration_connections; T03 prova o conjunto integrado.
+
 - 2026-09-29: SPEC P1-S01 alinhada ao baseline observado do Supabase `psestetica`: `profiles` existente é preservada e compatibilizada aditivamente; `noop_check_only` permanece intacta; guard de destino exclui o app Skip como alvo de migrations.
 - 2026-09-29: T01/T03, tasks, Jornada e rastreabilidade agora cobrem instalação limpa, upgrade do baseline existente, preservação de IDs/linhas e validação de alvo.
