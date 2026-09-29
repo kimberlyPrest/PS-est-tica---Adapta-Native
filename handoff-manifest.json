@@ -1,0 +1,9 @@
+{
+  "project": "PS Estética",
+  "phase": 1,
+  "status": "approved-and-released-for-implementation",
+  "contents": ["00-VISÃO-GERAL.md", "STATUS.md", "changelog.md", "04_fase-atual/escopo-da-fase.md", "04_fase-atual/fase.md", "04_fase-atual/01-SPECs/"],
+  "specCount": 5,
+  "taskCount": 15,
+  "credentialsIncluded": false
+}
