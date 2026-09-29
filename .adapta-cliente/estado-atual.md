@@ -3,11 +3,11 @@
 - task_id: P1-S01-T02
 - champion: Felipe F3 Energy Drink (solicitante; designação formal de champion não consta no handoff)
 - spec: 04_fase-atual/01-SPECS/SPEC-P1-S01-schema-tenancy.md
-- etapa: aguardando_autorizacao
-- autorizacao_implementacao: ausente — o pedido “implementar a proxima task” iniciou a seleção/análise; aguarda autorização após apresentação do plano desta T02
+- etapa: bloqueada
+- autorizacao_implementacao: ausente — pedido inicial selecionou a próxima task; análise posterior encontrou decisões de chave estrutural pendentes
 - teste_humano: pendente
-- verificacao_automatica: pendente — análise somente; baseline inspecionado, nenhuma migration T02/teste de produto executado
+- verificacao_automatica: pendente — análise somente; nenhuma migration T02 ou alteração de produto executada
 - aprendizado: pendente
-- ultima_acao: selecionada para análise a próxima task liberada P1-S01-T02. SPEC revisada: exatamente clinic_settings, teams, team_members, contacts, contact_identities e integration_connections; destino confirmado Supabase psestetica/uhozizrpmmpemvegtqaq. Baseline: quatro tabelas T01 existem, seis tabelas T02 ausentes; histórico contém create_profiles_and_seed, noop_check_only e p1_s01_t01_tenancy_core. profiles mantém 1 linha, OID 17605 e fingerprint legado 839b2b4ae3efc272420327f74ca32aeb. Skip #62134 permanece sem publicação e com o .skip.config.json previamente pendente. Nenhuma alteração de produto/banco foi feita nesta análise.
-- proxima_acao: aguardar autorização explícita do Felipe para implementar o plano analisado de P1-S01-T02
+- ultima_acao: analisada P1-S01-T02 contra SPEC/escopo atual e baseline real. Supabase autorizado contém as quatro tabelas T01 e as seis tabelas T02 estão ausentes; migrations incluem create_profiles_and_seed, noop_check_only e p1_s01_t01_tenancy_core. DÚVIDA registrada: SPEC enumera campos/FKs de clinic_settings, team_members e contact_identities, mas não define as suas chaves primárias compostas nem o escopo exato de unicidade. A SPEC proíbe inventar unicidade de negócio; essa decisão muda integridade e identidade das configurações, memberships de equipe e identidades de contato.
+- proxima_acao: consultora definir na SPEC os PKs/FKs e restrições de unicidade para clinic_settings, team_members e contact_identities; após resposta, reanalisar T02 e solicitar autorização explícita de implementação
 - atualizado_em: 2026-09-29T14:39:23-03:00
