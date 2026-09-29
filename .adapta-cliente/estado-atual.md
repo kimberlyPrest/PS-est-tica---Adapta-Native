@@ -1,13 +1,11 @@
 # Estado atual — Adapta Cliente
 
 - task_id: P1-S01-T02
-- champion: Felipe F3 Energy Drink (solicitante; designação formal de champion não consta no handoff)
 - spec: 04_fase-atual/01-SPECS/SPEC-P1-S01-schema-tenancy.md
-- etapa: bloqueada
-- autorizacao_implementacao: confirmada em 2026-09-29T16:56-03:00 — “pode analisar novamente e implementar”; execução interrompida pelos bloqueios documentais/contratuais descritos abaixo
-- teste_humano: pendente
-- verificacao_automatica: pendente — reanálise documental e leitura de baseline; nenhuma migration T02 ou teste de produto executado
-- aprendizado: pendente
-- ultima_acao: reanalisada a SPEC revisada de P1-S01. A seção Unicidade agora enumera regras de negócio e cria T04, mas permanece DÚVIDA para T02: contact_identities cita “chave primária técnica” sem incluir/definir sua chave no contrato; T02 menciona chaves definidas enquanto o fluxo separa as constraints únicas para T04. A fonte operacional continua inconsistente: `.adapta-cliente/estado-atual.md` aponta T04 e recomenda T02+T04; `04_fase-atual/fase.md`, `04_fase-atual/jornada.md`, `STATUS.md` e `changelog.md` contêm marcadores literais de conflito de merge; a jornada duplica T04. Supabase consultado permanece com apenas os quatro contratos T01 e histórico anterior; nenhuma alteração de banco/produto foi feita nesta reanálise.
-- proxima_acao: consultora reconciliar os arquivos com marcadores de conflito, restabelecer uma única task ativa/ordem T02→T04 e explicitar a PK técnica de contact_identities no contrato; então reanalisar T02 e seguir o gate de autorização
-- atualizado_em: 2026-09-29T17:03:03-03:00
+- etapa: contrato documental reconciliado; T02 liberada para implementação após T01 concluída
+- autorizacao_implementacao: a autorização de implementação está registrada no projeto; esta revisão corrigiu documentação e não executou migration T02
+- verificacao_automatica: conferidos os arquivos operacionais, removidos marcadores de conflito e validada a consistência de PK/unicidade e ordem das tasks; `git diff --check` aprovado
+- aprendizado: `contact_identities` tem PK técnica UUID `id`; `(contact_id, channel, external_id)` é UNIQUE condicional independente. Ordem única: T01 → T02 → T04 → T03
+- ultima_acao: a reanálise de 17:03 identificou gaps agora corrigidos: PK técnica explícita no contrato, Jornada sem duplicatas nem marcadores, STATUS/changelog sem conflito e ordem executável alinhada nos arquivos de controle
+- proxima_acao: implementar T02; depois validar as constraints UNIQUE em T04 e rodar a prova integrada T03
+- atualizado_em: 2026-09-29

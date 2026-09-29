@@ -3,12 +3,10 @@
 - Projeto: PS Estética.
 - Escopo definitivo integral incluído, versão 3.1 de 29/09/2026.
 - Aprovações humanas: confirmadas pela responsável; registro disponível na pasta do escopo.
-<<<<<<< HEAD
-- Fase atual: fase 1, decomposta em cinco SPECs e 16 tasks; P1-S01-T01 concluída, as demais liberadas conforme dependências.
+- Fase atual: fase 1, cinco SPECs e 16 tasks; P1-S01-T01 concluída.
 - Progresso da fase 1: 1/16 tasks concluídas (6,25%).
-- P1-S01: unicidade definida nos contratos locais; preservação aditiva de `profiles` e histórico aplicado coberta pela SPEC.
-- P1-S01-T02: liberada para implementação com chaves primárias/compostas e regras de unicidade especificadas.
-- Próxima ação: implementar P1-S01-T02 e T04 conforme a SPEC.
+- P1-S01: T02 e T04 estão liberadas conforme dependências; T02 define as PKs técnicas; T04 aplica/testa UNIQUE adicionais. Ordem: T01 → T02 → T04 → T03.
+- Próxima ação: implementar T02, aplicar e validar T04, depois executar a prova integrada T03.
 - Nenhuma credencial foi incluída.
 
 - 2026-09-29: P1-S01-T04 adicionada para implementar/testar unicidade; regras detalhadas na SPEC.
