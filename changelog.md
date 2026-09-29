@@ -13,3 +13,4 @@
 
 - 2026-09-29: SPEC P1-S01 alinhada ao baseline observado do Supabase `psestetica`: `profiles` existente é preservada e compatibilizada aditivamente; `noop_check_only` permanece intacta; guard de destino exclui o app Skip como alvo de migrations.
 - 2026-09-29: T01/T03, tasks, Jornada e rastreabilidade agora cobrem instalação limpa, upgrade do baseline existente, preservação de IDs/linhas e validação de alvo.
+- 2026-09-29: implementada P1-S01-T01 no Supabase `psestetica` pela migration `20260929145212_p1_s01_t01_tenancy_core`; criou `organizations`, `clinics`, `memberships` e alinhou `profiles.status` aditivamente. Testes PGlite de instalação limpa, upgrade, FKs, rejeição cross-tenant e replay passaram; baseline da linha/OID/fingerprint e policies de `profiles` preservados, `noop_check_only` mantida. Aguarda teste humano; T01 ainda não concluída.
