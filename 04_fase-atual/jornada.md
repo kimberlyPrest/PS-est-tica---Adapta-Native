@@ -2,12 +2,21 @@
 
 <!-- fase-format:2 -->
 
+<<<<<<< HEAD
 - [x] Materializar organizations, clinics, profiles e memberships sem perder o baseline existente. @técnico de banco #projeto — concluída em 2026-09-29 <!-- id:86eb4738-bb19-4b90-9746-36f037eeb983 -->
       > P1-S01-T01 — CA-P1-S01-01: quatro contratos T01 presentes; instalação limpa cria as quatro tabelas; no Supabase existente materializa os contratos ausentes e alinha `profiles` de forma aditiva, preservando tabela, IDs, linhas e histórico. Alvo: `psestetica`/`uhozizrpmmpemvegtqaq`. | Migration 20260929145212; PGlite clean/upgrade passou; perfil baseline preservado; teste humano aprovado em 2026-09-29.
+=======
+- [x] Materializar organizations, clinics, profiles e memberships sem perder o baseline existente. @técnico de banco #projeto — concluída em 2026-09-29 <!-- id:86eb4738-bb19-4b90-9746-36f037eeb983 -->
+      > P1-S01-T01 — CA-P1-S01-01: quatro contratos T01 presentes; instalação limpa e upgrade aprovados; profiles e histórico preservados. | migration 20260929145212; testes PGlite e validação humana registrados no changelog.
+>>>>>>> f2e4d95 (docs: define P1-S01 uniqueness constraints)
 - [ ] Criar clinic_settings, teams, team_members, contacts, contact_identities e metadados de integration_connections. @técnico de banco #projeto   <!-- id:2072d8ea-9798-423d-9b53-02d7ad1baf7a -->
       > P1-S01-T02 — CA-P1-S01-02: migration cria exatamente clinic_settings, teams, team_members, contacts, contact_identities e integration_connections; esta última guarda apenas secret_ref/config sanitizada. | CA e cenário TDD correspondente na SPEC.
-- [ ] Validar instalação limpa, upgrade do baseline observado, alvo e integridade relacional. @QA + técnico de banco #projeto   <!-- id:3d1eb137-481f-40fd-ba4f-5739d6b10739 -->
-      > P1-S01-T03 — CA-P1-S01-03: instalação limpa e upgrade do Supabase `psestetica` passam; `profiles` e `noop_check_only` são preservadas; alvo divergente não recebe escrita; terceira clínica é cadastrada sem nova migration ou mudança de código. | CA e cenário TDD correspondente na SPEC.
+- [ ] Validar instalação limpa, upgrade do baseline e integridade relacional. @QA + técnico de banco #projeto   <!-- id:3d1eb137-481f-40fd-ba4f-5739d6b10739 -->
+      > P1-S01-T03 — CA-P1-S01-03: instalação limpa e upgrade passam; `profiles` e o histórico aplicado são preservados; terceira clínica é cadastrada sem nova migration ou mudança de código. | CA e cenário TDD correspondente na SPEC.
+- [ ] Aplicar e validar as constraints de unicidade da SPEC P1-S01. @técnico de banco + QA #projeto   <!-- id:bd34f885-f8b2-41e9-9a14-d7dc6143fdc2 -->
+      > P1-S01-T04 — CA-P1-S01-04: duplicatas das chaves declaradas são rejeitadas e coexistências permitidas são aceitas. | Matriz sintética de unicidades na SPEC.
+- [ ] Aplicar e validar as constraints de unicidade da SPEC P1-S01. @técnico de banco + QA #projeto   <!-- id:bd34f885-f8b2-41e9-9a14-d7dc6143fdc2 -->
+      > P1-S01-T04 — CA-P1-S01-04: duplicatas das chaves declaradas são rejeitadas e coexistências permitidas são aceitas. | Matriz sintética de unicidades na SPEC.
 - [ ] Configurar Auth e fluxo de convite/login conforme decisão aprovada. @técnico de implementação #projeto   <!-- id:ee1ff632-b444-42a9-bb01-a4e2337cab92 -->
       > P1-S02-T01 — Usuário sem sessão não lê dados operacionais. | CA e cenário TDD correspondente na SPEC.
 - [ ] Aplicar políticas RLS por organização/clínica às tabelas expostas e revisar views. @técnico de integração #projeto   <!-- id:31435da1-a1b6-4f22-816c-8bac3569d62b -->

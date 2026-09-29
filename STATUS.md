@@ -3,11 +3,14 @@
 - Projeto: PS Estética.
 - Escopo definitivo integral incluído, versão 3.1 de 29/09/2026.
 - Aprovações humanas: confirmadas pela responsável; registro disponível na pasta do escopo.
-- Fase atual: fase 1, decomposta em cinco SPECs e 15 tasks liberadas para implementação.
-- Progresso da fase 1: 1/15 tasks concluídas (6,7%).
-- P1-S01: instalação limpa e upgrade do Supabase `psestetica` (`uhozizrpmmpemvegtqaq`) especificados; a tabela existente `public.profiles` foi preservada e compatibilizada aditivamente; a migration histórica `noop_check_only` permanece intacta. O app CRM Estética no Skip não é destino das migrations Postgres desta SPEC.
-- P1-S01-T01: concluída em 2026-09-29 após teste humano aprovado pelo Felipe. Migration `20260929145212_p1_s01_t01_tenancy_core`; PGlite passou em instalação limpa, upgrade, FKs, isolamento tenant e replay; Supabase conferido após aplicação. Relatório e SQL entregues em artifacts.
-- P1-S01-T02: bloqueada antes de implementação por decisão pendente da SPEC sobre chaves primárias/compostas e unicidade em `clinic_settings`, `team_members` e `contact_identities`. DÚVIDA registrada no changelog; nenhuma migration T02 aplicada.
-- App Skip #62134: sem alterações nesta task; nenhuma publicação feita.
-- Próxima ação: consultora especificar as chaves/restrições pendentes de T02; depois reanalisar e obter autorização explícita antes de implementar.
+<<<<<<< HEAD
+- Fase atual: fase 1, decomposta em cinco SPECs e 16 tasks; P1-S01-T01 concluída, as demais liberadas conforme dependências.
+- Progresso da fase 1: 1/16 tasks concluídas (6,25%).
+- P1-S01: unicidade definida nos contratos locais; preservação aditiva de `profiles` e histórico aplicado coberta pela SPEC.
+- P1-S01-T02: liberada para implementação com chaves primárias/compostas e regras de unicidade especificadas.
+- Próxima ação: implementar P1-S01-T02 e T04 conforme a SPEC.
 - Nenhuma credencial foi incluída.
+
+- 2026-09-29: P1-S01-T04 adicionada para implementar/testar unicidade; regras detalhadas na SPEC.
+
+- 2026-09-29: decisão documental sobre unicidade registrada nesta revisão; supersede a dúvida de chaves do T02 anotada anteriormente. T01 permanece concluída.

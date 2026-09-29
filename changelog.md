@@ -13,6 +13,13 @@
 
 - 2026-09-29: SPEC P1-S01 alinhada ao baseline observado do Supabase `psestetica`: `profiles` existente é preservada e compatibilizada aditivamente; `noop_check_only` permanece intacta; guard de destino exclui o app Skip como alvo de migrations.
 - 2026-09-29: T01/T03, tasks, Jornada e rastreabilidade agora cobrem instalação limpa, upgrade do baseline existente, preservação de IDs/linhas e validação de alvo.
+<<<<<<< HEAD
 - 2026-09-29: implementada P1-S01-T01 no Supabase `psestetica` pela migration `20260929145212_p1_s01_t01_tenancy_core`; criou `organizations`, `clinics`, `memberships` e alinhou `profiles.status` aditivamente. Testes PGlite de instalação limpa, upgrade, FKs, rejeição cross-tenant e replay passaram; baseline da linha/OID/fingerprint e policies de `profiles` preservados, `noop_check_only` mantida.
 - 2026-09-29 · Felipe F3 Energy Drink · Task P1-S01-T01 concluída: quatro contratos T01 presentes; profiles e histórico preservados, testes automáticos aprovados e confirmação humana “Teste OK — confirmei as quatro tabelas e profiles”. Evidência: relatório P1-S01-T01 e migration `20260929145212_p1_s01_t01_tenancy_core`.
 - 2026-09-29: DÚVIDA — P1-S01-T02 bloqueada antes da implementação. A SPEC enumera campos/FKs, mas não define claramente as chaves primárias e a unicidade de `clinic_settings`, `team_members` e `contact_identities`; a própria SPEC proíbe inventar unicidade de negócio. Consultora deve registrar a decisão aprovada para cada contrato antes da migration. Nenhuma tabela/dado foi alterado nesta análise.
+=======
+
+- 2026-09-29: resolvida lacuna de unicidade de P1-S01: removidas referências a inspeção/guarda de sistema externo; adicionada P1-S01-T04 e matriz explícita de constraints e duplicatas permitidas na SPEC; detalhes da inspeção remota anterior ficam supersedidos, pois esta definição usa o contrato local do projeto.
+>>>>>>> f2e4d95 (docs: define P1-S01 uniqueness constraints)
+
+- 2026-09-29: resolvida a dúvida de unicidade do T02 a partir dos contratos e requisitos do projeto; criada P1-S01-T04. T01 permanece concluída; T02 e T04 ficam liberadas para implementação conforme dependências.
