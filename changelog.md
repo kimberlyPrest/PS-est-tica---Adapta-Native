@@ -31,3 +31,5 @@
 - 2026-09-29: a auditoria preservou a estrutura associativa de `memberships` da T01 já concluída: PK composta `(user_id, organization_id, clinic_id, role)`, sem coluna `id` substituta. As demais tabelas seguem PK UUID `id`; T04 não altera a PK T01.
 
 - 2026-09-29: manifesto agora lista todos os arquivos visíveis do pacote; as referências aos artefatos brutos de T01 foram identificadas como externas/indisponíveis nesta workspace e substituídas por uma descrição explícita do resumo e ID mantidos.
+
+- 2026-09-30: DÚVIDA — Felipe solicitou transformar o protótipo local de registro de ponto da PS em versão online com login e dados centralizados. O registro de ponto e seu modelo de jornada não constam nas cinco SPECs aprovadas da fase 1; a P1-S02 cobre Auth/RLS do CRM, mas não define acesso, retenção, auditoria, correções, jornadas, intervalos ou isolamento de dados de ponto. Consultora/responsável pelo escopo deve definir e aprovar SPEC e task(s) para essa capacidade antes de conectar banco, ampliar autenticação ou publicar. Nenhuma alteração no Supabase/CRM e nenhuma publicação foram feitas para este pedido.
