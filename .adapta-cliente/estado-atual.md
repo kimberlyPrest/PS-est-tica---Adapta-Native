@@ -4,10 +4,10 @@
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P1-S02-auth-rls.md
 - etapa: aguardando_teste_humano
-- autorizacao_implementacao: confirmada — 2026-10-02 15:52, decisão de método de login (e-mail e senha) via formulário + clique em "Enviar decisão e autorizar implementação" (Felipe, owner)
+- autorizacao_implementacao: confirmada — 2026-10-02 16:10, "decisão enviada" (Form com método de login: E-mail e senha) (Felipe, owner)
 - teste_humano: pendente
-- verificacao_automatica: passou — matriz validada no banco real: signup público rejeitado; convite sem sessão/não-owner/papel inválido/clínica inexistente rejeitados; convite de owner cria usuário+profile+membership; reenvio reativa sem duplicar (bug corrigido); revogação/reativação preservam a linha; 2 memberships owner criadas para Felipe; migrations `p1_s02_t01_auth_invite`, `p1_s02_t01_auth_invite_fix_id`, `p1_s02_t01_invite_idempotent` + corretiva `fix_clinics_org_id_column_rename`
+- verificacao_automatica: passou — anon REST: 12/12 (10 tabelas bloqueadas sem sessão, auto-cadastro público bloqueado por trigger pré-existente, login inválido rejeitado); Edge Function admin-invite-user v2: 4/4 negativos (401 sem token, 401 anon, 401 anon com payload, 405 GET); harness validado em navegador (anon 200/[] bloqueado, senha errada rejeitada); memberships owner criadas (2 clínicas, ativas); decisão de login registrada: e-mail e senha
 - aprendizado: pendente
-- ultima_acao: fluxo de convite implementado e testado no banco real; correções aplicadas (coluna clinics renomeada acidentalmente restaurada; reenvio idempotente)
-- proxima_acao: teste humano de Felipe (convite real de um funcionário); após aprovação, concluir T01
-- atualizado_em: 2026-10-02T16:40:00-03:00
+- ultima_acao: Edge Function admin-invite-user deployada (auth antes da validação de payload); memberships de owner criadas por dados; harness de teste em artifacts/teste-auth-ps.html
+- proxima_acao: teste humano de Felipe (login, reset de senha e convite via harness); após aprovação, concluir T01
+- atualizado_em: 2026-10-02T17:05:00-03:00
