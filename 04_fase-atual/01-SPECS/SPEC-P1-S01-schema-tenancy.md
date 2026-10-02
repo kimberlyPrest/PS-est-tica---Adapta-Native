@@ -64,7 +64,9 @@ Constraints compostas adicionais podem ser usadas como suporte referencial (por 
 - `clinic_settings.clinic_id` referencia `clinics.id`; configurações futuras respeitam herança organização → clínica.
 - `teams.clinic_id` referencia `clinics.id`; `team_members.team_id` e `user_id` referenciam equipe e perfil.
 - `contact_identities.contact_id` referencia `contacts.id`.
-- `integration_connections.organization_id` referencia `organizations.id`; `(clinic_id, organization_id)` referencia `(clinics.id, organization_id)` quando `clinic_id` não é nulo, com `(clinics.id, organization_id)` único como suporte referencial. `clinic_id` nulo representa padrão organizacional; preenchido indica override da clínica, sempre pertencente à mesma organização. As chaves de unicidade de conexão usam dois índices parciais para tratar `clinic_id` nulo; a resolução escolhe a chave da clínica antes da chave herdada da organização. A chave `(clinics.id, clinics.organization_id)` dá suporte à FK composta. Para `contact_identities` com `external_id` nulo, não aplicar unicidade de negócio além da PK técnica `id`.
+- `integration_connections.organization_id` referencia `organizations.id`; `(clinic_id, organization_id)` referencia `(clinics.id, organization_id)` quando `clinic_id` não é nulo, com `(clinics.id, organization_id)` único como suporte referencial. `clinic_id` nulo representa padrão organizacional; preenchido representa override da clínica. `connection_key` identifica de forma estável a conta/slot configurado, pode usar o ID externo não secreto e não muda com rotação do segredo. A resolução segue organização → clínica.
+- `integration_connections` persiste apenas referência do segredo; o valor secreto fica em Supabase Secrets/Vault.
+- As constraints de unicidade são exatamente as listadas na seção “Chaves primárias e unicidade”; FKs e chaves compostas impedem relações clínicas entre tenants incompatíveis.
 
 ## Fluxo de implementação
 
