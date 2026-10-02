@@ -3,11 +3,11 @@
 - task_id: P1-S01-T04
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P1-S01-schema-tenancy.md
-- etapa: aguardando_autorizacao
-- autorizacao_implementacao: ausente
+- etapa: aguardando_teste_humano
+- autorizacao_implementacao: confirmada — 2026-10-02 14:22, "sim" (Felipe, owner, em resposta ao plano de T04)
 - teste_humano: pendente
-- verificacao_automatica: pendente — baseline verificado: 0 UNIQUEs nas tabelas T02; único UNIQUE existente é `clinics (organization_id, id)` da T01; todas as tabelas com 0 linhas (sem risco de conflito ao aplicar constraints)
+- verificacao_automatica: passou — runner PGlite 29/29 (matriz completa: duplicatas rejeitadas, coexistências permitidas, replay idempotente); migration `p1_s01_t04_uniques` aplicada no Supabase `psestetica`; catálogo real: 4 constraints UNIQUE novas + 3 índices parciais; memberships sem UNIQUE (conforme SPEC); profiles preservada (1 linha)
 - aprendizado: pendente
-- ultima_acao: análise profunda da T04 concluída; constatado que o escopo UNIQUE da T04 não toca memberships (SPEC: "Nenhuma adicional"); dúvida da PK de memberships segue aberta para T01/T03, não bloqueia T04
-- proxima_acao: aguardar autorização de Felipe para implementar T04
-- atualizado_em: 2026-10-02T14:25:00-03:00
+- ultima_acao: migration T04 aplicada e verificada no Supabase; SQL em artifacts/p1_s01_t04_uniques.sql, runner em scripts/test_t04.js
+- proxima_acao: teste humano de Felipe; após aprovação, concluir T04; T03 segue aguardando decisão da consultora sobre PK de memberships
+- atualizado_em: 2026-10-02T14:45:00-03:00
