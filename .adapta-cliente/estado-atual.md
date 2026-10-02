@@ -1,11 +1,13 @@
 # Estado atual — Adapta Cliente
 
 - task_id: P1-S01-T02
+- champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P1-S01-schema-tenancy.md
-- etapa: auditoria documental concluída; T02 segue liberada após T01 concluída
-- autorizacao_implementacao: a autorização de implementação está registrada no projeto; esta revisão corrigiu documentação e não executou migration T02
-- verificacao_automatica: conferidos os arquivos operacionais, removidos marcadores de conflito e validada a consistência de PK/unicidade, campos comuns, gates aprovados, contagem de tasks e ordem das tasks; `git diff --check` aprovado
-- aprendizado: `contact_identities` tem PK técnica UUID `id`; `(contact_id, channel, external_id)` é UNIQUE condicional independente. Ordem única: T01 → T02 → T04 → T03
-- ultima_acao: a reanálise de 17:03 identificou gaps agora corrigidos: PK técnica explícita no contrato, Jornada sem duplicatas nem marcadores, STATUS/changelog sem conflito e ordem executável alinhada nos arquivos de controle
-- proxima_acao: implementar T02; depois validar as constraints UNIQUE em T04 e rodar a prova integrada T03
-- atualizado_em: 2026-09-29
+- etapa: aguardando_teste_humano
+- autorizacao_implementacao: confirmada — 2026-10-02 09:29, "acesse o repositório e implemente a proxima task" (Felipe, owner)
+- teste_humano: pendente
+- verificacao_automatica: passou — runner PGlite 103/103 (RED, instalação limpa, upgrade do baseline, FKs, replay idempotente); migration `20261002123219_p1_s01_t02_contracts` aplicada no Supabase `psestetica`; catálogo real confirma as 6 tabelas com PKs UUID, timestamps, FKs e RLS; `profiles` preservada (1 linha)
+- aprendizado: pendente
+- ultima_acao: migration T02 aplicada e verificada no Supabase; arquivos de controle atualizados
+- proxima_acao: teste humano de Felipe; após aprovação, concluir T02 e seguir para T04
+- atualizado_em: 2026-10-02T12:40:00-03:00
