@@ -3,11 +3,11 @@
 - task_id: P1-S02-T01
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P1-S02-auth-rls.md
-- etapa: aguardando_teste_humano
-- autorizacao_implementacao: confirmada — 2026-10-02 16:10, "decisão enviada" (Form com método de login: E-mail e senha) (Felipe, owner)
-- teste_humano: pendente
-- verificacao_automatica: passou — anon REST: 12/12 (10 tabelas bloqueadas sem sessão, auto-cadastro público bloqueado por trigger pré-existente, login inválido rejeitado); Edge Function admin-invite-user v2: 4/4 negativos (401 sem token, 401 anon, 401 anon com payload, 405 GET); harness validado em navegador (anon 200/[] bloqueado, senha errada rejeitada); memberships owner criadas (2 clínicas, ativas); decisão de login registrada: e-mail e senha
-- aprendizado: pendente
-- ultima_acao: Edge Function admin-invite-user deployada (auth antes da validação de payload); memberships de owner criadas por dados; harness de teste em artifacts/teste-auth-ps.html
-- proxima_acao: teste humano de Felipe (login, reset de senha e convite via harness); após aprovação, concluir T01
-- atualizado_em: 2026-10-02T17:05:00-03:00
+- etapa: concluida
+- autorizacao_implementacao: confirmada — 2026-10-02 15:52, decisão de login e-mail/senha via formulário + "Enviar decisão e autorizar implementação" (Felipe, owner)
+- teste_humano: aprovado — 2026-10-03 13:25, "Login OK — sessão ativa para felipef3energydrink@gmail.com" (Felipe, owner)
+- verificacao_automatica: passou — revalidação pós-teste: anon 10/10 tabelas bloqueadas; 2 memberships owner ativas (PS Recife + PS Caruaru); Edge Function admin-invite-user v2 ACTIVE (verify_jwt); migrations p1_s02_t01_* (3) + fix_clinics_org_id_column_rename aplicadas
+- aprendizado: capturado: 06_notas/aprendizado-continuo/AP-2026-10-03-1325-reset-senha-fluxo-supabase.md
+- ultima_acao: T01 concluída com aprovação humana; fase, STATUS, changelog, aprendizado e estado sincronizados no GitHub (commits acf032f, b69f212, 4714a5e)
+- proxima_acao: nova mensagem de Felipe seleciona a próxima task (P1-S02-T02 RLS, ou migration aditiva da UNIQUE de memberships + T03)
+- atualizado_em: 2026-10-03T13:30:00-03:00
