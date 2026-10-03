@@ -1,13 +1,12 @@
 # Estado atual — Adapta Cliente
 
-- task_id: P1-S01-T03
+- task_id: P1-S02-T02
 - champion: Felipe F3 Energy Drink
-- spec: 04_fase-atual/01-SPECS/SPEC-P1-S01-schema-tenancy.md
-- etapa: concluida
-- autorizacao_implementacao: confirmada — 2026-10-03 13:35, "pode sim" (Felipe, owner, em resposta ao plano da T03)
-- teste_humano: aprovado — 2026-10-03 13:51, "FUNCIONOU" (Felipe, owner) — terceira clínica PS OLINDA cadastrada por dados no Table Editor
-- verificacao_automatica: passou — revalidação pós-teste: runner PGlite 14/14 (reconstruído e reexecutado); banco real: 10 tabelas, 6 UNIQUEs (incl. memberships_user_org_clinic_role_key), profiles intacta (1 linha), 3 clínicas; migration `p1_s01_t03_memberships_unique`
-- aprendizado: capturado: 06_notas/aprendizado-continuo/AP-2026-10-03-1351-uuid-vs-nome-table-editor.md
-- ultima_acao: T03 concluída com aprovação humana; SPEC P1-S01 COMPLETA (T01+T02+T04+T03); fase, STATUS e changelog sincronizados (commits 3599b22, 55610ce, fcac434)
-- proxima_acao: nova mensagem de Felipe seleciona a próxima task (P1-S02-T02 RLS é a candidata natural)
-- atualizado_em: 2026-10-03T13:55:00-03:00
+- spec: 04_fase-atual/01-SPECS/SPEC-P1-S02-auth-rls.md
+- etapa: implementada (aguarda teste humano)
+- autorizacao_implementacao: confirmada — 2026-10-03 13:59, "implementar a proxima task" (Felipe, owner)
+- teste_humano: pendente — harness artifacts/teste-rls-ps.html (login como Usuário Teste RLS → deve ver somente PSC; login como owner → deve ver PSC/PSR/PSO; anon → 0 clínicas)
+- verificacao_automatica: passou — runner PGlite scripts/test_t02_rls.js 37/37; provas ao vivo no Supabase real (anon 0 via API; B via SET ROLE vê somente PSC e 2 memberships; owner vê PSC/PSR/PSO); migrations `p1_s02_t02_rls_policies` + `p1_s02_t02b_clinic_scope_tighten` aplicadas
+- ultima_acao: 23 policies RLS aplicadas nas 10 tabelas; correção legada de profiles; usuário sintético B (teste.rls@ps-teste.local, sales na Caruaru) criado via RPC; membership owner do Felipe na PS Olinda; harness de teste criado; handoff sincronizado
+- proxima_acao: aprovação do teste humano conclui a task; depois P1-S02-T03 (matriz por role/revogação)
+- atualizado_em: 2026-10-03T17:20:00-03:00
