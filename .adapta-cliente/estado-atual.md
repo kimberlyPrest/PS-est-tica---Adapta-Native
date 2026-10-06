@@ -1,12 +1,12 @@
 # Estado atual — Adapta Cliente
 
-- task_id: P1-S02-T03
+- task_id: P1-S03-T01
 - champion: Felipe F3 Energy Drink
-- spec: 04_fase-atual/01-SPECS/SPEC-P1-S02-auth-rls.md
-- etapa: concluída (2026-10-06)
-- autorizacao_implementacao: confirmada — 2026-10-06, "Implementar a próxima task (P1-S02-T03 — matriz por role/revogação)" (Felipe, owner)
-- teste_humano: aprovado — 2026-10-06, "aprovado" (Felipe, owner), no harness artifacts/t03-revogacao-v1-20261006.html (estado ATIVO → revogado com trilha registrada → revogado vê 0 clínicas e só o próprio histórico → reativado volta a ver PSC)
-- verificacao_automatica: revalidada em 2026-10-06 com evidência fresca — constraint `memberships_role_check` ativa (role inválida rejeitada com 23514); trigger `memberships_touch_updated_at` ativo; 23 policies intactas; runner PGlite 45/45 (scripts/test_t03_role_matrix.js); ao vivo: B ativo vê só PSC, owner vê PSC/PSR/PSO, anon 0
-- ultima_acao: fechamento de P1-S02-T03 após aprovação do teste humano; SPEC P1-S02 COMPLETA; quadro, STATUS, changelog e estado sincronizados
-- proxima_acao: SPEC P1-S03 (admin/organização) — T01 (telas responsivas), mediante pedido do champion
-- atualizado_em: 2026-10-06T13:40:00-03:00
+- spec: 04_fase-atual/01-SPECS/SPEC-P1-S03-admin-organizacao.md
+- etapa: implementada (aguarda teste humano)
+- autorizacao_implementacao: confirmada — 2026-10-06, "implementar proxima task" (Felipe, owner)
+- teste_humano: pendente — preview https://login-crm-estetica-e388e--preview.goskip.app/admin (login com a própria conta; verificar abas Clínicas/Usuários/Memberships/Equipes)
+- verificacao_automatica: passou — QA Skip 4/4 (versão 0.0.2, bb9bf47); validação ao vivo: 4 abas carregam com dados reais (3 clínicas); convite real (teste.admin@ps-teste.local, reception, somente PSO) confirmado no banco; equipe "Recepção PS Recife" criada via tela; usuário sales (só Caruaru) recebeu "Acesso restrito" em /admin
+- ultima_acao: telas responsivas de admin entregues no app Skip (rota /admin + atalho no Dashboard); sem alteração de schema/migration — usa contrato das SPECs P1-S01/S02
+- proxima_acao: aprovação do teste humano conclui a task; depois P1-S03-T02 (validação de campos/herança/estados de convite no servidor)
+- atualizado_em: 2026-10-06T14:10:00-03:00
