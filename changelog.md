@@ -1,3 +1,3 @@
 # Changelog do pacote do cliente
 
-PLACEHOLDER_FULL_CONTENT
+- 2026-09-29: fase 1 organizada em cinco SPECs e 15 tasks.
