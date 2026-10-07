@@ -1,12 +1,12 @@
 # Estado atual — Adapta Cliente
 
-- task_id: P1-S03-T02
+- task_id: P1-S03-T03
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P1-S03-admin-organizacao.md
-- etapa: concluída (2026-10-07)
-- autorizacao_implementacao: confirmada — 2026-10-06, "implementar a proxima task" (Felipe, owner)
-- teste_humano: aprovado — 2026-10-07, "teste ok" (Felipe, owner), teste B: login como teste.clinicadmin@ps-teste.local (clinic_admin da PS Caruaru) em https://login-crm-estetica-e388e--preview.goskip.app/admin, vendo somente a própria clínica
-- verificacao_automatica: revalidada em 2026-10-07 com evidência fresca — clinic_admin vê só PSC; PATCH em PSR sem efeito (nome intacto); POST clínica nova 403; PATCH organização sem efeito; convite 42501 "somente owner"; PATCH própria PSC 204; organização "PS Estética" e PSR intactos; 4 constraints + trigger de convite + 23 policies ativos
-- ultima_acao: fechamento de P1-S03-T02 após aprovação do teste humano; quadro, STATUS, changelog e estado sincronizados; fase 1 em 9/16 (56,25%)
-- proxima_acao: P1-S03-T03 (auditoria/demonstração da 3ª clínica) — última da SPEC P1-S03, mediante pedido do champion
-- atualizado_em: 2026-10-07T14:55:00-03:00
+- etapa: demonstrada (aguarda aceite humano)
+- autorizacao_implementacao: confirmada — 2026-10-07, "implementar a proxima task" (Felipe, owner)
+- teste_humano: pendente — revisar o relatório e/ou repetir a demonstração no preview /admin (criar/editar clínica, revogar/reativar acesso e ver a data/hora da mudança na tabela)
+- verificacao_automatica: passou — clínica PSJ (PS Jaboatão) criada pela interface sem SQL (confirmada no banco); ciclo revogar→reativar pela UI com trilha updated_at (18:06:04 → 18:06:20); setting draft sem efeito (effective_clinic_setting 0 linhas) e ativo consultável com origem clinic; página /admin sem campo de SQL livre; owner vê as 4 clínicas via API
+- ultima_acao: demonstração completa executada como owner na UI; membership owner do Felipe na PSJ criada como dado de apoio; relatório artifacts/RELATORIO_P1_S03_T03_20261007.md
+- proxima_acao: aceite humano conclui a task e a SPEC P1-S03; depois P1-S04-T01 (gravação server-side de segredos)
+- atualizado_em: 2026-10-07T15:15:00-03:00
