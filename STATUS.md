@@ -3,11 +3,9 @@
 - Projeto: PS Estética.
 - Escopo definitivo integral incluído, versão 3.1 de 29/09/2026.
 - Aprovações humanas: confirmadas pela responsável; registro disponível na pasta do escopo.
-- Fase atual: fase 1, cinco SPECs e 16 tasks; SPEC P1-S01 completa, SPEC P1-S02 completa, SPEC P1-S03 completa, **SPEC P1-S04 COMPLETA**.
-- Progresso da fase 1: 12/16 tasks concluídas (75%); resta a SPEC P1-S05 (3 tasks).
-- P1-S01: CONCLUÍDA em 2026-10-03 (4 tasks). Banco real: 10 tabelas, 6 UNIQUEs, clínicas.
-- P1-S02: CONCLUÍDA em 2026-10-06 (login, 23 policies RLS, matriz de role/revogação com trilha).
-- P1-S03: COMPLETA em 2026-10-08 (T01 telas, T02 validação server-side, T03 demonstração/auditoria — aceite humano).
-- P1-S04: COMPLETA em 2026-10-08. T01 (segredo no Vault + secret_ref opaco, "sim"). T02 (versionamento imutável + teste sanitizado + audit log; "aprovado" + roteiro 6/6 "teste ok"). T03 (prova de não exposição, falhas sanitizadas com correlation_id e rollback; roteiro 6/6 "teste ok"): admin_test_connection v2 com correlation_id, cofre indisponível → falha sanitizada sem falso sucesso, rollback restaura sem apagar auditoria. Revalidação final: 12 versões, 30 auditorias, ZERO vazamentos (trilha, versões e conexões), 5 RPCs ativas.
-- Próxima ação: P1-S05-T01 (cliente server-side HTTP com timeout, rate limiter e telemetria sanitizada) — mediante pedido de Felipe.
-- Nenhuma credencial foi incluída (segredos de teste são sintéticos).
+- Fase atual: fase 1, cinco SPECs e 16 tasks; SPECs P1-S01, P1-S02, P1-S03 e P1-S04 completas; P1-S05-T01 implementada (aguarda teste humano).
+- Progresso da fase 1: 12/16 tasks concluídas (75%); P1-S05-T01 implementada, pendente de teste humano.
+- P1-S01: CONCLUÍDA em 2026-10-03 (4 tasks). P1-S02: CONCLUÍDA em 2026-10-06. P1-S03: COMPLETA em 2026-10-08. P1-S04: COMPLETA em 2026-10-08 (Vault + secret_ref opaco; versionamento/teste sanitizado/audit log; prova de falhas com correlation_id e rollback).
+- P1-S05: T01 implementada em 2026-10-08 — módulo server-side `clinic_experts_client.mjs` para a API Clínica Experts (GET /patients?phone=<E.164> e /patients/{uuid}, Bearer server-side): timeout por tentativa (AbortController), rate limiter em janela deslizante 120 req/min (a 121ª chamada é retida, não rejeitada), retry limitado com backoff exponencial (máx. 3) para 5xx/timeout/rede, 429 respeita retry-after e persistindo vira erro rate_limit_externo, erros tipados ErroOperacional com correlation_id, telemetria sanitizada (token nunca aparece), 404 tratado como zero resultados, múltiplos devolvidos por completo (classificação é da T02). Runner contra API simulada: 21/21.
+- Próxima ação: teste humano de P1-S05-T01; depois P1-S05-T02 (busca + normalização + deduplicação + vínculo humano + cache TTL).
+- Nenhuma credencial foi incluída (token de teste é sintético).
