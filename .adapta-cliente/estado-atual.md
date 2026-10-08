@@ -1,12 +1,13 @@
 # Estado atual — Adapta Cliente
 
-- task_id: P1-S04-T02
+- task_id: P1-S04-T03
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P1-S04-admin-secrets-config.md
-- etapa: concluída — teste humano aprovado via roteiro ("teste ok", Felipe, 2026-10-08)
-- autorizacao_implementacao: confirmada — 2026-10-08, "sim" (aceite de T01 + sequência)
-- teste_humano: aprovado — roteiro de 6 passos no harness artifacts/harness-segredos-v1-20261008.html (salvar → rotacionar → testar → listar versões → rollback → auditoria; validação de vazamento em cada resposta)
-- verificacao_automatica: passou — revalidação pós-roteiro: 6 versões imutáveis, 13 auditorias (save/rotate/test/rollback), ZERO vazamentos na trilha e nas versões (padrão sk_test/sk_live), 2 policies, 5 RPCs ativas; conexão webhook_token restaurada para v1 (health unknown, re-teste disponível)
-- ultima_acao: aceite humano registrado; handoff sincronizado
-- proxima_acao: P1-S04-T03 (prova de não exposição, falhas 401/429/timeout e rollback) — última da SPEC P1-S04, mediante pedido de Felipe
-- atualizado_em: 2026-10-08T17:25:00-03:00
+- etapa: implementada (aguarda teste humano)
+- autorizacao_implementacao: confirmada — 2026-10-08, "implementar a proxima task" (Felipe, owner)
+- teste_humano: pendente — revisar o relatório artifacts/RELATORIO_P1_S04_T03_20261008.md (roteiro via harness disponível a pedido)
+- verificacao_automatica: passou — runner PGlite scripts/test_s04_t03.js 24/24 (rollback restaura v1 com secret_ref idêntico e auditoria só cresce; falha de referência inválida sanitizada com correlation_id; cofre fora do ar → falha sem falso sucesso; recuperação rollback→ok; varredura final sem valores)
+- prova_ao_vivo: passou — rollback v1→restaurada, falha forçada (secret_ref inválido) → health falha + mensagem sanitizada + correlation_id 9d9d3aaa, auditoria da falha registrada, recuperação rollback v2 → teste ok, sales 42501; varredura final: 0 vazamentos na trilha/versões/conexões (20 auditorias, 8 versões)
+- ultima_acao: migration p1_s04_t03_failure_proofs aplicada (admin_test_connection v2 com correlation_id + cofre indisponível sanitizado); relatório e SQL em artifacts/
+- proxima_acao: teste humano do Felipe conclui a task e a SPEC P1-S04; depois P1-S05-T01 (cliente server-side HTTP com timeout/rate limiter/telemetria) — última SPEC da fase 1
+- atualizado_em: 2026-10-08T17:45:00-03:00
