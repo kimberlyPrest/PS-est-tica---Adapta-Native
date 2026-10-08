@@ -3,10 +3,10 @@
 - task_id: P1-S03-T03
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P1-S03-admin-organizacao.md
-- etapa: demonstrada (aguarda aceite humano)
+- etapa: concluída — teste humano aprovado ("Teste OK — aprovar P1-S03-T03 e fechar a SPEC P1-S03", Felipe, 2026-10-08)
 - autorizacao_implementacao: confirmada — 2026-10-07, "implementar a proxima task" (Felipe, owner)
-- teste_humano: pendente — revisar o relatório e/ou repetir a demonstração no preview /admin (criar/editar clínica, revogar/reativar acesso e ver a data/hora da mudança na tabela)
-- verificacao_automatica: passou — clínica PSJ (PS Jaboatão) criada pela interface sem SQL (confirmada no banco); ciclo revogar→reativar pela UI com trilha updated_at (18:06:04 → 18:06:20); setting draft sem efeito (effective_clinic_setting 0 linhas) e ativo consultável com origem clinic; página /admin sem campo de SQL livre; owner vê as 4 clínicas via API
-- ultima_acao: demonstração completa executada como owner na UI; membership owner do Felipe na PSJ criada como dado de apoio; relatório artifacts/RELATORIO_P1_S03_T03_20261007.md
-- proxima_acao: aceite humano conclui a task e a SPEC P1-S03; depois P1-S04-T01 (gravação server-side de segredos)
-- atualizado_em: 2026-10-07T15:15:00-03:00
+- teste_humano: aprovado — 2026-10-08
+- verificacao_automatica: passou — revalidação de fechamento: 4 clínicas (PSC, PSJ, PSO, PSR), 8 memberships ativas, 23 policies, 3 constraints de status/role, trigger de trilha e trigger de convite ativos, app /admin 200, owner lê as 4 clínicas via API, anon lê 0
+- ultima_acao: aceite humano registrado; SPEC P1-S03 COMPLETA (T01+T02+T03); fase 1 em 10/16 (62,5%); handoff sincronizado
+- proxima_acao: P1-S04-T01 (gravação server-side de segredos) — mediante pedido de Felipe
+- atualizado_em: 2026-10-08T12:10:00-03:00
