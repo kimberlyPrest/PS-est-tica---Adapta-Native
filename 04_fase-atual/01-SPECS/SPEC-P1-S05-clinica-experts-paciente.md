@@ -1,7 +1,7 @@
 # P1-S05 — Cliente Clínica Experts e busca/identificação de paciente
 
 **Fase:** 1
-**Status:** liberada para implementação
+**Status:** COMPLETA (T01+T02+T03 concluídas em 09/10/2026)
 **Dono:** sales, reception, post_sales e serviço Edge Function
 **Origem no escopo:** 9/AG-02; 10; 11/search-expert-patient; 12; 14; 16; 18/Fase 1
 **Degrau da solução:** construção mínima sobre arquitetura Supabase e conectores já definidos; esta SPEC entrega somente a capacidade indicada no título.
@@ -63,9 +63,9 @@ Buscar paciente por telefone normalizado usando apenas chamadas server-side e cl
 6. Estado válido ao concluir: capacidade demonstrável, telemetria sanitizada, rollback/fallback conhecido e critérios abaixo aprovados.
 
 ## Critérios de aceite
-- [ ] **CA-P1-S05-01:** Busca zero/um/múltiplos produz estados definidos sem escolher múltiplos automaticamente.
-- [ ] **CA-P1-S05-02:** 401/422/429/timeout têm erro operacional sanitizado e correlação; falha não bloqueia conversa local.
-- [ ] **CA-P1-S05-03:** Token nunca chega ao cliente; cache mínimo expira e pode ser invalidado.
+- [x] **CA-P1-S05-01:** Busca zero/um/múltiplos produz estados definidos sem escolher múltiplos automaticamente. (roteiro T03 17/17 — A3/A4/A5)
+- [x] **CA-P1-S05-02:** 401/422/429/timeout têm erro operacional sanitizado e correlação; falha não bloqueia conversa local. (A6/B13–B16)
+- [x] **CA-P1-S05-03:** Token nunca chega ao cliente; cache mínimo expira e pode ser invalidado. (A7/A8 + B17 varredura 0 ocorrências)
 
 ## TDD da SPEC
 
@@ -81,10 +81,10 @@ Buscar paciente por telefone normalizado usando apenas chamadas server-side e cl
 
 ## Operação e handoff
 
-- **Demonstração:** executar o cenário principal acima como um ator autorizado e uma tentativa negativa de outra clínica.
+- **Demonstração:** executar o cenário principal acima como um ator autorizado e uma tentativa negativa de outra clínica. — REALIZADA no roteiro T03 (A3–A12).
 - **Monitoramento:** health, sucesso/falha, latência, retry/dead-letter e métricas de domínio conforme tabela/feature.
 - **Operação:** dono listado nesta SPEC; runbook/rollback da fase.
-- **Pendência:** nenhuma pendência de aprovação; dependências de sequência estão indicadas como dependências técnicas.
+- **Pendência:** EXPERT_API_BASE_URL + token real da API (via /admin→Vault) quando o cliente fornecer — até lá a função responde 503 sanitizado.
 
 ## Tasks vinculadas
 
@@ -92,7 +92,7 @@ Buscar paciente por telefone normalizado usando apenas chamadas server-side e cl
 |---|---|---|---|---|---|---|
 | P1-S05-T01 | Implementar cliente server-side HTTP com timeout, rate limiter e telemetria sanitizada. | técnico de implementação | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☑ Concluída 09/10 — aceite "teste ok" (roteiro 11/11; runner 21/21 revalidado) |
 | P1-S05-T02 | Implementar busca, normalização, deduplicação, vínculo humano e cache mínimo com TTL. | técnico de integração | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☑ Concluída 09/10 — aceite "teste ok" (roteiro 8/8 no Supabase real; revalidação viva: banco + função) |
-| P1-S05-T03 | Construir fluxo de busca demonstrável e executar matriz zero/um/múltiplos/falhas. | QA + dono operacional | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☐ Liberada |
+| P1-S05-T03 | Construir fluxo de busca demonstrável e executar matriz zero/um/múltiplos/falhas. | QA + dono operacional | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☑ Concluída 09/10 — aceite "teste ok" (roteiro 17/17: matriz completa no Supabase real + falhas da API simulada) |
 
 ## Emendas
 
