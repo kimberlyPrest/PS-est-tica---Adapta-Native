@@ -1,12 +1,12 @@
 # Estado atual — Adapta Cliente
 
-- task_id: P1-S05-T01
+- task_id: P1-S05-T02
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P1-S05-clinica-experts-paciente.md
-- etapa: implementada (aguarda teste humano)
-- autorizacao_implementacao: confirmada — 2026-10-08, "implementar a proxima task" (Felipe, owner)
-- teste_humano: pendente — revisar o relatório artifacts/RELATORIO_P1_S05_T01_20261008.md (módulo scripts/clinic_experts_client.mjs)
-- verificacao_automatica: passou — runner scripts/test_s05_t01.mjs 21/21 contra API simulada local (zero/um/múltiplos sem classificar sozinho; 401/422/timeout/429/5xx com erros tipados + correlation_id; 429 transitório recupera, persistente vira rate_limit_externo; limiter retém a 121ª chamada sem estourar 120/min; token ausente de toda telemetria/erro)
-- ultima_acao: módulo client server-side implementado (timeout, rate limiter janela 120/min, retry/backoff, telemetria sanitizada, erros tipados); relatório em artifacts/
-- proxima_acao: teste humano do Felipe conclui a task; depois P1-S05-T02 (busca + normalização E.164 + deduplicação + vínculo humano + cache TTL)
-- atualizado_em: 2026-10-08T18:20:00-03:00
+- etapa: liberada (não iniciada)
+- autorizacao_implementacao: aguardando pedido do Felipe ("implementar a próxima")
+- task_anterior: P1-S05-T01 CONCLUÍDA em 2026-10-09 — aceite humano "teste ok" (roteiro-t01-cliente-v1-20261009.html, 11/11 ✔ validado no navegador); revalidação de fechamento: runner scripts/test_s05_t01.mjs 21/21 com evidência fresca; módulo scripts/clinic_experts_client.mjs (sha256 4b12c95a) inalterado
+- verificacao_automatica: passou — runner 21/21 (revalidado em 2026-10-09)
+- ultima_acao: fechamento da P1-S05-T01 e sincronização do handoff
+- proxima_acao: P1-S05-T02 — busca, normalização E.164, deduplicação, vínculo humano e cache mínimo com TTL (tabelas external_patient_links/expert_patients_cache + Edge Function search-expert-patient consumindo o módulo T01)
+- atualizado_em: 2026-10-09T00:35:00-03:00
