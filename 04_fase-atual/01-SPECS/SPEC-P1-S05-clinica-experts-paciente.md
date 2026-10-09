@@ -91,7 +91,7 @@ Buscar paciente por telefone normalizado usando apenas chamadas server-side e cl
 | ID | Task | Dono | Critério | Recorte da prova | Evidência | Status |
 |---|---|---|---|---|---|---|
 | P1-S05-T01 | Implementar cliente server-side HTTP com timeout, rate limiter e telemetria sanitizada. | técnico de implementação | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☑ Concluída 09/10 — aceite "teste ok" (roteiro 11/11; runner 21/21 revalidado) |
-| P1-S05-T02 | Implementar busca, normalização, deduplicação, vínculo humano e cache mínimo com TTL. | técnico de integração | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☑ Implementada 09/10 — runner 22/22; migration + Edge Function aplicadas; aguarda teste humano |
+| P1-S05-T02 | Implementar busca, normalização, deduplicação, vínculo humano e cache mínimo com TTL. | técnico de integração | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☑ Concluída 09/10 — aceite "teste ok" (roteiro 8/8 no Supabase real; revalidação viva: banco + função) |
 | P1-S05-T03 | Construir fluxo de busca demonstrável e executar matriz zero/um/múltiplos/falhas. | QA + dono operacional | Critério CA correspondente atendido no recorte desta tarefa | Teste/fluxo desta task conforme seção TDD | relatório/captura sanitizada vinculada ao run | ☐ Liberada |
 
 ## Emendas
