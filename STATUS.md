@@ -1,11 +1,8 @@
 # Status do pacote do cliente
 
 - Projeto: PS Estética.
-- Escopo definitivo integral incluído, versão 3.1 de 29/09/2026.
-- Aprovações humanas: confirmadas pela responsável; registro disponível na pasta do escopo.
-- **Fase 1:** 16/16 tasks com aceite humano em 2026-10-09. Pendência operacional: base URL e token real da API Clínica Experts (assumida pela P2-S02-T01).
-- **Fase 2: liberada em 2026-10-14**, em paralelo ao fechamento da fase 1 — 7 SPECs (P2-S01 a P2-S07), 28 tasks, 53 critérios de aceite. Prazo da fase: 14/10 a 04/11/2026.
-- Ordem sugerida: P2-S01 → P2-S02 → P2-S03 → P2-S04 → P2-S05 → P2-S06 → P2-S07 (dependências técnicas em cada SPEC).
-- Próxima ação: P2-S01-T01 — importar migrations e funções da fase 1 para o repositório do CRM.
-- Atenção imediata: trocar a senha do usuário semeado no repositório público do CRM (P2-S01-T02) e gravar o token do Clínica Experts somente pelo `/admin` (P2-S02-T01).
-- Nenhuma credencial foi incluída.
+- Fase 1: COMPLETA (16/16, 100%) — todas as SPECs com aceite humano.
+- Fase 2 (SPECs liberadas pela consultora, 7 SPECs / 28 tasks): P2-S01-T01 IMPLEMENTADA em 2026-10-14 (aguarda teste humano) — base versionada no repositório do CRM: 19 migrations com os timestamps exatos do histórico real do Supabase psestetica (fonte: supabase_migrations.schema_migrations), seed neutralizada (sem senha/e-mail na árvore), Edge Functions search-expert-patient + _shared/clinic_experts_client + admin-invite-user; QA Skip 5/5, versão 0.0.7.
+- Pendências da task: diff formal vazio (CLI), replay dos runners, decisão sobre histórico Git.
+- Prazos fase 2: P2-S01 16/10 · P2-S02 20/10 · P2-S03 22/10 · P2-S04 26/10 · P2-S05 28/10 · P2-S06 30/10 · P2-S07 04/11.
+- Próxima ação: teste humano de P2-S01-T01; depois P2-S01-T02 (hardening).
