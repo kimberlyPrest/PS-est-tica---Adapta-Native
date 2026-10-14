@@ -1,5 +1,12 @@
 # Changelog — Adapta Cliente
 
+## 2026-10-14 — FASE 2 LIBERADA (em paralelo ao fechamento da fase 1)
+- Incluídas as SPECs P2-S01 a P2-S07 em `04_fase-atual/01-SPECS/`, com contrato técnico detalhado (tabelas coluna a coluna, regras de acesso, funções, filas, telas), TDD, critérios de aceite (53) e roteiro passo a passo das 28 tasks.
+- Incluído `00-CONTRATO-COMUM-FASE-2.md`: convenções de banco, RLS, envelope de erro das funções, filas, interruptores, rotas de tela e provas.
+- Incluído `03-Produto-e-Arquitetura/mapa-de-dados-clinica-experts.md` (API verificada ao vivo em 13/10/2026, somente leitura).
+- `fase.md`, `jornada.md`, `escopo-da-fase.md`, índice, STATUS, estado atual, README, visão geral e manifesto atualizados.
+- Nenhuma credencial incluída.
+
 ## 2026-10-09 — P1-S05-T03 CONCLUÍDA · FASE 1 COMPLETA (16/16)
 - Aceite humano: "teste ok" (Felipe, 2026-10-09, canal web) após roteiro roteiro-t03-matriz-v1-20261009.html (17 passos) validado 17/17 ✔ no navegador antes da entrega.
 - Parte A (Supabase real, sessão do owner): fixtures sintéticas de cache criadas pelo roteiro (0901–0904) e REMOVIDAS ao final (0 restantes, confirmado na revalidação); busca "um" via cache (HTTP 200), "zero" → novo lead, "múltiplos" → 2 resultados devolvidos SEM escolher (CA-P1-S05-01); cache expirado ignorado (TTL); invalidação explícita → cache não mais usado; busca sem cache → 503 api_nao_configurada com correlation_id, sem falso sucesso (CA-P1-S05-02); negativa de outra clínica: vendedor PSC→PSR → 403, controle na própria → 503; sem sessão → 401.

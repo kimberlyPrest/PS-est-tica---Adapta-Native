@@ -34,3 +34,62 @@
       > P1-S05-T02 — 401/422/429/timeout têm erro operacional sanitizado e correlação; falha não bloqueia conversa local. | CA e cenário TDD correspondente na SPEC.
 - [ ] Construir fluxo de busca demonstrável e executar matriz zero/um/múltiplos/falhas. @QA + dono operacional #projeto   <!-- id:2e94d2a3-5242-4885-a050-2a4c606ff697 -->
       > P1-S05-T03 — Token nunca chega ao cliente; cache mínimo expira e pode ser invalidado. | CA e cenário TDD correspondente na SPEC.
+
+# Fase 2 — Jornada de execução
+
+- [ ] Importar migrations e funções do banco real para o repositório e provar diff vazio. @"técnico de banco" #projeto !14/10/2026
+      > P2-S01-T01 — CA-P2-S01-01, CA-P2-S01-02 | Roteiro da task na SPEC.
+- [ ] Remover seed com senha, trocar a credencial exposta, fechar o cadastro aberto e corrigir a leitura de `profiles`. @"técnico de segurança" #projeto !15/10/2026
+      > P2-S01-T02 — CA-P2-S01-03, CA-P2-S01-04, CA-P2-S01-07 | Roteiro da task na SPEC.
+- [ ] Gerar tipos, remover `as any`, criar guarda de rota e seletor de clínica e limpar o Dashboard. @"técnico de frontend" #projeto !15/10/2026
+      > P2-S01-T03 — CA-P2-S01-04, CA-P2-S01-05, CA-P2-S01-06 | Roteiro da task na SPEC.
+- [ ] Configurar suíte de testes e CI com varredura de segredos e demonstrar clone → reset → testes. @"QA" #projeto !16/10/2026
+      > P2-S01-T04 — CA-P2-S01-01, CA-P2-S01-03, CA-P2-S01-05 | Roteiro da task na SPEC.
+- [ ] Configurar base URL, token no Vault e `User-Agent`; classificar erros pelos quatro formatos. @"técnico de integração" #projeto !16/10/2026
+      > P2-S02-T01 — CA-P2-S02-01, CA-P2-S02-04 | Roteiro da task na SPEC.
+- [ ] Implementar busca em duas etapas, regra de ambiguidade e limitador guiado pelo cabeçalho. @"técnico de integração" #projeto !19/10/2026
+      > P2-S02-T02 — CA-P2-S02-02, CA-P2-S02-03, CA-P2-S02-05 | Roteiro da task na SPEC.
+- [ ] Construir a tela "Identificar paciente" e o cartão de saúde da conexão no `/admin`. @"técnico de frontend" #projeto !19/10/2026
+      > P2-S02-T03 — CA-P2-S02-02, CA-P2-S02-07 | Roteiro da task na SPEC.
+- [ ] Rodar a matriz com os telefones indicados pela clínica e a varredura de dado sensível. @"QA + reception" #projeto !20/10/2026
+      > P2-S02-T04 — CA-P2-S02-02, CA-P2-S02-06, CA-P2-S02-07 | Roteiro da task na SPEC.
+- [ ] Criar contas de canal, recibos, filas e o cadastro com teste de conexão no `/admin`. @"técnico de banco + frontend" #projeto !20/10/2026
+      > P2-S03-T01 — CA-P2-S03-01 | Roteiro da task na SPEC.
+- [ ] Implementar adaptador e webhook da Meta Cloud API (entrada, saída, situação, janela e modelos). @"técnico de integração" #projeto !21/10/2026
+      > P2-S03-T02 — CA-P2-S03-02, CA-P2-S03-03, CA-P2-S03-05, CA-P2-S03-07 | Roteiro da task na SPEC.
+- [ ] Implementar adaptador e webhook da Z-API (entrada, saída, situação e desconexão). @"técnico de integração" #projeto !21/10/2026
+      > P2-S03-T03 — CA-P2-S03-02, CA-P2-S03-03, CA-P2-S03-05, CA-P2-S03-06 | Roteiro da task na SPEC.
+- [ ] Executar a matriz de contrato dos dois provedores e demonstrar envio e recebimento reais. @"QA + owner" #projeto !22/10/2026
+      > P2-S03-T04 — CA-P2-S03-02, CA-P2-S03-03, CA-P2-S03-04, CA-P2-S03-05, CA-P2-S03-06, CA-P2-S03-07, CA-P2-S03-08 | Roteiro da task na SPEC.
+- [ ] Criar as tabelas de conversa com isolamento por clínica e o consumidor da fila de entrada. @"técnico de banco + integração" #projeto !22/10/2026
+      > P2-S04-T01 — CA-P2-S04-01, CA-P2-S04-02, CA-P2-S04-07 | Roteiro da task na SPEC.
+- [ ] Construir a caixa de entrada e a conversa em tempo real, com envio de resposta e situação. @"técnico de frontend" #projeto !23/10/2026
+      > P2-S04-T02 — CA-P2-S04-01, CA-P2-S04-04 | Roteiro da task na SPEC.
+- [ ] Ligar a identificação do contato, a saída da lista por palavra-chave e os anexos privados. @"técnico de integração" #projeto !26/10/2026
+      > P2-S04-T03 — CA-P2-S04-03, CA-P2-S04-06, CA-P2-S04-08 | Roteiro da task na SPEC.
+- [ ] Executar a matriz de isolamento e repetição e demonstrar a caixa de entrada em duas clínicas. @"QA + reception" #projeto !26/10/2026
+      > P2-S04-T04 — CA-P2-S04-02, CA-P2-S04-05, CA-P2-S04-07 | Roteiro da task na SPEC.
+- [ ] Criar tickets, expediente, presença e política de distribuição, com o console de filas, horários e prazos. @"técnico de banco + frontend" #projeto !27/10/2026
+      > P2-S05-T01 — CA-P2-S05-01, CA-P2-S05-07 | Roteiro da task na SPEC.
+- [ ] Implementar o motor de distribuição, reoferta, escalonamento e alertas de prazo. @"técnico de integração" #projeto !27/10/2026
+      > P2-S05-T02 — CA-P2-S05-01, CA-P2-S05-03, CA-P2-S05-04, CA-P2-S05-05, CA-P2-S05-06 | Roteiro da task na SPEC.
+- [ ] Construir a tela do ticket (aceitar, transferir, devolver, escalar, resolver), a presença e a visão do gestor. @"técnico de frontend" #projeto !28/10/2026
+      > P2-S05-T03 — CA-P2-S05-02, CA-P2-S05-08 | Roteiro da task na SPEC.
+- [ ] Executar a matriz de contingência e isolamento e demonstrar com o gestor. @"QA + manager" #projeto !28/10/2026
+      > P2-S05-T04 — CA-P2-S05-03, CA-P2-S05-04, CA-P2-S05-05, CA-P2-S05-06, CA-P2-S05-07 | Roteiro da task na SPEC.
+- [ ] Criar o ambiente de execução de agentes, as tabelas de registro e o guardião determinístico. @"técnico de IA" #projeto !29/10/2026
+      > P2-S06-T01 — CA-P2-S06-02, CA-P2-S06-06 | Roteiro da task na SPEC.
+- [ ] Implementar a triagem de intenção e a resposta com conteúdo aprovado. @"técnico de IA" #projeto !29/10/2026
+      > P2-S06-T02 — CA-P2-S06-01, CA-P2-S06-03, CA-P2-S06-07 | Roteiro da task na SPEC.
+- [ ] Construir o console de conhecimento, modelos de mensagem, rotas e interruptores por clínica. @"técnico de frontend" #projeto !30/10/2026
+      > P2-S06-T03 — CA-P2-S06-03, CA-P2-S06-05 | Roteiro da task na SPEC.
+- [ ] Executar a matriz das 20 mensagens, as falhas de IA e a demonstração. @"QA + manager" #projeto !30/10/2026
+      > P2-S06-T04 — CA-P2-S06-01, CA-P2-S06-02, CA-P2-S06-04, CA-P2-S06-05, CA-P2-S06-07, CA-P2-S06-08 | Roteiro da task na SPEC.
+- [ ] Implementar a função de sugestão com evidências e o registro de uso. @"técnico de IA" #projeto !03/11/2026
+      > P2-S07-T01 — CA-P2-S07-01, CA-P2-S07-03 | Roteiro da task na SPEC.
+- [ ] Construir o painel do copiloto no ticket com usar, editar, descartar e ver evidências. @"técnico de frontend" #projeto !03/11/2026
+      > P2-S07-T02 — CA-P2-S07-01, CA-P2-S07-02, CA-P2-S07-04 | Roteiro da task na SPEC.
+- [ ] Construir o console de agentes e prompts com rascunho, teste, publicação, volta de versão e herança. @"técnico de frontend + IA" #projeto !04/11/2026
+      > P2-S07-T03 — CA-P2-S07-05, CA-P2-S07-06, CA-P2-S07-07 | Roteiro da task na SPEC.
+- [ ] Executar a matriz do copiloto e a demonstração ponta a ponta da fase 2 com as atendentes. @"QA + atendentes" #projeto !04/11/2026
+      > P2-S07-T04 — CA-P2-S07-02, CA-P2-S07-03, CA-P2-S07-04, CA-P2-S07-06 | Roteiro da task na SPEC.
