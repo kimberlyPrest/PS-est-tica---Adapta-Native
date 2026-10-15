@@ -1,5 +1,12 @@
 # Changelog — Adapta Cliente
 
+## 2026-10-14 — P2-S01-T01 CONCLUÍDA (primeira task da fase 2)
+- Aceite humano: "teste ok" (Felipe, 2026-10-14 22:43, canal web) após conferência no Skip: 3 pastas em supabase/functions/, 19 migrations em supabase/migrations/, versão 0.0.7 com QA 5/5, seed sem senha/e-mail.
+- Entrega: repositório do CRM (Skip 62134) passa a conter a base da fase 1 — 19 migrations com os timestamps EXATOS do histórico real (fonte: supabase_migrations.schema_migrations do projeto psestetica; SQL literal, não reconstruído) + Edge Functions search-expert-patient (importa _shared/), _shared/clinic_experts_client (módulo T01 aceito) e admin-invite-user (recuperada da produção v2). Seed 20260929135430 neutralizada; corretiva de rename ganhou guarda para instalação limpa.
+- Pendências operacionais registradas (não bloqueiam): diff formal vazio e replay dos runners exigem Supabase CLI (fora do sandbox); decisão do owner sobre histórico Git (senha antiga no commit inicial, já trocada no banco).
+- Artefato: artifacts/RELATORIO_P2_S01_T01_20261014.md. Quadro atualizado (commit 2c736e0).
+- Próxima: P2-S01-T02 (hardening) mediante pedido do dono. Prazos da fase 2: S01 16/10 · S02 20/10 · S03 22/10 · S04 26/10 · S05 28/10 · S06 30/10 · S07 04/11.
+
 ## 2026-10-14 — FASE 2 LIBERADA (em paralelo ao fechamento da fase 1)
 - Incluídas as SPECs P2-S01 a P2-S07 em `04_fase-atual/01-SPECS/`, com contrato técnico detalhado (tabelas coluna a coluna, regras de acesso, funções, filas, telas), TDD, critérios de aceite (53) e roteiro passo a passo das 28 tasks.
 - Incluído `00-CONTRATO-COMUM-FASE-2.md`: convenções de banco, RLS, envelope de erro das funções, filas, interruptores, rotas de tela e provas.
