@@ -3,10 +3,10 @@
 - task_id: P2-S01-T04
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P2-S01-base-versionada-e-protegida.md
-- etapa: T03 CONCLUÍDA no Skip (v0.0.8 f299cf2 + v0.0.9 b215a07, QA verde); T04 em implementação (suíte de testes + varredura de segredos no QA)
-- entregue_T03: types.ts do catálogo real (14 tabelas + 17 RPCs + Papel); guards.tsx (RequireAuth/RequireRole com AAL2/EmptyState/ErrorState); clinic-selector.tsx; app-shell.tsx; Inicio.tsx (/inicio, estado vazio); AdminProtegido.tsx (/admin owner/clinic_admin + AAL2); App.tsx (/signup removida; /dashboard→/inicio); Index.tsx sem link de cadastro e sem dica de credenciais; Dashboard.tsx e SignUp.tsx removidos; migration de convite 20261002185527 higienizada (e-mail pessoal fora da árvore); testes de tela 7/7 (Vitest local); 0 "as any" em chamada ao Supabase
-- pendencias_da_task_T03: capturas por papel (humano) — sales vê só "Início"; owner vê "Início"+"Administração"; sem vínculo vê "sem acesso"
+- etapa: T03 e T04 IMPLEMENTADAS e sincronizadas no Skip (v0.0.8 f299cf2 · v0.0.9 b215a07 · v0.0.10 4f8b442 — QA verde nas três); T04 aguarda aceite humano
+- entregue_T04: package.json com npm test → vitest run (antes era echo "no tests"); vitest.config.ts (jsdom, globals); src/pages/Inicio.test.tsx (7 testes de tela); scripts/scan-secrets.mjs (varredura de segredos, 5 padrões, exit 1 em achado); prova da suíte: exit 0 verde / exit 1 com teste falho de propósito; prova da varredura: 0 achados na árvore, JWT de teste → exit 1
+- pendencias_da_task: plataforma Skip não executa a suíte do projeto (qa.test.ran=false — limitação do runner); clone→reset→diff formal exige Supabase CLI (fora do sandbox); capturas por papel da T03 (humano)
 - pendencias_do_dono (painel Supabase, da T02): desligar "Allow new users to sign up"; ativar TOTP; decisão sobre histórico Git
-- fase_2: 2/28 concluídas + T03 implementada e sincronizada (aguarda aceite humano) + T04 em andamento
-- proxima_acao: concluir T04 (suíte no QA do Skip); depois capturas por papel da T03
-- atualizado_em: 2026-10-18T18:51:00-03:00
+- fase_2: 2/28 concluídas + T03 implementada + T04 implementada (aguardam aceite)
+- proxima_acao: aceite humano das capturas por papel (T03); depois P2-S02-T01 (conexão real Clínica Experts) mediante token no Vault
+- atualizado_em: 2026-10-18T19:05:00-03:00
