@@ -1,6 +1,15 @@
 # Changelog — Adapta Cliente
 
-## 2026-10-14 — P2-S01-T01 CONCLUÍDA (primeira task da fase 2)
+## 2026-10-18 — P2-S01-T03 IMPLEMENTADA (aguarda sync no Skip e aceite)
+- Tipos `src/lib/supabase/types.ts` gerados do catálogo REAL do Supabase psestetica (pg_class/pg_attribute/pg_proc, 2026-10-18): 14 tabelas com Row/Insert/Update + 17 funções RPC tipadas + tipo `Papel` (7 papéis da SPEC).
+- Componentes novos: `guards.tsx` (RequireAuth; RequireRole com exigência AAL2 para owner/clinic_admin; EmptyState; ErrorState com correlation_id copiável), `clinic-selector.tsx` (só clínicas com vínculo ativo via RLS; escolha em localStorage por conveniência, servidor sempre valida), `app-shell.tsx` (menu lateral por papel + topo com seletor e e-mail).
+- Rotas: `/inicio` (painel sem números fixos; sem dado → estado vazio), `/admin` protegida (owner/clinic_admin + segundo fator), `/dashboard`→`/inicio`, `/signup` REMOVIDA (acesso só por convite).
+- Testes de tela (Vitest + Testing Library): **7/7 verdes** — sem sessão→login; sem vínculo→"sem acesso"; com vínculo→conteúdo; papel insuficiente→"Acesso restrito"; owner sem AAL2→pede segundo fator; owner com AAL2→libera; EmptyState sem número fixo (RN-P2-S01-03).
+- **0 `as any` em chamada ao Supabase** (verificado por varredura; único restante é comentário).
+- Pendências: gravar os 8 arquivos no Skip (ferramentas indisponíveis nesta sessão — arquivos prontos em work/p2s01/src/); build `npm run build` no ambiente do app; capturas por papel (humano).
+- Próxima: P2-S01-T04 (suíte de testes + CI) após sync no Skip.
+
+## 2026-10-14 — P2-S01-T02 CONCLUÍDA (primeira task da fase 2)
 - Aceite humano: "teste ok" (Felipe, 2026-10-14 22:43, canal web) após conferência no Skip: 3 pastas em supabase/functions/, 19 migrations em supabase/migrations/, versão 0.0.7 com QA 5/5, seed sem senha/e-mail.
 - Entrega: repositório do CRM (Skip 62134) passa a conter a base da fase 1 — 19 migrations com os timestamps EXATOS do histórico real (fonte: supabase_migrations.schema_migrations do projeto psestetica; SQL literal, não reconstruído) + Edge Functions search-expert-patient (importa _shared/), _shared/clinic_experts_client (módulo T01 aceito) e admin-invite-user (recuperada da produção v2). Seed 20260929135430 neutralizada; corretiva de rename ganhou guarda para instalação limpa.
 - Pendências operacionais registradas (não bloqueiam): diff formal vazio e replay dos runners exigem Supabase CLI (fora do sandbox); decisão do owner sobre histórico Git (senha antiga no commit inicial, já trocada no banco).
