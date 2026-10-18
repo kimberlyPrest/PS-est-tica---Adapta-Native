@@ -1,13 +1,25 @@
 # Changelog — Adapta Cliente
 
-## 2026-10-18 — P2-S01-T03 IMPLEMENTADA (aguarda sync no Skip e aceite)
-- Tipos `src/lib/supabase/types.ts` gerados do catálogo REAL do Supabase psestetica (pg_class/pg_attribute/pg_proc, 2026-10-18): 14 tabelas com Row/Insert/Update + 17 funções RPC tipadas + tipo `Papel` (7 papéis da SPEC).
-- Componentes novos: `guards.tsx` (RequireAuth; RequireRole com exigência AAL2 para owner/clinic_admin; EmptyState; ErrorState com correlation_id copiável), `clinic-selector.tsx` (só clínicas com vínculo ativo via RLS; escolha em localStorage por conveniência, servidor sempre valida), `app-shell.tsx` (menu lateral por papel + topo com seletor e e-mail).
-- Rotas: `/inicio` (painel sem números fixos; sem dado → estado vazio), `/admin` protegida (owner/clinic_admin + segundo fator), `/dashboard`→`/inicio`, `/signup` REMOVIDA (acesso só por convite).
-- Testes de tela (Vitest + Testing Library): **7/7 verdes** — sem sessão→login; sem vínculo→"sem acesso"; com vínculo→conteúdo; papel insuficiente→"Acesso restrito"; owner sem AAL2→pede segundo fator; owner com AAL2→libera; EmptyState sem número fixo (RN-P2-S01-03).
-- **0 `as any` em chamada ao Supabase** (verificado por varredura; único restante é comentário).
-- Pendências: gravar os 8 arquivos no Skip (ferramentas indisponíveis nesta sessão — arquivos prontos em work/p2s01/src/); build `npm run build` no ambiente do app; capturas por papel (humano).
-- Próxima: P2-S01-T04 (suíte de testes + CI) após sync no Skip.
+## 2026-10-18 — TELA DE SEGUNDO FATOR implementada (v0.0.11, extra fora da SPEC)
+- Contexto: no teste humano da T03, o owner era bloqueado em /admin com a tela estática "Segundo fator necessário" — não havia como ATIVAR o fator dentro do app (só pelo painel Supabase). Tela implementada a pedido do Felipe.
+- Entrega (Skip 62134, v0.0.11 812ac41, QA verde: setup/static/build/integrations):
+  - src/pages/SegundoFator.tsx: fluxo TOTP completo via supabase-js v2 — enroll (QR + chave manual + friendly_name), challenge, verify; unenroll automático de fator pendente anterior (não acumula); erros amigáveis (código inválido, rate limit, fator não encontrado); retorno automático ao destino original (?next=, default /admin).
+  - guards.tsx: owner/clinic_admin sem AAL2 agora são REDIRECIONADOS a /segundo-fator?next=/admin (antes: tela estática).
+  - src/lib/auth-errors.ts: mensagens amigáveis extraídas de use-auth (sem duplicar).
+  - App.tsx: rota /segundo-fator. vitest.config.ts: alias @ (o app usa @/lib/...). package.json: @testing-library/user-event.
+  - Testes: 12/12 (7 da guarda — incluindo owner sem AAL2 → /segundo-fator — e 5 da tela MFA: enroll, QR+chave, sucesso, código inválido, challenge direto).
+- Lições de teste: mockar pelo MESMO caminho que o componente importa (@/lib/supabase/client); a chain mockada do from() precisa ser THENABLE (await em qualquer ponto resolve) — o erro real era "...eq(...).limit is not a function"; não usar vi.clearAllMocks() quando o mock é configurado no beforeEach.
+- Como usar: /admin → redireciona a /segundo-fator → Gerar código QR → escanear no autenticador → código de 6 dígitos → verificado → Continuar → /admin abre.
+- Próxima: aceite humano; depois P2-S02-T01 (token Clínica Experts no Vault).
+
+## 2026-10-18 — P2-S01-T03 SINCRONIZADA no Skip (v0.0.8 + v0.0.9, QA verde)
+- Sincronização concluída após reconexão do conector Skip: 7 arquivos da T03 gravados no projeto CRM Estética (62134) e QA verde (setup/static/build/integrations) na versão 0.0.8 (f299cf2); migration de convite 20261002185527 substituída pela cópia higienizada (e-mail pessoal removido) na versão 0.0.9 (b215a07), fechando a pendência da T02.
+- Entrega da T03: types.ts do catálogo real (14 tabelas + 17 RPCs + Papel); guards.tsx (RequireAuth/RequireRole com AAL2/EmptyState/ErrorState); clinic-selector.tsx; app-shell.tsx; Inicio.tsx (/inicio, estado vazio); AdminProtegido.tsx (/admin owner/clinic_admin + AAL2); App.tsx (/signup removida; /dashboard→/inicio); Index.tsx sem link "Solicitar acesso" e sem a dica de credenciais exposta; Dashboard.tsx (números fixos) e SignUp.tsx removidos.
+- Testes de tela 7/7 verdes (Vitest + Testing Library); 0 "as any" em chamada ao Supabase.
+- Pendência restante: capturas por papel (humano). Próxima: P2-S01-T04 (suíte de testes + CI).
+
+## 2026-10-18 — P2-S01-T04 implementada (v0.0.10)
+- package.json npm test → vitest run (antes era echo "no tests" — por isso qa.test.ran=false no Skip); vitest.config.ts (jsdom/globals); Inicio.test.tsx (7 testes); scripts/scan-secrets.mjs (5 padrões, exit 1 em achado; provas: 0 na árvore, JWT teste → exit 1). Prova da suíte: exit 0 verde / exit 1 com teste falho. Skip v0.0.10 (4f8b442) QA verde (test.ran=false é limitação do runner da plataforma). SPEC P2-S01 COMPLETA (T01–T04). Próxima: P2-S02-T01 (conexão real Clínica Experts) — pré-condição: token entregue pelo /admin no Vault. Pendências do dono seguem: toggles Auth (signup off + TOTP) e decisão sobre histórico Git.
 
 ## 2026-10-14 — P2-S01-T02 CONCLUÍDA (primeira task da fase 2)
 - Aceite humano: "teste ok" (Felipe, 2026-10-14 22:43, canal web) após conferência no Skip: 3 pastas em supabase/functions/, 19 migrations em supabase/migrations/, versão 0.0.7 com QA 5/5, seed sem senha/e-mail.
@@ -35,7 +47,7 @@
 
 ## 2026-10-09 — P1-S05-T02 CONCLUÍDA
 - Aceite humano: "teste ok" (Felipe, 2026-10-09, canal web) após roteiro roteiro-t02-busca-v1-20261009.html (8 passos contra o Supabase real com sessão do owner: login, normalização E.164, 22023, 503 api_nao_configurada com correlation_id, 400 entrada, 401 anon, invalidação idempotente, RLS anon 0) validado 8/8 ✔ no navegador antes da entrega.
-- Revalidação de fechamento com evidência fresca: banco real (2 tabelas novas, 4 policies, 3 funções, normalize 8→9 dígitos ok, cache/links 0 linhas) + Edge Function ao vivo (owner autenticado → 503 api_nao_configurada com correlation_id a4419eb2, sem falso sucesso; anon → 401).
+- Revalidação de fechamento: banco real (2 tabelas novas, 4 policies, 3 funções, normalize 8→9 dígitos ok, cache/links 0 linhas) + Edge Function ao vivo (owner autenticado → 503 api_nao_configurada com correlation_id a4419eb2, sem falso sucesso; anon → 401).
 - Fase 1: 14/16 (87,5%). Próxima: P1-S05-T03 (fluxo demonstrável + matriz zero/um/múltiplos/falhas) — última da fase 1, mediante pedido.
 
 ## 2026-10-09 — P1-S05-T02 IMPLEMENTADA
