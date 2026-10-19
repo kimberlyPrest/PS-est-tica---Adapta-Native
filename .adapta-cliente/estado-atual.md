@@ -1,12 +1,12 @@
 # Estado atual — Adapta Cliente
 
-- task_id: P2-S02-T02
+- task_id: P2-S02-T03
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P2-S02-conexao-real-clinica-experts.md
-- etapa: T01 e T02 IMPLEMENTADAS (2026-10-19) — Skip v0.0.12 (447a9e0) e v0.0.13 (1ec8b97), QA verde; matrizes 23/23 e 18/18; FALTAM os testes de conexão real (T01 passo 4 e T02 contra a API real) — dependem do token no Vault
-- entregue_T02: supabase/functions/_shared/providers/expert-search.ts (buscarEmDuasEtapas: etapa a E.164 per_page=10; etapa b últimos 8 dígitos per_page=50 com filtro local de DDD; classificação um/multiplos/provavel/zero; candidatos com birth_masked **/**/AAAA; 429 propagado como limite_externo; budget local parametrizável 90/min); Edge Function search-expert-patient v2 (contrato de saída da SPEC: data{result_class, phone_e164, candidates[uuid,name,birth_masked,active], linked_patient_uuid, cache_hit}; cache grava só candidatos mínimos; base URL com default do contrato; mantém JWT/RLS/TTL/erros sanitizados/falha_nao_bloqueia); scripts/test_p2_s02_t02.mjs (matriz 18/18: E.164, DDD+número, sem 9º, inexistente, 2 e 4 candidatos, inativo, etapa b mesmo DDD/outro DDD, máscaras, 429, carga 200 sem 429 propagado); scripts/test_p2_s02_t01.mjs corrigido para o caminho do repo
-- pendencias_da_task: token no Vault via /admin + EXPERT_API_BASE_URL secret → testes de conexão real (T01) e busca real (T02); capturas por papel T03 (3.b/3.c)
-- pendencias_do_dono (arrastadas): toggles Auth (signup off no TOPO de Providers + TOTP); decisão histórico Git
-- fase_2: 4/28 concluídas + T01/T02 implementadas (aguardam token + aceites)
-- proxima_acao: P2-S02-T03 (tela Identificar paciente + cartão de saúde no /admin) — pode ser implementada agora e testada com dado real quando o token chegar
-- atualizado_em: 2026-10-19T18:40:00-03:00
+- etapa: T03 IMPLEMENTADA (2026-10-19) — Skip v0.0.15 (881cfcf), QA verde; testes de tela 8/8, suíte completa 20/20, runner da emenda 12/12 (PGlite); AGUARDA aceite humano (capturas dos 4 estados + negativa 403)
+- entregue_T03: src/pages/IdentificarPaciente.tsx (tela /pacientes/identificar: campo qualquer formato + E.164 exibido; resultados um/multiplos/provavel/zero conforme SPEC; erros por code com correlation_id copiável; Buscar de novo com force_refresh; Confirmar vínculo chama RPC, provavel grava manual_provavel); src/pages/AdminConexoes.tsx (cartão Clínica Experts em /admin/conexoes: situação/último teste/Testar conexão via admin_test_connection/Trocar token via admin_save_integration_secret — valor nunca volta à tela; rota com RequireRole owner/clinic_admin + AAL2); src/lib/experts-api.ts (cliente da função v2 + mensagens por code); src/App.tsx + app-shell.tsx (rotas e menu novos); migration 20261019190000_p2_s02_t03_link_emenda.sql APLICADA NO SUPABASE REAL (link_expert_patient aceita sales/reception/post_sales/manager para criar; unlink_expert_patient nova, só owner/clinic_admin; manual_provavel confidence 0.7; contato de outra org recusado; grants só authenticated); src/pages/IdentificarPaciente.test.tsx (8 testes); scripts/test_p2_s02_t03_emenda.mjs (12 testes)
+- pendencias_da_task: aceite humano (capturas dos 4 estados + usuário de outra clínica 403) — pré-condição do token; T04 precisa dos 3 telefones de conferência + token no Vault
+- pendencias_do_dono (arrastadas): toggles Auth (signup off no TOPO de Providers + TOTP); capturas 3.b/3.c da P2-S01-T03; decisão histórico Git
+- fase_2: 4/28 concluídas + T01/T02/T03 implementadas (aguardam token + aceites)
+- proxima_acao: P2-S02-T04 (matriz com telefones reais + varredura de dado sensível) quando o token chegar; atualizar linha da T03 no quadro fase.md
+- atualizado_em: 2026-10-19T19:40:00-03:00
