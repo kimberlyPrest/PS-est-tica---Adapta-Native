@@ -1,13 +1,12 @@
 # Estado atual — Adapta Cliente
 
-- task_id: P2-S01 — tela de segundo fator (extra, fora das 4 tasks da SPEC)
+- task_id: P2-S02-T01
 - champion: Felipe F3 Energy Drink
-- spec: 04_fase-atual/01-SPECS/SPEC-P2-S01-base-versionada-e-protegida.md
-- etapa: T01–T04 concluídas; TELA DE SEGUNDO FATOR implementada (2026-10-18, v0.0.11 812ac41, QA verde) — aguarda aceite humano
-- entregue_tela_mfa: src/pages/SegundoFator.tsx (enroll com QR + chave manual; challenge; verify; erros amigáveis; retorno automático ao /admin via ?next=); src/lib/auth-errors.ts (mensagens amigáveis extraídas de use-auth); guards.tsx com redirect automático (owner/clinic_admin sem AAL2 → /segundo-fator?next=/admin em vez de tela morta); rota /segundo-fator no App.tsx; vitest.config.ts com alias @; package.json com @testing-library/user-event; testes 12/12 (7 guarda + 5 tela MFA)
-- como_usar: Felipe entra no preview → /admin → é levado a /segundo-fator → "Gerar código QR" → escaneia no Google Authenticator/1Password → digita o código de 6 dígitos → "Segundo fator ativado e verificado" → Continuar → /admin abre
-- pendencias_da_task: aceite humano da tela MFA (Felipe parear o autenticador e entrar no /admin); capturas por papel da T03 (3.b vendas e 3.c /inicio sem dado)
-- pendencias_do_dono (painel Supabase, da T02): desligar "Allow new users to sign up" (toggle no TOPO de Authentication→Providers); ativar TOTP na conta do painel; decisão sobre histórico Git
-- fase_2: 2/28 concluídas + T03/T04 implementadas + tela MFA extra (aguardam aceites)
-- proxima_acao: aceite da tela MFA; depois P2-S02-T01 (conexão real Clínica Experts) mediante token no Vault
-- atualizado_em: 2026-10-18T20:20:00-03:00
+- spec: 04_fase-atual/01-SPECS/SPEC-P2-S02-conexao-real-clinica-experts.md
+- etapa: IMPLEMENTADA (2026-10-19) — código + matriz 23/23 no sandbox; Skip v0.0.12 (447a9e0) QA verde; FALTA teste de conexão real a partir da função publicada (passo 4 da task) — depende do token no Vault
+- entregue: supabase/functions/_shared/providers/clinica-experts.ts (expertGet com User-Agent próprio PSEstetica-CRM/1.0 +supabase-edge, x-correlation-id, Authorization Bearer; classifyExpertError com os 4 formatos do contrato + Cloudflare 1010 → bloqueio_de_borda; httpDeErro (404/400/503/504/502); rateBudget 90/min guiado por x-ratelimit-remaining — abaixo de 10 espera a virada do minuto; retry 2× para transitórios; telemetria sanitizada — token NUNCA em log/erro/retorno; lerPacienteMinimo descarta documents/address/email/annotation/occupation/marital_status/contacts); scripts/test_p2_s02_t01.mjs (matriz 23/23: 9 classificação + 6 http + 3 budget + 3 leitor + UA + smoke expertGet)
+- pendencias_da_task: (1) EXPERT_API_BASE_URL nas secrets das funções + token no Vault via /admin (Felipe/suporte Experts); (2) teste de conexão real a partir da Edge Function publicada + diagnóstico sanitizado anexado; (3) deno test oficial na CI do Skip (roda local no sandbox com Node)
+- pendencias_do_dono (arrastadas): toggles Auth (signup off no TOPO de Providers + TOTP); decisão histórico Git; capturas por papel T03 (3.b/3.c)
+- fase_2: 4/28 concluídas (P2-S01 completa) + P2-S02-T01 implementada (aguarda token + aceite)
+- proxima_acao: quando o token chegar → gravar no Vault pelo /admin → eu rodo o teste de conexão real e fecho a T01; depois P2-S02-T02 (busca em duas etapas + limitador)
+- atualizado_em: 2026-10-19T17:35:00-03:00
