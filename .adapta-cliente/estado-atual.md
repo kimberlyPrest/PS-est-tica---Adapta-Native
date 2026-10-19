@@ -1,12 +1,12 @@
 # Estado atual — Adapta Cliente
 
-- task_id: P2-S02-T01
+- task_id: P2-S02-T02
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P2-S02-conexao-real-clinica-experts.md
-- etapa: IMPLEMENTADA (2026-10-19) — código + matriz 23/23 no sandbox; Skip v0.0.12 (447a9e0) QA verde; FALTA teste de conexão real a partir da função publicada (passo 4 da task) — depende do token no Vault
-- entregue: supabase/functions/_shared/providers/clinica-experts.ts (expertGet com User-Agent próprio PSEstetica-CRM/1.0 +supabase-edge, x-correlation-id, Authorization Bearer; classifyExpertError com os 4 formatos do contrato + Cloudflare 1010 → bloqueio_de_borda; httpDeErro (404/400/503/504/502); rateBudget 90/min guiado por x-ratelimit-remaining — abaixo de 10 espera a virada do minuto; retry 2× para transitórios; telemetria sanitizada — token NUNCA em log/erro/retorno; lerPacienteMinimo descarta documents/address/email/annotation/occupation/marital_status/contacts); scripts/test_p2_s02_t01.mjs (matriz 23/23: 9 classificação + 6 http + 3 budget + 3 leitor + UA + smoke expertGet)
-- pendencias_da_task: (1) EXPERT_API_BASE_URL nas secrets das funções + token no Vault via /admin (Felipe/suporte Experts); (2) teste de conexão real a partir da Edge Function publicada + diagnóstico sanitizado anexado; (3) deno test oficial na CI do Skip (roda local no sandbox com Node)
-- pendencias_do_dono (arrastadas): toggles Auth (signup off no TOPO de Providers + TOTP); decisão histórico Git; capturas por papel T03 (3.b/3.c)
-- fase_2: 4/28 concluídas (P2-S01 completa) + P2-S02-T01 implementada (aguarda token + aceite)
-- proxima_acao: quando o token chegar → gravar no Vault pelo /admin → eu rodo o teste de conexão real e fecho a T01; depois P2-S02-T02 (busca em duas etapas + limitador)
-- atualizado_em: 2026-10-19T17:35:00-03:00
+- etapa: T01 e T02 IMPLEMENTADAS (2026-10-19) — Skip v0.0.12 (447a9e0) e v0.0.13 (1ec8b97), QA verde; matrizes 23/23 e 18/18; FALTAM os testes de conexão real (T01 passo 4 e T02 contra a API real) — dependem do token no Vault
+- entregue_T02: supabase/functions/_shared/providers/expert-search.ts (buscarEmDuasEtapas: etapa a E.164 per_page=10; etapa b últimos 8 dígitos per_page=50 com filtro local de DDD; classificação um/multiplos/provavel/zero; candidatos com birth_masked **/**/AAAA; 429 propagado como limite_externo; budget local parametrizável 90/min); Edge Function search-expert-patient v2 (contrato de saída da SPEC: data{result_class, phone_e164, candidates[uuid,name,birth_masked,active], linked_patient_uuid, cache_hit}; cache grava só candidatos mínimos; base URL com default do contrato; mantém JWT/RLS/TTL/erros sanitizados/falha_nao_bloqueia); scripts/test_p2_s02_t02.mjs (matriz 18/18: E.164, DDD+número, sem 9º, inexistente, 2 e 4 candidatos, inativo, etapa b mesmo DDD/outro DDD, máscaras, 429, carga 200 sem 429 propagado); scripts/test_p2_s02_t01.mjs corrigido para o caminho do repo
+- pendencias_da_task: token no Vault via /admin + EXPERT_API_BASE_URL secret → testes de conexão real (T01) e busca real (T02); capturas por papel T03 (3.b/3.c)
+- pendencias_do_dono (arrastadas): toggles Auth (signup off no TOPO de Providers + TOTP); decisão histórico Git
+- fase_2: 4/28 concluídas + T01/T02 implementadas (aguardam token + aceites)
+- proxima_acao: P2-S02-T03 (tela Identificar paciente + cartão de saúde no /admin) — pode ser implementada agora e testada com dado real quando o token chegar
+- atualizado_em: 2026-10-19T18:40:00-03:00

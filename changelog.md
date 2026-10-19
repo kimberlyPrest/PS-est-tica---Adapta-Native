@@ -1,10 +1,17 @@
 # Changelog — Adapta Cliente
 
+## 2026-10-19 — P2-S02-T02 IMPLEMENTADA (v0.0.13; teste real aguarda token)
+- Busca em duas etapas: supabase/functions/_shared/providers/expert-search.ts — etapa (a) GET /patients?phone=<E.164 sem +>&per_page=10; etapa (b) se zero E número tem 9º dígito: GET com os últimos 8 dígitos &per_page=50, filtrando localmente pelo mesmo DDD (números antigos sem o 9º). Classificação: um / multiplos (2+, NUNCA escolhidos) / provavel (etapa b, mesmo DDD) / zero. Candidatos mínimos com birth_masked (**/**/AAAA). 429 propagado como limite_externo. Budget local parametrizável (90/min) para carga.
+- Edge Function search-expert-patient v2: contrato de saída da SPEC (data{result_class, phone_e164, candidates[{expert_patient_uuid,name,birth_masked,active}], linked_patient_uuid, cache_hit}, correlation_id); cache TTL 1h grava só candidatos mínimos; base URL com default EXPERT_BASE_URL_DEFAULT; mantém JWT obrigatório, acesso por organização (RLS), erros sanitizados com correlation_id, falha_nao_bloqueia.
+- Matriz 18/18 (scripts/test_p2_s02_t02.mjs): E.164 único → um (1 chamada); DDD+número casa por trecho; número antigo sem 9º → um; inexistente → zero; 2 candidatos → multiplos; 4 candidatos; birth_masked; inativo active=false; etapa (b) → provavel com 2 chamadas; etapa (b) DDD diferente → zero; máscaras; 429 → limite_externo; CARGA 200 buscas: nenhuma 429 propagada e budget reteve além de 90/min.
+- Correção: scripts/test_p2_s02_t01.mjs apontava para caminho inexistente no repo — corrigido e revalidado (23/23 nos caminhos do repositório).
+- Lição: comentário JSDoc com **/**/ fecha comentário de bloco no strip-types do Node — usar espaços.
+- Skip v0.0.13 (1ec8b97) QA verde. Próxima: P2-S02-T03 (tela Identificar paciente + cartão de saúde) — implementável agora; teste com dado real quando o token chegar.
+
 ## 2026-10-19 — P2-S02-T01 IMPLEMENTADA (v0.0.12; falta teste real com token)
 - Cliente HTTP da conexão REAL: supabase/functions/_shared/providers/clinica-experts.ts — expertGet (User-Agent próprio PSEstetica-CRM/1.0 (+supabase-edge) exigido pela borda Cloudflare; x-correlation-id; Bearer só no header), classifyExpertError (4 formatos do contrato: {error:{code,title,fields}} / {error:"..."} / {success:false,message} / cloudflare_error → credencial_invalida, bloqueio_de_borda, modulo_desabilitado, paciente_nao_encontrado, entrada_recusada, limite_externo, falha_transitoria, tempo_esgotado), httpDeErro (mapa 404/400/503/504/502), rateBudget.take (90/min; x-ratelimit-remaining < 10 → espera virada), retry 2× transitórios, telemetria sanitizada (token NUNCA sai), lerPacienteMinimo (só uuid/name/phone/birth/active/created; descarta documents/address/email/annotation/occupation).
-- Matriz 23/23 (scripts/test_p2_s02_t01.mjs): 9 classificação + 6 http-por-code + 3 rateBudget + 3 leitor mínimo + User-Agent + smoke expertGet. Skip v0.0.12 (447a9e0) QA verde.
-- Lição de sandbox: runner com servidor HTTP real + strip-types prende o event-loop — matriz pura + smoke com guarda de 3s resolve; deno test oficial fica para a CI do Skip.
-- Pendências para FECHAR a T01: EXPERT_API_BASE_URL (secret) + token no Vault via /admin → teste de conexão real a partir da função publicada com diagnóstico sanitizado. Próxima: P2-S02-T02 (busca em duas etapas + limitador).
+- Matriz 23/23 (scripts/test_p2_s02_t01.mjs). Skip v0.0.12 (447a9e0) QA verde.
+- Pendências para FECHAR a T01: EXPERT_API_BASE_URL (secret) + token no Vault via /admin → teste de conexão real a partir da função publicada com diagnóstico sanitizado.
 
 ## 2026-10-18 — TELA DE SEGUNDO FATOR implementada (v0.0.11, extra fora da SPEC)
 - Contexto: no teste humano da T03, o owner era bloqueado em /admin com a tela estática "Segundo fator necessário" — não havia como ATIVAR o fator dentro do app (só pelo painel Supabase). Tela implementada a pedido do Felipe.
