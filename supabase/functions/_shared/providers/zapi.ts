@@ -1,6 +1,5 @@
-// supabase/functions/_shared/providers/zapi.ts — P2-S03-T03
-// Adaptador da Z-API (WhatsApp não oficial) conforme SPEC-P2-S03.
-// Telemetria sanitizada. Compatível Deno (WebCrypto). Sem `as any`.
+// supabase/functions/_shared/providers/zapi.ts — P2-S03-T03 (v2 com DeliveryCallback)
+// Adaptador da Z-API conforme SPEC-P2-S03. Telemetria sanitizada. Sem `as any`.
 export const ZAPI_BASE = 'https://api.z-api.io'
 export const JANELA_24H_MS = 24 * 60 * 60 * 1000
 export const TOLERANCIA_STALE_MS = JANELA_24H_MS
@@ -45,6 +44,8 @@ type ZapiBody = Record<string, unknown> & {
   ids?: unknown[]
   status?: string
   connected?: boolean
+  error?: string
+  errorCode?: string
 }
 
 export function paraE164Zapi(phone: string | undefined | null): string | null {
@@ -161,6 +162,33 @@ export function mapearCorpoZapi(
       occurred_at: occurredAt,
       stale,
       unsupported: statusInterno === null,
+      desconectar: false,
+      reconectar: false,
+    })
+    return itens
+  }
+
+  // DeliveryCallback: confirmação de envio (webhook Ao enviar) — sucesso = sem error
+  if (tipo === 'DeliveryCallback') {
+    const messageId = typeof corpo?.messageId === 'string' ? corpo.messageId : ''
+    const temErro = typeof corpo?.error === 'string' && corpo.error.length > 0
+    itens.push({
+      ...base,
+      kind: 'status',
+      external_event_id: `${messageId}:status`,
+      from_phone_e164: null,
+      contact_name: null,
+      message_type: null,
+      text_body: null,
+      media_id: null,
+      provider_message_id: messageId || null,
+      status: temErro ? 'failed' : 'sent',
+      error_code: temErro
+        ? (typeof corpo?.errorCode === 'string' ? corpo.errorCode : 'delivery_error')
+        : null,
+      occurred_at: occurredAt,
+      stale,
+      unsupported: false,
       desconectar: false,
       reconectar: false,
     })
