@@ -1,4 +1,4 @@
-// supabase/functions/_shared/providers/zapi.ts — P2-S03-T03 (v2 com DeliveryCallback)
+// supabase/functions/_shared/providers/zapi.ts — P2-S03-T03 (v3 com imageUrl + caption)
 // Adaptador da Z-API conforme SPEC-P2-S03. Telemetria sanitizada. Sem `as any`.
 export const ZAPI_BASE = 'https://api.z-api.io'
 export const JANELA_24H_MS = 24 * 60 * 60 * 1000
@@ -37,10 +37,10 @@ type ZapiBody = Record<string, unknown> & {
   isGroup?: boolean
   isNewsletter?: boolean
   text?: { message?: string }
-  image?: { id?: string; caption?: string }
-  audio?: { id?: string }
-  video?: { id?: string }
-  document?: { id?: string }
+  image?: { id?: string; caption?: string; imageUrl?: string; link?: string; url?: string }
+  audio?: { id?: string; link?: string; url?: string }
+  video?: { id?: string; videoUrl?: string; link?: string; url?: string }
+  document?: { id?: string; link?: string; url?: string }
   ids?: unknown[]
   status?: string
   connected?: boolean
@@ -78,8 +78,11 @@ export function statusZapiParaInterno(status: string | undefined): string | null
 
 function midiaIdDe(msg: ZapiBody): { tipo: string; id: string } | null {
   for (const tipo of ['image', 'audio', 'video', 'document'] as const) {
-    const obj = msg[tipo] as { id?: string } | undefined
-    if (obj && typeof obj.id === 'string') return { tipo, id: obj.id }
+    const obj = msg[tipo] as { id?: string; imageUrl?: string; link?: string; url?: string } | undefined
+    if (!obj || typeof obj !== 'object') continue
+    // Z-API real: image.imageUrl (sem id); doc oficial também aceita link/url.
+    const id = [obj.id, obj.imageUrl, obj.link, obj.url].find((v) => typeof v === 'string' && v !== '')
+    if (id) return { tipo, id }
   }
   return null
 }
@@ -199,7 +202,12 @@ export function mapearCorpoZapi(
     const isGroup = corpo?.isGroup === true || corpo?.isNewsletter === true
     const messageId = typeof corpo?.messageId === 'string' ? corpo.messageId : ''
     const midia = midiaIdDe(corpo)
-    const texto = typeof corpo?.text?.message === 'string' ? corpo.text.message : null
+    const texto =
+      typeof corpo?.text?.message === 'string' && corpo.text.message !== ''
+        ? corpo.text.message
+        : midia && typeof (corpo?.[midia.tipo] as { caption?: string })?.caption === 'string'
+          ? ((corpo?.[midia.tipo] as { caption?: string }).caption as string)
+          : null
     itens.push({
       ...base,
       kind: 'message',
