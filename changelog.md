@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-26 (4) — P2-S04-T03: BUG da mídia Z-API corrigido (imageUrl) — foto recuperada
+
+- RETESTE (owner): foto de OUTRO celular → recibo 'ignored' no banco. Payload real lido via probe-payload (Edge temporária de diagnóstico): a Z-API real manda **image.imageUrl** (não link/url/id) e a legenda em **image.caption** — o adaptador (zapi.ts) e o consumidor (extrairMidia/extrairTexto) só aceitavam id/link/url → unsupported → ignorada.
+- FIX: zapi.ts v3 (midiaIdDe aceita id/imageUrl/link/url; texto = text.message OU caption da mídia), consumidor process-inbound-event v9 (extrairMidia lê imageUrl; extrairTexto lê caption), webhook-whatsapp-zapi v5 publicado com o adaptador corrigido.
+- PROVA REAL: foto da Milena Araujo (3A894590...) reprocessada → mensagem content_type=image com a legenda "Esses que ela passou pra mim hj", anexo gravado no bucket (scan_status=pending) e renderizada na tela Conversa (screenshot no chat). Conversa real preservada.
+- Limpeza: membership temporária do usuário de teste removida; probe-payload permanece (deletar junto com probe-egress-experts quando encerrar o diagnóstico).
+- Lição: NUNCA presumir o formato do payload do provedor — validar com payload REAL capturado (probe de leitura do bucket) antes de escrever o parser.
+
 ## 2026-10-26 (3) — P2-S04-T02/T03: anexo pendente diagnosticado + renderização de anexos
 
 - SINTOMA (owner, print 16:20): foto mandada pelo WhatsApp não apareceu; "o anexo pending não está presente".
