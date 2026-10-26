@@ -4,10 +4,9 @@
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P2-S04-conversas-e-caixa-de-entrada.md
 - etapa: aguardando_teste_humano
-- autorizacao_implementacao: fila destravada em 2026-10-26 (pgmq.send 406 → wrappers + trigger + cron autenticado; DÚVIDA-2026-10-20-01 RESOLVIDA)
-- teste_humano: pendente — Felipe refaz T02 (mensagem real → app → resposta chega) e T03 (selo + imagem); T01 ACEITE CONFIRMADO 2026-10-26
-- verificacao_automatica: passou — 9 mensagens reprocessadas → 4 conversas selo novo_lead; consumidor v8, send v6 publicados; fila drenada pelo cron
-- aprendizado: pgmq.send via PostgREST falha 406 com sobrecargas múltiplas — usar wrappers de assinatura única; trigger no recibo garante o enfileiramento independente do webhook
-- ultima_acao: fila destravada, conversas reidentificadas, handoff sincronizado
+- teste_humano: pendente — Felipe recarrega o preview (Ctrl+F5) e confere as conversas na PS Recife + resposta pelo app (T02) + selo/imagem (T03); T01 ACEITE CONFIRMADO
+- verificacao_automatica: passou — bug do contexto corrigido (v0.0.28) e provado no preview; banco com 16 conversas/114 mensagens; saída provada (Z-API sent)
+- aprendizado: hook de contexto lido FORA do provider devolve sempre o default — extrair o conteúdo para componente filho do provider
+- ultima_acao: fix v0.0.28 publicado no preview; handoff sincronizado
 - proxima_acao: aceite T02/T03 do owner → demonstração recepção (fecha T04) → SPEC P2-S05
-- atualizado_em: 2026-10-26T13:00:00-03:00
+- atualizado_em: 2026-10-26T16:05:00-03:00
