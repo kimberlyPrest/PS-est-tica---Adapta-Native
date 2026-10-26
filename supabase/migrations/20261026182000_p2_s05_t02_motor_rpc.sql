@@ -3,6 +3,7 @@
 -- Regras: RN-02 (concorrência via version), RN-03 (estratégias), RN-04 (nunca
 -- sai da clínica), RN-05 (cadeia), RN-07 (pausa automação), RN-08 (resolver
 -- exige código + próxima ação, salvo spam).
+-- (v2: fila_elegiveis sem filtro de papéis — owner também é elegível, clínicas pequenas)
 
 -- ===== Elegíveis da fila (nunca de outra clínica — RN-04) =====
 CREATE OR REPLACE FUNCTION public.fila_elegiveis(p_queue uuid)
@@ -26,7 +27,6 @@ AS $$
   FROM q
   JOIN public.team_members tm ON tm.team_id = q.team_id AND tm.active
   JOIN public.memberships m ON m.user_id = tm.user_id AND m.clinic_id = q.clinic_id AND m.active
-    AND m.role IN ('reception','sales','post_sales','manager','atendente','clinic_admin')
   LEFT JOIN public.attendant_presence ap ON ap.user_id = tm.user_id AND ap.clinic_id = q.clinic_id
   WHERE COALESCE(ap.state, 'offline') = 'online'
     AND COALESCE(ap.active_load, 0) < tm.max_concurrent
@@ -47,6 +47,7 @@ BEGIN
   SELECT * INTO v_row FROM public.tickets WHERE id = p_ticket;
   IF v_row.id IS NULL THEN RAISE EXCEPTION 'ticket_inexistente' USING ERRCODE='22023'; END IF;
   IF NOT public.is_clinic_member(v_row.clinic_id) THEN RAISE EXCEPTION 'sem_vinculo' USING ERRCODE='42501'; END IF;
+  -- oferta atual é minha OU fila manual (qualquer membro da equipe)
   IF v_row.offered_to IS NOT NULL AND v_row.offered_to <> v_user THEN
     RAISE EXCEPTION 'oferta_de_outro' USING ERRCODE='42501';
   END IF;
@@ -60,6 +61,7 @@ BEGIN
   END IF;
   INSERT INTO public.ticket_events (organization_id, clinic_id, ticket_id, event_type, from_user_id, to_user_id)
   VALUES (v_row.organization_id, v_row.clinic_id, p_ticket, 'accepted', v_user, v_user);
+  -- SLA de aceite: fecha o relógio
   UPDATE public.ticket_sla_events SET acknowledged_at = now() WHERE ticket_id = p_ticket AND metric = 'accept' AND acknowledged_at IS NULL;
   RETURN json_build_object('ok', true, 'ticket_id', p_ticket);
 END $$;
@@ -168,12 +170,13 @@ BEGIN
   IF v_row.id IS NULL THEN RAISE EXCEPTION 'conversa_inexistente' USING ERRCODE='22023'; END IF;
   IF NOT public.is_clinic_member(v_row.clinic_id) THEN RAISE EXCEPTION 'sem_vinculo' USING ERRCODE='42501'; END IF;
   UPDATE public.conversations SET automation_paused = false, updated_at = now() WHERE id = p_conversation;
+  -- resolve ticket aberto, se houver
   SELECT id INTO v_ticket FROM public.tickets WHERE conversation_id = p_conversation AND status NOT IN ('resolved','cancelled');
   IF v_ticket IS NOT NULL THEN
-    INSERT INTO public.ticket_events (organization_id, clinic_id, ticket_id, event_type, from_user_id, reason_code)
-    SELECT organization_id, clinic_id, v_ticket, 'resolved', v_user, 'atendido' FROM public.tickets WHERE id = v_ticket;
     UPDATE public.tickets SET status = 'resolved', resolved_at = now(), resolution_code = 'atendido',
       version = version + 1, updated_at = now() WHERE id = v_ticket;
+    INSERT INTO public.ticket_events (organization_id, clinic_id, ticket_id, event_type, from_user_id, reason_code)
+    SELECT organization_id, clinic_id, v_ticket, 'resolved', v_user, 'atendido' FROM public.tickets WHERE id = v_ticket;
   END IF;
   RETURN json_build_object('ok', true);
 END $$;
