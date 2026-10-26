@@ -1,12 +1,12 @@
 # Estado atual — Adapta Cliente
 
-- task_id: P2-S04-T02/T03 (reteste pelo owner)
+- task_id: P2-S04 (T01/T02/T03 concluídas; T04 pendente de demonstração)
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P2-S04-conversas-e-caixa-de-entrada.md
 - etapa: aguardando_teste_humano
-- teste_humano: pendente — T01 ACEITE CONFIRMADO; T02/T03 aguardam reteste após fixes v0.0.28 (contexto), v0.0.30 (render de anexos) e mídia Z-API imageUrl (webhook v5 + consumidor v10, foto da Milena recuperada e renderizada na tela)
-- verificacao_automatica: passou — pipeline de imagem provado ponta a ponta com payload REAL da Z-API (imageUrl+caption): mensagem image + legenda + anexo no bucket + render na tela Conversa; fumaça v10 com _shared reais (selo novo_lead real)
+- teste_humano: T01/T02/T03 ACEITES CONFIRMADOS (2026-10-26, "teste T01 OK" + "reteste ok"); T04 aguarda demonstração com a recepção
+- verificacao_automatica: passou — fixes do dia provados: contexto da clínica (v0.0.28), render de anexos (v0.0.30), mídia Z-API imageUrl+caption (zapi.ts v3, webhook v5, consumidor v10 com _shared reais; foto da Milena recuperada e renderizada na tela)
 - aprendizado: payload real do provedor capturado via probe de leitura do bucket antes de escrever o parser; fromMe não gera ReceivedCallback por padrão (fix: update-notify-sent-by-me=true)
-- ultima_acao: webhook v5 + consumidor v10 publicados; foto da Milena recuperada e provada na tela; changelog consolidado
-- proxima_acao: reteste do owner (Ctrl+F5, PS Recife, foto de outro celular) → demonstração recepção (fecha T04) → SPEC P2-S05
-- atualizado_em: 2026-10-26T17:25:00-03:00
+- ultima_acao: aceites registrados em fase.md e STATUS.md (8/28 concluídas)
+- proxima_acao: demonstração da recepção (fecha T04) → SPEC P2-S05 (tickets/SLA, prazo 28/10)
+- atualizado_em: 2026-10-26T17:15:00-03:00
