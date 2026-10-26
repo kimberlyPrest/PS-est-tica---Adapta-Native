@@ -3,8 +3,9 @@
 -- attendant_presence, routing_policies (versionada), tickets, ticket_events,
 -- ticket_sla_events + emenda aditiva team_members (skills, max_concurrent).
 -- RLS: leitura is_clinic_member; config só owner/clinic_admin; presença só o próprio.
--- RPCs de configuração: admin_save_queue, admin_save_hours, admin_save_closure,
--- admin_save_policy, admin_publish_policy, admin_rollback_policy, admin_list_policy_versions.
+-- RPCs de configuração: admin_save_queue, admin_save_hours, admin_save_policy,
+-- admin_publish_policy, admin_rollback_policy, admin_list_policy_versions.
+-- (v2: fix do expediente — UNIQUE com COALESCE(team_id) e upsert manual em admin_save_hours)
 
 -- ===== Helper de papel (has_clinic_role não existe no banco real — lição P2-S02-T03).
 -- Checagem direta em memberships ativas; SECURITY DEFINER para uso em policies.
@@ -50,9 +51,10 @@ CREATE TABLE IF NOT EXISTS public.business_hours (
   closes_at time NOT NULL,
   timezone text NOT NULL DEFAULT 'America/Recife',
   created_at timestamptz NOT NULL DEFAULT now(),
-  updated_at timestamptz NOT NULL DEFAULT now(),
-  UNIQUE (clinic_id, team_id, weekday)
+  updated_at timestamptz NOT NULL DEFAULT now()
 );
+CREATE UNIQUE INDEX IF NOT EXISTS uq_business_hours_dia
+  ON public.business_hours (clinic_id, COALESCE(team_id, '00000000-0000-0000-0000-000000000000'::uuid), weekday);
 
 -- ===== business_closures =====
 CREATE TABLE IF NOT EXISTS public.business_closures (
@@ -195,7 +197,8 @@ CREATE POLICY rls_tickets_select ON public.tickets FOR SELECT USING (public.is_c
 CREATE POLICY rls_ticket_events_select ON public.ticket_events FOR SELECT USING (public.is_clinic_member(clinic_id));
 CREATE POLICY rls_ticket_sla_events_select ON public.ticket_sla_events FOR SELECT USING (public.is_clinic_member(clinic_id));
 
--- Escrita de config: owner/clinic_admin (defesa extra; RPCs security definer conferem papel)
+-- Escrita de config: owner/clinic_admin (via RPCs security definer; policies de escrita
+-- direta só para owner/clinic_admin como defesa extra)
 CREATE POLICY rls_ticket_queues_write ON public.ticket_queues FOR ALL USING (public.has_clinic_role(clinic_id, '{owner,clinic_admin}')) WITH CHECK (public.has_clinic_role(clinic_id, '{owner,clinic_admin}'));
 CREATE POLICY rls_business_hours_write ON public.business_hours FOR ALL USING (public.has_clinic_role(clinic_id, '{owner,clinic_admin}')) WITH CHECK (public.has_clinic_role(clinic_id, '{owner,clinic_admin}'));
 CREATE POLICY rls_business_closures_write ON public.business_closures FOR ALL USING (public.has_clinic_role(clinic_id, '{owner,clinic_admin}')) WITH CHECK (public.has_clinic_role(clinic_id, '{owner,clinic_admin}'));
@@ -242,11 +245,16 @@ BEGIN
   IF auth.uid() IS NULL OR NOT public.has_clinic_role(p_clinic, '{owner,clinic_admin}') THEN
     RAISE EXCEPTION 'papel_insuficiente' USING ERRCODE='42501';
   END IF;
-  INSERT INTO public.business_hours (clinic_id, team_id, weekday, opens_at, closes_at, timezone)
-  VALUES (p_clinic, p_team, p_weekday, p_opens, p_closes, p_timezone)
-  ON CONFLICT (clinic_id, team_id, weekday) DO UPDATE
-    SET opens_at = EXCLUDED.opens_at, closes_at = EXCLUDED.closes_at, timezone = EXCLUDED.timezone, updated_at = now()
-  RETURNING id INTO v_id;
+  -- upsert manual (UNIQUE usa COALESCE(team_id) — ON CONFLICT inline não casa)
+  UPDATE public.business_hours SET opens_at = p_opens, closes_at = p_closes, timezone = p_timezone, updated_at = now()
+    WHERE clinic_id = p_clinic AND weekday = p_weekday
+      AND COALESCE(team_id, '00000000-0000-0000-0000-000000000000'::uuid) = COALESCE(p_team, '00000000-0000-0000-0000-000000000000'::uuid)
+    RETURNING id INTO v_id;
+  IF v_id IS NULL THEN
+    INSERT INTO public.business_hours (clinic_id, team_id, weekday, opens_at, closes_at, timezone)
+    VALUES (p_clinic, p_team, p_weekday, p_opens, p_closes, p_timezone)
+    RETURNING id INTO v_id;
+  END IF;
   RETURN v_id;
 END $$;
 
@@ -358,7 +366,7 @@ CREATE OR REPLACE FUNCTION public.open_ticket(p_conversation uuid, p_reason text
 RETURNS uuid
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = public
 AS $$
-DECLARE v_user uuid := auth.uid(); v_org uuid; v_clinic uuid; v_queue uuid; v_id uuid; v_aberto uuid;
+DECLARE v_user uuid := auth.uid(); v_conv RECORD; v_org uuid; v_clinic uuid; v_queue uuid; v_id uuid; v_aberto uuid;
 BEGIN
   IF v_user IS NULL THEN RAISE EXCEPTION 'nao_autenticado' USING ERRCODE='42501'; END IF;
   IF p_reason NOT IN ('pedido_humano','risco','baixa_confianca','falha_automacao','regra_negocio','manual') THEN
