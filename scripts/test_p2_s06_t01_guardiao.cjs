@@ -1,5 +1,5 @@
-// Runner P2-S06-T01 — Ambiente de agentes + guardião (PGlite)
-// Uma prova por regra do guardião (10 regras) + falha fechada + RLS.
+// Runner P2-S06-T01 — Ambiente de agentes + guardião (PGlite) — PARTE 2 (RLS)
+// (a parte 1 está no commit anterior; este commit completa o arquivo)
 const { PGlite } = require('@electric-sql/pglite');
 const fs = require('fs');
 const path = require('path');
@@ -14,11 +14,6 @@ function check(name, cond, extra) {
   else { fail++; failures.push(name); console.log(`  FAIL ${name}${extra ? ' — ' + extra : ''}`); }
 }
 
-// evaluateGuard — função pura (espelho da lógica que vai para a Edge/SQL).
-// ctx: { automation_paused, flag_auto_resposta, contato_recusou_promo, acao_e_atendimento,
-//        em_expediente, rota_auto_reply_allowed, confidence, confianca_min,
-//        texto_contato, item_aprovado, resposta_candidata, custo_esgotado, chamadas_esgotadas }
-// Regras em ordem; a primeira que casar decide. Falha = require_human.
 const TERMOS_SENSIVEIS = ['preço','preco','desconto','sintoma','dor','foto','alergia','reação','reacao','reclama','reclamação','reclamacao'];
 function evaluateGuard(a, ctx) {
   try {
@@ -81,7 +76,6 @@ async function main() {
   try { await db.exec(MIG); } catch (e) { erro = e.message; }
   check('migration instala sem erro', !erro, erro);
 
-  // Catálogo e regras globais carregados
   await db.exec('RESET ROLE;');
   const defs = await db.query(`SELECT count(*)::int AS n FROM agent_definitions`);
   check('catálogo AG-01..AG-14 carregado (13 defs)', defs.rows[0].n === 13, `n=${defs.rows[0].n}`);
@@ -89,7 +83,6 @@ async function main() {
   check('10 regras globais do guardião carregadas', regras.rows.length === 10, `n=${regras.rows.length}`);
   check('regra 1 = transbordo_ativo (deny)', regras.rows[0].rule_key === 'transbordo_ativo' && regras.rows[0].effect === 'deny');
 
-  // ===== Provas do guardião (uma por regra, em ordem) =====
   console.log('\n--- Guardião: uma prova por regra ---');
   let g = evaluateGuard('auto_reply', { ...BASE_OK, automation_paused: true });
   check('R1 transbordo_ativo → deny', g.effect === 'deny' && g.reason === 'transbordo_ativo', JSON.stringify(g));
@@ -119,7 +112,45 @@ async function main() {
   check('R10b orcamento_esgotado (chamadas) → require_human', g.reason === 'orcamento_esgotado', JSON.stringify(g));
   g = evaluateGuard('auto_reply', BASE_OK);
   check('caminho feliz → allow', g.effect === 'allow' && g.reason === null, JSON.stringify(g));
-
-  // Falha fechada: entrada quebrada = require_human
   g = evaluateGuard('auto_reply', { ...BASE_OK, confidence: undefined });
   check('falha fechada: dado faltando → require_human', g.effect === 'require_human', JSON.stringify(g));
+
+  console.log('\n--- RLS ---');
+  await db.exec(`DELETE FROM public._session; INSERT INTO public._session VALUES ('11111111-1111-1111-1111-111111111111'); SET ROLE authenticated;`);
+  const ffOwner = await db.query(`SELECT count(*)::int AS n FROM feature_flags`);
+  check('owner lê feature_flags da clínica', ffOwner.rows[0].n === 0);
+  const insFF = await db.query(`INSERT INTO feature_flags (organization_id, clinic_id, flag_key, enabled) VALUES ('a0000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000001','auto_resposta', false) RETURNING id`).catch(e => ({ err: e.message }));
+  check('owner liga/desliga o interruptor (escrita ok)', !insFF.err, insFF.err || '');
+  const insFF2 = await db.query(`INSERT INTO feature_flags (organization_id, clinic_id, flag_key, enabled) VALUES ('a0000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000001','auto_resposta', true) RETURNING id`).catch(e => ({ err: e.message }));
+  check('UNIQUE (clinic_id, flag_key) — duplicata recusada', !!insFF2.err, insFF2.err || '');
+
+  await db.exec(`DELETE FROM public._session; INSERT INTO public._session VALUES ('22222222-2222-2222-2222-222222222222'); SET ROLE authenticated;`);
+  const ffRecep = await db.query(`SELECT enabled FROM feature_flags WHERE flag_key='auto_resposta'`);
+  check('recepção lê o interruptor (padrão false)', ffRecep.rows.length === 1 && ffRecep.rows[0].enabled === false);
+  const insRecep = await db.query(`INSERT INTO feature_flags (organization_id, clinic_id, flag_key, enabled) VALUES ('a0000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000001','outra', true) RETURNING id`).catch(e => ({ err: e.message }));
+  check('recepção NÃO escreve configuração (42501)', !!insRecep.err, insRecep.err || '');
+
+  await db.exec(`DELETE FROM public._session; INSERT INTO public._session VALUES ('33333333-3333-3333-3333-333333333333'); SET ROLE authenticated;`);
+  const ffFora = await db.query(`SELECT count(*)::int AS n FROM feature_flags`);
+  check('sem vínculo lê 0 flags', ffFora.rows[0].n === 0);
+  const runsFora = await db.query(`SELECT count(*)::int AS n FROM agent_runs`);
+  check('sem vínculo lê 0 execuções (isolamento)', runsFora.rows[0].n === 0);
+
+  await db.exec(`DELETE FROM public._session; INSERT INTO public._session VALUES ('11111111-1111-1111-1111-111111111111'); SET ROLE authenticated;`);
+  const insRun = await db.query(`INSERT INTO agent_runs (organization_id, clinic_id, agent_key) VALUES ('a0000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000001','AG-01') RETURNING id`).catch(e => ({ err: e.message }));
+  check('authenticated NÃO insere agent_runs (só service_role)', !!insRun.err, insRun.err || '');
+
+  await db.exec(`DELETE FROM public._session; INSERT INTO public._session VALUES ('11111111-1111-1111-1111-111111111111'); SET ROLE authenticated;`);
+  const ki = await db.query(`INSERT INTO knowledge_items (organization_id, clinic_id, category, question_examples, answer, auto_reply_allowed, status)
+    VALUES ('a0000000-0000-0000-0000-000000000001','c0000000-0000-0000-0000-000000000001','endereco',ARRAY['onde vocês ficam?'],'Estamos na Rua Exemplo, 123 — Recife/PE.', true, 'approved') RETURNING id`).catch(e => ({ err: e.message }));
+  check('item de conhecimento aprovado gravado', !ki.err, ki.err || '');
+
+  const ir = await db.query(`INSERT INTO intent_routes (clinic_id, intent, auto_reply_allowed) VALUES ('c0000000-0000-0000-0000-000000000001','informacao_geral', true) RETURNING id`).catch(e => ({ err: e.message }));
+  check('rota informacao_geral com auto-resposta permitida', !ir.err, ir.err || '');
+  const ir2 = await db.query(`INSERT INTO intent_routes (clinic_id, intent, auto_reply_allowed) VALUES ('c0000000-0000-0000-0000-000000000001','intent_inexistente', true) RETURNING id`).catch(e => ({ err: e.message }));
+  check('CHECK: intent fora do catálogo recusado', !!ir2.err, ir2.err || '');
+
+  console.log(`\n=== RESULTADO: ${pass} PASS / ${fail} FAIL ===`);
+  if (failures.length) { console.log('FALHAS:', failures.join(' | ')); process.exitCode = 1; }
+}
+main().catch(e => { console.error('ERRO FATAL:', e.message); process.exit(1); });
