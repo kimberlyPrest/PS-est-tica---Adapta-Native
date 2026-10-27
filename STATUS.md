@@ -1,13 +1,13 @@
 # Status do projeto — CRM Estética (Adapta Native)
 
-Atualizado: 2026-10-27 13:30 (BRT)
+Atualizado: 2026-10-27 19:20 (BRT)
 
 ## Visão geral
 
 - **Fase 1 (P1-S01..S05, 16 tasks): 16/16 ✔ CONCLUÍDA (2026-10-09)**
-- **Fase 2 (P2-S01..S07, 28 tasks): 21/28 (75%) — SPEC P2-S07 COMPLETA (4/4). Restam 3 tasks bloqueadas por credenciais do dono.**
+- **Fase 2 (P2-S01..S07, 28 tasks): 24/28 (86%) — SPECs P2-S02 e P2-S07 COMPLETAS. Restam as 2 tasks da P2-S03 que dependem das credenciais Meta do dono (T02 e T04).**
   - P2-S01 base/hardening/UI: ✔ COMPLETA (T01–T03)
-  - P2-S02 conexão Clínica Experts: T01 ✔, T02 ✔ (implementada), T03 ✔ (implementada) — aguarda token real do suporte Experts
+  - P2-S02 conexão Clínica Experts: ✔ COMPLETA (T01–T03, aceite 27/10) — token do painel no Vault, API real autenticada; bug `date_birth` corrigido
   - P2-S03 canais WhatsApp: T01 ✔, T02 ✔ (implementada — aguarda credenciais Meta reais no Vault + webhook no painel da Meta), T03 ✔ (aceite 24/10), T04 ☐ liberada (pré-condição: T02 com credenciais reais)
   - P2-S04 conversas/caixa de entrada: ✔ COMPLETA (T01–T04, aceites 26/10)
   - P2-S05 tickets/filas/SLA: ✔ COMPLETA (T01–T04, aceites 26/10)
@@ -16,11 +16,10 @@ Atualizado: 2026-10-27 13:30 (BRT)
 
 ## Pendências do dono
 
-1. Token real da API Clínica Experts (com o suporte deles) — fecha P2-S02
-2. Credenciais Meta reais no Vault (/admin/canais) + webhook no painel da Meta — fecha P2-S03-T02/T04
-3. Publicação do app em produção (roda em preview — decisão do dono)
+1. Credenciais Meta reais no Vault (/admin/canais) + webhook no painel da Meta — fecha P2-S03-T02/T04
+2. Publicação do app em produção (roda em preview — decisão do dono)
 
 ## Próximos passos
 
-- Aceite da P2-S07-T04 (matriz 13 cenários em 05_entregas/RELATORIO_P2_S07_T04_20261027.md)
-- Fase 2 fechada tecnicamente: restam P2-S02 (token Experts) e P2-S03-T02/T04 (credenciais Meta)
+- P2-S02 fechada em 27/10 (token Experts validado, bug de nascimento corrigido na Edge v10)
+- Restam na fase 2: P2-S03-T02 (credenciais Meta) e P2-S03-T04 (matriz de contrato + desconexão)
