@@ -9,6 +9,6 @@
   - P2-S04: COMPLETA (T01-T04 ✔, 2026-10-26).
   - P2-S05: COMPLETA (T01-T04 ✔, 2026-10-26).
   - P2-S06: COMPLETA (T01-T04 ✔, 2026-10-26).
-  - P2-S07: T01 CONCLUÍDA (2026-10-26, aceite "teste ok"); T02 IMPLEMENTADA (2026-10-26) — RPC approve_agent_action (use/edit/discard; use envia via send_human_message com autor=atendente; bloqueada não envia; 403 sem vínculo), painel do copiloto src/components/copilot-panel.tsx na conversa (Gerar sugestão → resumo/motivo/resposta/próxima ação/dados faltantes/evidências/confiança; Usar/Editar e enviar/Descartar; bloqueio com motivo + Gerar de novo; risco alto em vermelho; indisponível + lista manual; expira com mensagem nova), Skip v0.0.52 QA verde. Prova real: sugestão gerada → Usar → mensagem outbound com sender_user_id do atendente + sugestão used com message_id. Relatório: 05_entregas/RELATORIO_P2_S07_T02_20261026.md.
+  - P2-S07: T01 CONCLUÍDA (2026-10-26, aceite "teste ok"); T02 IMPLEMENTADA (2026-10-26) — RPC approve_agent_action (use/edit/discard; use envia com autor=atendente; bloqueada não envia; 403), PainelCopiloto na conversa (Skip v0.0.54 QA verde). Fixes do aceite: copiloto via supabase.functions.invoke (fetch manual pendurava), CORS na Edge (preflight OPTIONS 405), painel lê o corpo {data:{...}} (campos vazios + confiança NaN). Prova real: sugestão gerada → Usar → outbound com autor=atendente + used + message_id. Relatório: 05_entregas/RELATORIO_P2_S07_T02_20261026.md.
   - Pendências do dono: credenciais Meta reais no Vault; token Experts com o suporte.
-- Próxima ação: aceite do Felipe na T02 → P2-S07-T03 (console de prompts com sandbox/publicação/volta).
+- Próxima ação: Felipe retesta o Copiloto no preview (Ctrl+F5) → aceite T02 → P2-S07-T03 (console de prompts).
