@@ -1,11 +1,11 @@
 # Estado atual — Adapta Cliente
 
-- task_id: P2-S07-T04 (matriz do copiloto + demonstração ponta a ponta da fase 2) — LIBERADA, aguardando autorização do owner
+- task_id: P2-S07-T04 (matriz + demonstração ponta a ponta) — IMPLEMENTADA, aguardando aceite do owner
 - champion: Felipe F3 Energy Drink
 - spec: 04_fase-atual/01-SPECS/SPEC-P2-S07-copiloto-da-atendente-e-prompts.md
-- etapa: aguardando_autorizacao
-- teste_humano: P2-S07-T03 ACEITA ("teste ok", 27/10 13:09) — aba "Instruções do copiloto" validada após correção do agent_key (AG-01)
-- verificacao_automatica: runner PGlite 25/25; ciclo de versão provado no banco real (publicar sem sandbox recusado, sandbox 10/10, publicar, efetivo muda para própria, outra clínica segue herdando); Skip v0.0.59 QA verde
-- ultima_acao: aceite T03 registrado no handoff (fase.md ☑, STATUS 18/28 = 64%)
-- proxima_acao: autorização para T04 (matriz do copiloto + roteiro mensagem → ticket → copiloto → resposta → resolvido, com IA ligada e desligada) — fecha a fase 2
-- atualizado_em: 2026-10-27T13:12:00-03:00
+- etapa: aguardando_aceite_humano
+- teste_humano: P2-S07 T01/T02/T03 aceitas; T04 com matriz de 13 cenários executada no banco real
+- verificacao_automatica: sugestão real em 7,86 s; guardião bloqueia preço (blocked + envio recusado); IA indisponível → lista manual e atendimento segue; indicador de uso por clínica; fixtures limpas
+- ultima_acao: T04 implementada — SPEC P2-S07 COMPLETA, fase 2 em 21/28 (75%)
+- proxima_acao: aceite do owner na T04 → fase 2 encerrada tecnicamente (restam P2-S02 e P2-S03-T04, bloqueadas por credenciais do dono)
+- atualizado_em: 2026-10-27T13:30:00-03:00
