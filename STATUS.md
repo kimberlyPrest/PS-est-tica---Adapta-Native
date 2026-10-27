@@ -1,14 +1,26 @@
-# Status do pacote do cliente
+# Status do projeto — CRM Estética (Adapta Native)
 
-- Projeto: PS Estética.
-- Fase 1: COMPLETA (16/16, 100%) — todas as SPECs com aceite humano.
-- Fase 2 (7 SPECs / 28 tasks): 16/28 concluídas (57%) + T02 da P2-S07 implementada com prova real, aguardando aceite.
-  - P2-S01: T01–T04 concluídas (2026-10-14/18).
-  - P2-S02: T01–T03 implementadas (2026-10-19) — token Experts recusado 401 (com o suporte); aceite da tela pendente.
-  - P2-S03: T01 concluída (2026-10-24), T02 implementada (aguarda credenciais Meta reais), T03 CONCLUÍDA (2026-10-24). T04 aguarda T02.
-  - P2-S04: COMPLETA (T01-T04 ✔, 2026-10-26).
-  - P2-S05: COMPLETA (T01-T04 ✔, 2026-10-26).
-  - P2-S06: COMPLETA (T01-T04 ✔, 2026-10-26).
-  - P2-S07: T01 CONCLUÍDA (2026-10-26, aceite "teste ok"); T02 IMPLEMENTADA (2026-10-26) — RPC approve_agent_action (use/edit/discard; use envia com autor=atendente; bloqueada não envia; 403), PainelCopiloto na conversa (Skip v0.0.54 QA verde). Fixes do aceite: copiloto via supabase.functions.invoke (fetch manual pendurava), CORS na Edge (preflight OPTIONS 405), painel lê o corpo {data:{...}} (campos vazios + confiança NaN). Prova real: sugestão gerada → Usar → outbound com autor=atendente + used + message_id. Relatório: 05_entregas/RELATORIO_P2_S07_T02_20261026.md.
-  - Pendências do dono: credenciais Meta reais no Vault; token Experts com o suporte.
-- Próxima ação: Felipe retesta o Copiloto no preview (Ctrl+F5) → aceite T02 → P2-S07-T03 (console de prompts).
+Atualizado: 2026-10-26 23:00 (BRT)
+
+## Visão geral
+
+- **Fase 1 (P1-S01..S05, 16 tasks): 16/16 ✔ CONCLUÍDA (2026-10-09)**
+- **Fase 2 (P2-S01..S07, 28 tasks): 17/28 (61%)**
+  - P2-S01 base/hardening/UI: ✔ COMPLETA (T01–T03)
+  - P2-S02 conexão Clínica Experts: T01 ✔, T02 ✔ (implementada), T03 ✔ (implementada) — aguarda token real do suporte Experts para teste com dado real
+  - P2-S03 canais WhatsApp: T01 ✔, T02 ✔ (implementada — aguarda credenciais Meta reais no Vault + webhook no painel da Meta), T03 ✔ (aceite 24/10), T04 ☐ liberada (pré-condição: T02 com credenciais reais)
+  - P2-S04 conversas/caixa de entrada: ✔ COMPLETA (T01–T04, aceites 26/10)
+  - P2-S05 tickets/filas/SLA: ✔ COMPLETA (T01–T04, aceites 26/10)
+  - P2-S06 triagem/guardião/respostas: ✔ COMPLETA (T01–T04, aceites 26/10)
+  - P2-S07 copiloto/prompts: T01 ✔ (aceite 26/10), T02 ✔ (aceite 26/10), T03 ☐ liberada (console de agentes e prompts, prazo 04/11), T04 ☐ (matriz + demonstração, fecha a fase 2)
+
+## Pendências do dono
+
+1. Token real da API Clínica Experts (com o suporte deles) — fecha P2-S02
+2. Credenciais Meta reais no Vault (/admin/canais) + webhook no painel da Meta — fecha P2-S03-T02/T04
+3. Publicação do app em produção (roda em preview — decisão do dono)
+
+## Próximos passos
+
+- P2-S07-T03: console de agentes e prompts (rascunho → teste em sandbox → publicação → volta de versão → herança), prazo 04/11
+- P2-S07-T04: matriz do copiloto + demonstração ponta a ponta da fase 2 — fecha a fase 2
