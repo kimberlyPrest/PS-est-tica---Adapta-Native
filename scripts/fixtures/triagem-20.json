@@ -1,0 +1,25 @@
+{
+  "descricao": "20 mensagens sintéticas rotuladas (2 por intenção) — SPEC P2-S06-T02",
+  "mensagens": [
+    { "id": 1,  "intent_esperada": "informacao_geral", "texto": "Oi, voces ficam abertos ate que horas hoje?" },
+    { "id": 2,  "intent_esperada": "informacao_geral", "texto": "qual o endereco da clinica?" },
+    { "id": 3,  "intent_esperada": "interesse_procedimento", "texto": "quero fazer o laser subdermico, como funciona?" },
+    { "id": 4,  "intent_esperada": "interesse_procedimento", "texto": "vi que voces fazem lift mamario, tenho interesse" },
+    { "id": 5,  "intent_esperada": "preco_condicao", "texto": "quanto custa a drenagem?" },
+    { "id": 6,  "intent_esperada": "preco_condicao", "texto": "tem algum desconto no pacote de sessoes?" },
+    { "id": 7,  "intent_esperada": "pedido_agendamento", "texto": "quero marcar um horario pra essa semana" },
+    { "id": 8,  "intent_esperada": "pedido_agendamento", "texto": "tem vaga na agenda amanha de manha?" },
+    { "id": 9,  "intent_esperada": "reagendamento_cancelamento", "texto": "preciso remarcar minha sessao de amanha" },
+    { "id": 10, "intent_esperada": "reagendamento_cancelamento", "texto": "vou ter que cancelar o horario de quinta" },
+    { "id": 11, "intent_esperada": "pos_procedimento", "texto": "fiz o procedimento ontem e estou com um pouco de inchaço, é normal?" },
+    { "id": 12, "intent_esperada": "pos_procedimento", "texto": "quando posso voltar a me exercitar depois do laser?" },
+    { "id": 13, "intent_esperada": "reclamacao", "texto": "estou muito insatisfeita com o atendimento de ontem" },
+    { "id": 14, "intent_esperada": "reclamacao", "texto": "quero reclamar do atraso na minha consulta" },
+    { "id": 15, "intent_esperada": "financeiro", "texto": "queria parcelar o pagamento no cartao" },
+    { "id": 16, "intent_esperada": "financeiro", "texto": "minha fatura venceu, consigo pagar segunda?" },
+    { "id": 17, "intent_esperada": "atendimento_humano", "texto": "quero falar com uma pessoa, por favor" },
+    { "id": 18, "intent_esperada": "atendimento_humano", "texto": "me passa com um atendente humano" },
+    { "id": 19, "intent_esperada": "desconhecido", "texto": "voces tem estacionamento proprio?" },
+    { "id": 20, "intent_esperada": "desconhecido", "texto": "aceitam cartao de presente?" }
+  ]
+}
