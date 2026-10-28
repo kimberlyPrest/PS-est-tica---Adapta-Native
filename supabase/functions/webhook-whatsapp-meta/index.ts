@@ -1,4 +1,11 @@
-// Edge Function webhook-whatsapp-meta v3 — P2-S03-T02 (correção 27/10)
+// Edge Function webhook-whatsapp-meta v4 — P2-S03-T02 (correção 27/10)
+// v4 (2026-10-28): grava o corpo bruto no bucket privado `webhook-payloads` e
+// guarda o `payload_ref` no recibo — mesmo padrão da Z-API. SEM ISSO O CANAL META
+// NÃO FUNCIONAVA: o consumidor (process-inbound-event) lê o payload por
+// payload_ref; como era null, `extrairFromE164` devolvia null e TODO item era
+// arquivado sem criar contato/conversa/mensagem (recibo ficava 'accepted', o que
+// escondia a falha). O payload_hash passou a ser o SHA-256 do corpo real
+// (antes era o hash do id do evento, inútil para auditoria).
 // v3 (2026-10-27): o schema `vault` NÃO é exposto na API PostgREST (pgrst.db_schemas
 // vazio; REST com Accept-Profile: vault -> 406), então admin.schema('vault') devolvia
 // vazio e o webhook recusava TODO GET (403) e TODO POST (401). Agora lê pela RPC
@@ -190,6 +197,9 @@ Deno.serve(async (req: Request) => {
         continue
       }
 
+      // v4: grava o corpo bruto no bucket privado webhook-payloads e guarda o
+      // payload_ref — o consumidor (process-inbound-event) lê o payload por ali.
+      // Sem isso, extrairFromE164 devolvia null e TODO item era descartado.
       const { error: errRecibo } = await admin.from('webhook_receipts').insert({
         provider: 'meta_cloud',
         channel_account_id: item.channel_account_id,
@@ -198,7 +208,13 @@ Deno.serve(async (req: Request) => {
         external_event_id: item.external_event_id,
         event_kind: item.kind,
         signature_valid: true,
-        payload_hash: await sha256Hex(JSON.stringify({ id: item.external_event_id })),
+        payload_hash: await sha256Hex(corpoBruto),
+        payload_ref: await gravarPayload(
+          admin,
+          item.organization_id,
+          item.external_event_id,
+          corpoBruto,
+        ),
         status: statusRecibo,
         correlation_id: correlationId,
       })
@@ -273,4 +289,30 @@ async function sha256Hex(texto: string): Promise<string> {
   return Array.from(new Uint8Array(digest))
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('')
+}
+
+// Emenda P2-S03-T02 (destrava o consumidor): grava o corpo bruto no bucket
+// privado webhook-payloads e devolve o payload_ref — mesmo padrão da Z-API.
+// Falha de storage NÃO derruba o webhook (o recibo fica sem ref e o item é
+// descartado pelo consumidor, mas a Meta recebe 200 e não reentrega em loop).
+async function gravarPayload(
+  admin: any,
+  organizationId: string | null,
+  externalEventId: string,
+  corpoBruto: string,
+): Promise<string | null> {
+  if (!organizationId) return null
+  try {
+    const hoje = new Date().toISOString().slice(0, 10)
+    const seguro = externalEventId.replace(/[^A-Za-z0-9._-]/g, '_')
+    const caminho = `webhook-payloads/${organizationId}/${hoje}/${seguro}.json`
+    const { error } = await admin.storage.from('webhook-payloads').upload(caminho, corpoBruto, {
+      contentType: 'application/json',
+      upsert: true,
+    })
+    if (error) return null
+    return caminho
+  } catch {
+    return null
+  }
 }
