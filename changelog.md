@@ -68,7 +68,9 @@
 
 ## 2026-10-27 (1) — P2-S07-T03: console de prompts com sandbox, publicação e volta
 
-- Migration `p2_s07_t03_console_prompts` aplicada no Supabase real: 7 RPCs (rascunho, sandbox 10 casos, publicação, volta, listagem, efetivo, estatísticas) + tela `/admin/agentes`.
+- Migration `p2_s07_t03_console_prompts` aplicada no Supabase real: 7 RPCs (rascunho, sandbox 10 casos, publicação com trava de sandbox, volta de versão, histórico, efetivo com origem, stats de uso) + `_guardiao_sandbox` (espelho SQL do guardião da Edge). Runner PGlite 25/25.
+- Telas (Skip v0.0.58): aba "Instruções do copiloto" em /admin/agentes (editor + sandbox + publicar + voltar + herança + histórico) e indicador de uso do copiloto em /filas (30 dias).
+- Pendência: aceite do Felipe → T04 fecha a fase 2.
 
 ## 2026-10-26 (5) — P2-S04-T03: consumidor v10 com _shared reais (correção do deploy v9)
 
@@ -80,9 +82,11 @@
 
 ## 2026-10-26 (4) — P2-S04-T03: BUG da mídia Z-API corrigido (imageUrl) — foto recuperada
 
-- A Z-API real manda **image.imageUrl**, não `link`/`url`/`id`; a legenda vem em **caption**. O adaptador e o consumidor só aceitavam id/link/url → mídia classificada como `unsupported` e ignorada.
-- Correção: `zapi.ts` v3 (`midiaIdDe` aceita `id`/`imageUrl`/`link`/`url`; texto = `text.message` **ou** `caption` da mídia); `process-inbound-event` v9 (`extrairMidia` lê `imageUrl`, `extrairTexto` lê `caption`); `webhook-whatsapp-zapi` v5 publicado.
-- Prova real: foto de outro celular → mensagem `content_type=image` com legenda, anexo no bucket (`scan_status=pending`) e renderizada na tela de conversa.
+- RETESTE (owner): foto de OUTRO celular → recibo 'ignored' no banco. Payload real lido via probe-payload (Edge temporária de diagnóstico): a Z-API real manda **image.imageUrl** (não link/url/id) e a legenda em **image.caption** — o adaptador (zapi.ts) e o consumidor (extrairMidia/extrairTexto) só aceitavam id/link/url → unsupported → ignorada.
+- FIX: zapi.ts v3 (midiaIdDe aceita id/imageUrl/link/url; texto = text.message OU caption da mídia), consumidor process-inbound-event v9 (extrairMidia lê imageUrl; extrairTexto lê caption), webhook-whatsapp-zapi v5 publicado com o adaptador corrigido.
+- PROVA REAL: foto da Milena Araujo (3A894590...) reprocessada → mensagem content_type=image com a legenda "Esses que ela passou pra mim hj", anexo gravado no bucket (scan_status=pending) e renderizada na tela Conversa (screenshot no chat). Conversa real preservada.
+- Limpeza: membership temporária do usuário de teste removida; probe-payload permanece (deletar junto com probe-egress-experts quando encerrar o diagnóstico).
+- Lição: NUNCA presumir o formato do payload do provedor — validar com payload REAL capturado (probe de leitura do bucket) antes de escrever o parser.
 
 ## 2026-10-26 (3) — P2-S04-T02/T03: anexo pendente diagnosticado + renderização de anexos
 
@@ -131,6 +135,7 @@
 - Consumidor process-inbound-event v3: recibo+conta → contato por contact_identities (ambíguo usa o mais recente e registra evento, sem fundir) → cria contato se novo → abre/reaproveita conversa aberta → grava mensagem (duplicata 23505 tratada) → palavra de saída registra consent revogado → contadores + enfileira agent_jobs (P2-S06 consome).
 - Runner scripts/test_p2_s04_t01.mjs 44/44 (PGlite: instalação limpa, constraints, RLS com grants, consent vigente, trigger de coerência org/clínica).
 - Pendências: deploy das 3 Edges emendadas (webhook-whatsapp-meta, webhook-whatsapp-zapi, process-inbound-event v3) no Supabase real; aceite humano (conferência das tabelas no Table Editor).
+- 2026-10-24 · [Felipe] · Task P2-S03-T03 concluída: troca real Z-API provada — mensagem recebida pelo sistema (3 recibos accepted), envio pelo sistema chega no celular (confirmado pelo owner), situação sent/read registradas; canal ativo e saudável. Correções em cadeia durante o aceite: T01f/T01g (Client-Token como segunda conexão no Vault), _edge_read_secret lendo vault.decrypted_secrets (a tabela devolve o cifrado!), emenda DeliveryCallback no adaptador. Runner 94/94 + regressões 48/48 e 18/18.
 
 ## 2026-10-24 (3) — P2-S03-T03 CONCLUÍDA (aceite humano da troca real Z-API)
 
