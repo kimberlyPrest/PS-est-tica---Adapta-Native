@@ -1,13 +1,9 @@
-## 2026-10-28 (2) — P2-S03-T04 adiantada: dois bugs de fila corrigidos e as duas provas que não dependem da Z-API
+## 2026-10-28 (3) — DESVIO registrado na SPEC: P2-S03-T04 depende de um segundo número
 
-- Decisão do owner: **caminho A** para a T04 — criar instância Z-API nova com número diferente em outra clínica (cumpre a SPEC literal). Bloqueio atual: a instância antiga está com trial vencido e o número migrou para o Cloud API.
-- Adiantadas as duas provas da T04 que **não** dependem de instância viva:
-  - **Provedor fora do ar** → 5 tentativas até esgotar → `outbound_requests.status=failed` (attempts=5) + linha em `dead_letters` + mensagem arquivada.
-  - **Conta não ativa** → bloqueio imediato com `conta_desconectada` (attempts=0) e dead letter; a outra conta não é afetada.
-- **BUG 1 (grave, encontrado nesta prova):** `dead_letters.organization_id` é NOT NULL e o consumidor não o enviava; o erro era **engolido** porque o retorno de `.insert()` não era checado. Consequência: **12.106 itens presos** na fila `dead_letter` com a tabela `dead_letters` VAZIA — a "fila de falha visível" exigida pela SPEC era invisível.
-- **BUG 2 (grave):** a mensagem consumida nunca era arquivada no pgmq. Sucesso, reenfileiramento e falha saíam do laço sem `fila_arquivar`, então o pgmq devolvia a mesma mensagem após a vt e ela era reprocessada indefinidamente (itens vistos com `read_ct` **657** e **1579**). O `process-inbound-event` já arquivava corretamente; o consumidor de saída não.
-- **BUG 3:** `dead_letters.ref_id` gravava o `msg_id` da fila, não o id do pedido — a linha da fila de falha ficava sem rastro. Corrigido para o id de `outbound_requests`.
-- Corretiva publicada: Edge **`send-whatsapp-message` v4** (versão 9 no projeto), autossuficiente com os adaptadores meta/zapi inlined (o deploy por MCP não resolve imports relativos para `_shared/providers`).
-- Fixtures removidas: `dead_letters`=0, pedidos `system_test`=0, canais de prova=0, fila de saída=0. Canais reais preservados: Meta `active`, Z-API `disabled`.
-- Resta para fechar a T04: instância Z-API nova (pré-requisito do dono) → matriz dos dois provedores + desconexão real.
-- Evidências: `.adapta-cliente/estado-atual.md`, `supabase/functions/send-whatsapp-message/index.ts` (v4) neste commit.
+- O owner decidiu **registrar desvio formal** em vez de comprar um segundo número agora (28/10, 06:41).
+- Motivo técnico, verificado na documentação da Meta: um número registrado no Cloud API **não pode** operar simultaneamente no aplicativo WhatsApp nem em API não oficial, e a exclusão do portfólio é caminho de ida — a ajuda do WhatsApp declara que número excluído não volta para outra conta da plataforma, além de apagar os dados do número. Não existe caminho técnico com um número só.
+- Alternativa descartada e por quê: retirar `+55 81 98234-9927` da Meta para liberá-lo à Z-API. Destruiria o canal Meta recém-aceito na T02, apagaria o `phone_number_id` 707487385771432 (ao re-registrar vem outro), perderia o histórico do número e colocaria em risco não oficial o número de pós-procedimento da clínica.
+- Documento criado: `06_notas/desvio-p2-s03-t04-segundo-numero.md` — com o problema em linguagem simples, o que já foi provado (CA-P2-S03-06 nas duas partes), o que falta, os três bugs corrigidos e **três opções** para a consultora decidir (aceitar prova por provedor; manter bloqueada; ou emendar a SPEC separando T04a/T04b).
+- Recomendação técnica registrada: opção 1 ou 3. A opção 2 trava a fase 2 por item de infraestrutura de baixo custo e prazo incerto.
+- **Nada foi alterado** em schema, SPEC, canal de produção ou número. Canal Meta segue `active`, Z-API segue `disabled`.
+- Estado do handoff atualizado: `.adapta-cliente/estado-atual.md` → `etapa: desvio_registrado_aguardando_consultora`.
