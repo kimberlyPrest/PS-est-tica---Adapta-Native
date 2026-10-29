@@ -291,9 +291,10 @@ Envio (adaptador Z-API): `POST https://api.z-api.io/instances/<instanceId>/token
 3. Desconectar a instância de teste da Z-API: conta muda para `disconnected` e a saída automática dela para.
 4. Demonstrar ao owner e registrar o aceite.
 **Pronto quando:** matriz completa anexada e "teste ok" do owner.
+**Emenda de 29/10:** enquanto houver um número só, a T04 fecha com as matrizes por provedor (T02 Meta 48/48, T03 Z-API 94/94), as duas provas de contingência de 28/10 (CA-P2-S03-06) e o "ok" do owner. A execução simultânea dos dois provedores e o ponto 3 deste roteiro ficam para quando houver o segundo número.
 
 ## Emendas
 
 | Data | Origem do sinal | Micro-spec/task | Motivo |
 |---|---|---|---|
-| — | — | Nenhuma | SPEC inicial |
+| 2026-10-29 | Desvio da P2-S03-T04 (segundo número) | P2-S03-T04 | Opção 1 do desvio: a T04 fecha sem o segundo número, com prova por provedor e contingência; a matriz simultânea vira pendência rastreada para quando houver o segundo número e não trava a fase 2 |

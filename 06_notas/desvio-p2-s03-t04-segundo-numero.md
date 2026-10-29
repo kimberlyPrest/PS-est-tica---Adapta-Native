@@ -38,6 +38,10 @@ Este desvio vem acompanhado de correções que não têm relação com o número
 
 Corrigido e publicado na Edge `send-whatsapp-message` **v4** (versão 9 no projeto). As duas provas acima foram reexecutadas **depois** da correção e passaram. Fixtures removidas ao final.
 
+## Decisão da consultora (29/10)
+
+**Opção 1.** A T04 fecha com a prova por provedor (T02 e T03), as duas provas de contingência de 28/10 e o "ok" do owner. A execução simultânea dos dois provedores e o ponto 3 do roteiro ficam como pendência rastreada para quando houver o segundo número, sem travar a fase 2. Emenda registrada na SPEC P2-S03.
+
 ## Opções para a consultora decidir
 
 1. **Aceitar a T04 com prova por provedor + as duas provas de contingência** — registra-se em ata que a execução simultânea dos dois provedores fica para quando houver segundo número, e a T04 é concluída com os CAs cobertos individualmente (T02 48/48, T03 94/94) mais CA-P2-S03-06 provado no banco real. Não exige compra.

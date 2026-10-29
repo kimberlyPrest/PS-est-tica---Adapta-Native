@@ -8,7 +8,7 @@ O teste do cliente agora é um por SPEC, na última task dela (contrato comum, s
 
 1. **P2-S02-T04:** buscar na tela "Identificar paciente" os telefones reais indicados pela clínica. Fecha também a T02 e a T03 da P2-S02.
 2. **P2-S07-T04:** roteiro ponta a ponta da fase 2 (mensagem → identificação → triagem → ticket → atendente → copiloto → resposta) com as atendentes.
-3. **P2-S03-T04:** decisão da consultora sobre o segundo número (`06_notas/desvio-p2-s03-t04-segundo-numero.md`).
+3. **P2-S03-T04:** emenda de 29/10 (opção 1 do desvio): fecha com o "ok" do owner, sem o segundo número. A matriz simultânea dos dois provedores fica para quando houver o segundo número.
 
 ## Visão geral
 
