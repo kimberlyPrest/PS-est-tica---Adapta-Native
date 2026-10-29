@@ -142,6 +142,8 @@ Criada na P2-S02 (primeira SPEC que precisa) se não existir:
 | Banco (schema, RLS, funções) | runners PGlite no padrão da fase 1 | `scripts/test_p2_sXX_*.js` |
 | Edge Functions | `deno test` com provedores simulados | `supabase/functions/**/*.test.ts` |
 | Telas | Vitest + Testing Library | `src/**/*.test.tsx` |
-| Ponta a ponta | roteiro HTML de teste humano no padrão da fase 1 | `artifacts/roteiro-p2-sXX-*.html` |
+| Ponta a ponta | roteiro do teste do cliente, um por SPEC, na última task dela | `artifacts/roteiro-p2-sXX-*.html` |
 
-Cada task termina com: runner verde, evidência sanitizada anexada, linha no `changelog.md`, `STATUS.md` atualizado e aceite humano ("teste ok") quando a task pedir demonstração.
+Cada task termina com: runner verde, evidência sanitizada anexada, linha no `changelog.md` e `STATUS.md` atualizado. Capturas e gravações pedidas no "Pronto quando" das tasks são feitas pelo agente, sem pedir nada ao cliente.
+
+**Teste do cliente: um por SPEC.** O aceite humano ("teste ok") é pedido uma vez, na última task da SPEC (a de regressão e demonstração), depois que as outras tasks dela estão no ar. As tasks anteriores da SPEC fecham com a prova automática e entram no mesmo aceite. Antes disso, o agente só para por dado ou acesso que só a clínica tem, por ação de risco em dado real ou por falha que não consegue resolver.

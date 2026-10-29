@@ -2,6 +2,14 @@
 
 Atualizado: 2026-10-28 00:20 (BRT)
 
+## Para fechar a fase 2 (29/10)
+
+O teste do cliente agora é um por SPEC, na última task dela (contrato comum, seção 8). Faltam três pontos, todos para a call de 30/10:
+
+1. **P2-S02-T04:** buscar na tela "Identificar paciente" os telefones reais indicados pela clínica. Fecha também a T02 e a T03 da P2-S02.
+2. **P2-S07-T04:** roteiro ponta a ponta da fase 2 (mensagem → identificação → triagem → ticket → atendente → copiloto → resposta) com as atendentes.
+3. **P2-S03-T04:** decisão da consultora sobre o segundo número (`06_notas/desvio-p2-s03-t04-segundo-numero.md`).
+
 ## Visão geral
 
 - **Fase 1 (P1-S01..S05, 16 tasks): 16/16 ✔ CONCLUÍDA (2026-10-09)**

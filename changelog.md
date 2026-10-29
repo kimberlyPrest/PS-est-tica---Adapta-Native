@@ -1,5 +1,11 @@
 # Changelog — CRM Estética (handoff)
 
+## 2026-10-29 — teste do cliente por SPEC
+
+- Contrato comum da fase 2 (seção 8): o aceite humano ("teste ok") passa a ser um por SPEC, na última task dela; capturas e gravações das outras tasks são do agente e não pedem nada ao cliente.
+- `fase.md`: P2-S03-T01, P2-S04-T02 e P2-S04-T03 fechadas, cobertas pelos aceites das SPECs; P2-S02-T02 e P2-S02-T03 fecham junto com o teste da P2-S02-T04.
+- Para fechar a fase 2 faltam o teste da P2-S02-T04, o roteiro final da P2-S07-T04 e a decisão sobre a P2-S03-T04 (ver `STATUS.md`).
+
 ## 2026-10-28 (3) — DESVIO registrado na SPEC: P2-S03-T04 depende de um segundo número
 
 - O owner decidiu **registrar desvio formal** em vez de comprar um segundo número agora (28/10, 06:41).
