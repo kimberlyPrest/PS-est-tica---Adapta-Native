@@ -37,3 +37,31 @@ Status de todas: liberada para implementação (em paralelo ao fechamento da fas
 | Agendamento feito pelo sistema | fase 4 (P4-S02), com confirmação humana |
 | Gravação no CRM do Clínica Experts | fora do programa enquanto o módulo estiver desabilitado na clínica |
 | Funil, tarefas e follow-up | fase 3 |
+
+# Índice de SPECs — Fase 3
+
+**CRM, agenda assistida, follow-up e painel** — A equipe conduz o lead do primeiro contato à avaliação, com dono e próxima ação em cada caso, e o gestor enxerga funil, prazos, conversão e a primeira linha de base.
+
+**Leia antes de qualquer task:** [00-CONTRATO-COMUM-FASE-2.md](./00-CONTRATO-COMUM-FASE-2.md), que vale também para esta fase.
+
+Status de todas: liberada para implementação (29/10/2026). Dependência técnica indica ordem de execução. O teste do cliente é só na última task de cada SPEC.
+
+| ID | Capacidade | SPEC | Tasks | Dependência técnica | Prazo |
+|---|---|---|---|---|---|
+| P3-S01 | Espelho de catálogos, agenda e vendas do Clínica Experts | [SPEC-P3-S01-espelho-catalogos-agenda-vendas.md](./SPEC-P3-S01-espelho-catalogos-agenda-vendas.md) | P3-S01-T01, P3-S01-T02, P3-S01-T03, P3-S01-T04 | P2-S02 (conexão real) | 06/11/2026 |
+| P3-S02 | Funil comercial: leads, oportunidades e motivos de perda | [SPEC-P3-S02-funil-leads-oportunidades.md](./SPEC-P3-S02-funil-leads-oportunidades.md) | P3-S02-T01, P3-S02-T02, P3-S02-T03, P3-S02-T04 | P2-S04 (conversa) e P3-S01 (vendas espelhadas) | 10/11/2026 |
+| P3-S03 | Tarefas e próxima ação obrigatória | [SPEC-P3-S03-tarefas-e-proxima-acao.md](./SPEC-P3-S03-tarefas-e-proxima-acao.md) | P3-S03-T01, P3-S03-T02, P3-S03-T03 | P3-S02 | 12/11/2026 |
+| P3-S04 | Agenda assistida no atendimento | [SPEC-P3-S04-agenda-assistida.md](./SPEC-P3-S04-agenda-assistida.md) | P3-S04-T01, P3-S04-T02, P3-S04-T03 | P3-S01 (catálogos e agenda espelhada) e P2-S05 (ticket) | 13/11/2026 |
+| P3-S05 | Follow-up por cadência configurável | [SPEC-P3-S05-follow-up-por-cadencia.md](./SPEC-P3-S05-follow-up-por-cadencia.md) | P3-S05-T01, P3-S05-T02, P3-S05-T03, P3-S05-T04 | P2-S06 (guardião e modelos), P3-S02 e P3-S03 | 17/11/2026 |
+| P3-S06 | Resultado da avaliação e recuperação de não fechamento | [SPEC-P3-S06-resultado-da-avaliacao-e-recuperacao.md](./SPEC-P3-S06-resultado-da-avaliacao-e-recuperacao.md) | P3-S06-T01, P3-S06-T02, P3-S06-T03 | P3-S01, P3-S03 e P3-S05 | 18/11/2026 |
+| P3-S07 | Painel do gestor e linha de base | [SPEC-P3-S07-painel-do-gestor-e-linha-de-base.md](./SPEC-P3-S07-painel-do-gestor-e-linha-de-base.md) | P3-S07-T01, P3-S07-T02, P3-S07-T03 | P2-S05, P3-S01, P3-S02, P3-S05 e P3-S06 | 19/11/2026 |
+
+## Fora desta fase
+
+| Item | Motivo |
+|---|---|
+| Criar, confirmar ou cancelar agendamento pelo sistema | fase 4 (P4-S02) |
+| Espelhar oportunidades no CRM do Clínica Experts | fora do programa enquanto o módulo estiver desabilitado (verificado em 13/10/2026) |
+| Desconto ou condição comercial automática | fora do programa |
+| Campanhas de pós-venda e recompra | fase 4 (P4-S04) |
+| Resumo gerencial automático | fase 5 (P5-S01) |

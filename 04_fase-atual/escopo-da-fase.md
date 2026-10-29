@@ -35,3 +35,23 @@ Toda mensagem de WhatsApp entra no CRM, é ligada à clínica e ao contato certo
 Nenhuma mensagem duplicada ou perdida; nenhuma conversa, ticket ou configuração visível fora da clínica; nenhuma resposta automática sobre preço, desconto, saúde ou reclamação; sugestão da IA nunca enviada sem o clique da atendente; segredos só no servidor; atendimento humano funciona com IA, Clínica Experts ou provedor fora do ar.
 
 A fase 2 roda em paralelo ao fechamento operacional da fase 1. Convenções técnicas comuns em `01-SPECS/00-CONTRATO-COMUM-FASE-2.md`.
+
+# Fase 3 — CRM, agenda assistida, follow-up e painel
+
+## Resultado
+A equipe conduz o lead do primeiro contato à avaliação, com dono e próxima ação em cada caso, e o gestor enxerga funil, prazos, conversão e a primeira linha de base.
+
+## Entregas da fase
+
+1. Espelho de catálogos, agenda e vendas do Clínica Experts, separado por unidade (P3-S01).
+2. Funil comercial com leads, oportunidades e motivos de perda (P3-S02).
+3. Tarefas e próxima ação obrigatória em todo contato (P3-S03).
+4. Agenda assistida no atendimento, sem gravar no Clínica Experts (P3-S04).
+5. Follow-up por cadência configurável (P3-S05).
+6. Resultado da avaliação e recuperação de quem não fechou (P3-S06).
+7. Painel do gestor e linha de base (P3-S07).
+
+## Critérios globais
+Nada é gravado no Clínica Experts; o dado do Clínica Experts prevalece em divergência; nenhum contato fica sem próxima ação; nenhuma mensagem sai sozinha sem modelo aprovado e interruptor ligado na clínica; cada usuário vê só as suas clínicas.
+
+Convenções técnicas comuns em `01-SPECS/00-CONTRATO-COMUM-FASE-2.md`, que vale também para esta fase.

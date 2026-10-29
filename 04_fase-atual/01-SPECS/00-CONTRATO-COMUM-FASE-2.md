@@ -1,6 +1,6 @@
 # Contrato comum da fase 2
 
-Vale para todas as SPECs P2-S01 a P2-S07. Quando uma SPEC disser "conforme o contrato comum", é este arquivo.
+Vale para todas as SPECs P2-S01 a P2-S07 e, desde 29/10/2026, também para as da fase 3 (P3-S01 a P3-S07). Quando uma SPEC disser "conforme o contrato comum", é este arquivo.
 
 ## 1. Antes de qualquer task
 

@@ -1,5 +1,12 @@
 # Changelog — CRM Estética (handoff)
 
+## 2026-10-29 (2) — fase 3 liberada
+
+- Fase 3 liberada: 7 SPECs (P3-S01 a P3-S07) e 24 tasks em `04_fase-atual/fase.md`, com índice e escopo da fase atualizados.
+- Valores que dependem da clínica deixaram de ser pré-condição das tasks: entram como rascunho e são confirmados no teste da SPEC.
+- O contrato comum da fase 2 vale também para a fase 3, inclusive o teste do cliente na última task de cada SPEC.
+- Os três testes do cliente que restam da fase 2 (P2-S02-T04, P2-S03-T04 e P2-S07-T04) não travam a fase 3.
+
 ## 2026-10-29 — teste do cliente por SPEC
 
 - Contrato comum da fase 2 (seção 8): o aceite humano ("teste ok") passa a ser um por SPEC, na última task dela; capturas e gravações das outras tasks são do agente e não pedem nada ao cliente.

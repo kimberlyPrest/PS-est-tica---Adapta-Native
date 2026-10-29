@@ -1,10 +1,12 @@
 # Status do projeto — CRM Estética (Adapta Native)
 
-Atualizado: 2026-10-28 00:20 (BRT)
+Atualizado: 2026-10-29 (BRT)
 
-## Para fechar a fase 2 (29/10)
+## Fase 3 liberada (29/10)
 
-O teste do cliente agora é um por SPEC, na última task dela (contrato comum, seção 8). Faltam três pontos, todos para a call de 30/10:
+A fase 3 (CRM, agenda assistida, follow-up e painel) está liberada: 7 SPECs e 24 tasks em `04_fase-atual/fase.md`. O teste do cliente é um por SPEC, na última task dela (contrato comum, seção 8).
+
+Da fase 2 ficaram só três testes do cliente, que não travam a fase 3:
 
 1. **P2-S02-T04:** buscar na tela "Identificar paciente" os telefones reais indicados pela clínica. Fecha também a T02 e a T03 da P2-S02.
 2. **P2-S07-T04:** roteiro ponta a ponta da fase 2 (mensagem → identificação → triagem → ticket → atendente → copiloto → resposta) com as atendentes.
@@ -13,7 +15,8 @@ O teste do cliente agora é um por SPEC, na última task dela (contrato comum, s
 ## Visão geral
 
 - **Fase 1 (P1-S01..S05, 16 tasks): 16/16 ✔ CONCLUÍDA (2026-10-09)**
-- **Fase 2 (P2-S01..S07, 28 tasks): 25/28 (89%) — restam 3: P2-S03-T04 (bloqueio do dono na Z-API) e as duas de aceite visual já implementadas.**
+- **Fase 2 (P2-S01..S07, 28 tasks): construída — restam 3 testes do cliente (ver acima)**
+- **Fase 3 (P3-S01..S07, 24 tasks): liberada em 29/10**
   - P2-S01 base/hardening/UI: ✔ COMPLETA (T01–T04)
   - P2-S02 conexão Clínica Experts: ✔ COMPLETA (T01–T03, aceite 27/10) — token do painel no Vault, API real autenticada; bug `date_birth` corrigido
   - P2-S03 canais WhatsApp: T01 ✔, **T02 ✔ CONCLUÍDA (aceite 28/10 — canal Meta real, recebimento e envio provados com `delivered`)**, T03 ✔ (aceite 24/10), T04 ☐ liberada (bloqueio: instância Z-API trial vencida)

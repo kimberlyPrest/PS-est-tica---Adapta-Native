@@ -1,7 +1,7 @@
 {
   "project": "PS Estética",
   "repository": "https://github.com/kimberlyPrest/PS-est-tica---Adapta-Native",
-  "phaseCurrent": 2,
+  "phaseCurrent": 3,
   "approvalStatus": "approved",
   "implementationStatus": "released",
   "phase1": {
@@ -50,17 +50,27 @@
     "README.md",
     "STATUS.md",
     "changelog.md",
-    "handoff-manifest.json"
+    "handoff-manifest.json",
+    "04_fase-atual/01-SPECS/SPEC-P3-S01-espelho-catalogos-agenda-vendas.md",
+    "04_fase-atual/01-SPECS/SPEC-P3-S02-funil-leads-oportunidades.md",
+    "04_fase-atual/01-SPECS/SPEC-P3-S03-tarefas-e-proxima-acao.md",
+    "04_fase-atual/01-SPECS/SPEC-P3-S04-agenda-assistida.md",
+    "04_fase-atual/01-SPECS/SPEC-P3-S05-follow-up-por-cadencia.md",
+    "04_fase-atual/01-SPECS/SPEC-P3-S06-resultado-da-avaliacao-e-recuperacao.md",
+    "04_fase-atual/01-SPECS/SPEC-P3-S07-painel-do-gestor-e-linha-de-base.md"
   ],
   "specDirectory": "04_fase-atual/01-SPECS",
-  "phasesReleased": [
-    1,
-    2
-  ],
+  "phasesReleased": 3,
   "phase2": {
     "specCount": 7,
     "taskCount": 28,
     "releasedAt": "2026-10-14",
+    "commonContract": "04_fase-atual/01-SPECS/00-CONTRATO-COMUM-FASE-2.md"
+  },
+  "phase3": {
+    "specCount": 7,
+    "taskCount": 24,
+    "releasedAt": "2026-10-29",
     "commonContract": "04_fase-atual/01-SPECS/00-CONTRATO-COMUM-FASE-2.md"
   }
 }

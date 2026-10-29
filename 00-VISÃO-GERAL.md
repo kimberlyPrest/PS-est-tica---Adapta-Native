@@ -6,7 +6,8 @@ O projeto substitui acompanhamento fragmentado por um fluxo rastreável, sem ret
 
 - **Projeto:** PS Estética. F3 Energy Drink é cadastro legado.
 - **Fase 1 (concluída):** base multi-clínica, identidade/acesso, console inicial, conexões seguras e identificação de pacientes.
-- **Fase 2 (liberada):** WhatsApp oficial e não oficial, caixa de entrada, tickets com fila e prazo, triagem com respostas aprovadas e assistente da atendente.
+- **Fase 2 (construída; 3 testes do cliente pendentes):** WhatsApp oficial e não oficial, caixa de entrada, tickets com fila e prazo, triagem com respostas aprovadas e assistente da atendente.
+- **Fase 3 (liberada em 29/10):** funil com oportunidades, tarefas e próxima ação, agenda assistida, follow-up por cadência, recuperação pós-avaliação e painel do gestor.
 - **Aprovações:** confirmadas pela responsável; registro em `02-Escopo-Definitivo/decisoes-e-aprovacoes.md`.
 - **Escopo integral:** `02-Escopo-Definitivo/02-Escopo-Definitivo.md`.
 - **Navegação do pacote:** `README.md`.

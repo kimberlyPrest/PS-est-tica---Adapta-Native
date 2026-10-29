@@ -29,3 +29,5 @@
 - ultima_acao: desvio registrado em `06_notas/desvio-p2-s03-t04-segundo-numero.md` e changelog atualizado (commit 35a8e21)
 - proxima_acao: aguardar a decisão da consultora. Se opção 1 ou 3: fechar a T04 com a prova por provedor e o aceite do owner. Se opção 2: aguardar o segundo número e então rodar a matriz simultânea.
 - atualizado_em: 2026-10-28T06:45:00-03:00
+- decisao_da_consultora: 2026-10-29 — opção 1 do desvio. A T04 fecha com a prova por provedor, a contingência de 28/10 e o "ok" do owner (emenda na SPEC P2-S03).
+- fase_3: liberada em 2026-10-29. Os três testes do cliente da fase 2 (P2-S02-T04, P2-S03-T04, P2-S07-T04) não travam a fase 3; seguir pela P3-S01-T01.
